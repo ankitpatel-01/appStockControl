@@ -1,0 +1,53 @@
+// Global styles goes here
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-anchor: none;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed;
+}
+
+.overflow-x-hidden {
+    overflow-x: hidden;
+}
+
+.overflow-y-hidden {
+    overflow-y: hidden;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
+    overflow-y: hidden;
+    // scrollbar-color: $secondary transparent;
+    // scrollbar-width: thin;
+}
+
+.overflow-y-auto {
+    overflow-y: auto;
+    overflow-x: hidden;
+    // scrollbar-color: $secondary transparent;
+    // scrollbar-width: thin;
+}
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+
+.word-break {
+    word-break: break-all;
+}

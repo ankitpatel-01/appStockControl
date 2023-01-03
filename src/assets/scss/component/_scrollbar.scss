@@ -1,0 +1,35 @@
+// ::-webkit-scrollbar {
+//     width: 4px;
+//     height: 4px;
+
+//     &-thumb {
+//         background-color: $secondary;
+//         border-radius: $border-radius;
+//     }
+
+//     &-button {
+//         visibility: hidden;
+//         height: 4px;
+//         width: 4px;
+
+//         &:vertical:start:increment,
+//         &:vertical:end:decrement,
+//         &:horizontal:start:increment,
+//         &:horizontal:end:decrement {
+//             display: none;
+//         }
+//     }
+// }
+
+// // Small devices (landscape phones, less than 768px)
+// @media (max-width: 768px) {
+//     ::-webkit-scrollbar {
+//         width: 2px;
+//         height: 2px;
+
+//         &-button {
+//             height: 2px;
+//             width: 2px;
+//         }
+//     }
+// }

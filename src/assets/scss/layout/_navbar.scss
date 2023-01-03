@@ -1,0 +1,24 @@
+.nav {
+    &-item {
+        padding: $nav-item-padding-y $nav-item-padding-x;
+
+        &:hover {
+            .nav-link {
+                color: $nav-link-hover-color;
+            }
+        }
+    }
+
+    &-link {
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $nav-hover-bg;
+        }
+
+        &.active {
+            // background-color: ;
+        }
+    }
+}

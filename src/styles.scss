@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+// Project base and component style import
+
+// Base
+@import './assets/scss/base/index';
+
+// Bootstrap Base 
+@import './assets/scss/vendor/bootstrap-base';
+
+// Bootstrap Component 
+@import './assets/scss/vendor/bootstrap-components';
+
+// Project Specific Components
+@import './assets/scss/component/index';
+
+// Now other style import
+@import './assets/scss/layout/index';
+
+// Utilies 
+@import './assets/scss/utilities/index';
+
+//CDk -overlay styles
+@import '@angular/cdk/overlay-prebuilt.css';
