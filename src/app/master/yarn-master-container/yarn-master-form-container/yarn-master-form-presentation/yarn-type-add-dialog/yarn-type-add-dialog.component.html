@@ -1,0 +1,70 @@
+<div class="dialog">
+
+    <div class="dialog-header">
+        <span class="fs-5">Add Yarn Type</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+
+    <div class="dialog-main">
+
+        <form class="row" [formGroup]="yarnTypeFrom" autocomplete="off">
+
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="typeDesc" class="form-label">Type Description</label>
+                    <input id="typeDesc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['type_desc'].touched
+                        || getControls['type_desc'].dirty
+                    ) && getControls['type_desc'].invalid }" placeholder="Enter Type Description" maxlength="40"
+                        formControlName="type_desc" alphabetOnly toUpperCase (keyup.enter)="type.focus()">
+                    <small class="validation-text">
+                        Please enter type description.
+                    </small>
+                </div>
+            </div>
+
+
+            <div class="col-6">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="type" class="form-label">Type</label>
+                    <input #type id="type" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['type'].touched
+                        || getControls['type'].dirty
+                    ) && getControls['type'].invalid }" placeholder="Enter Type" maxlength="1" formControlName="type"
+                        alphabetOnly toUpperCase (keyup.enter)="count_type.focus()">
+                    <small class="validation-text">
+                        Please enter type.
+                    </small>
+                </div>
+            </div>
+
+
+            <div class="col-6">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="count_type" class="form-label">Count Type</label>
+                    <ng-select #count_type placeholder="Select Type" id="count_type" [ngClass]="{ 'invalid': (
+                        getControls['count_type'].touched
+                        || getControls['count_type'].dirty
+                    ) && getControls['count_type'].invalid }" formControlName="count_type"
+                        (keyup.enter)="saveBtn.focus()">
+                        <ng-option value="" disabled>Select Count Type</ng-option>
+                        <ng-option value="C">C</ng-option>
+                        <ng-option value="D">D</ng-option>
+                        <ng-option value="L">L</ng-option>
+                    </ng-select>
+                    <small class="validation-text">
+                        Please select count type.
+                    </small>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="dialog-footer">
+        <button type="button" class="btn btn-outline-primary me-3" (click)="close()">Cancel</button>
+        <button #saveBtn id="save_btn" type="button" class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+
+</div>

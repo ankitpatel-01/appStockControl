@@ -1,0 +1,46 @@
+<div class="dialog">
+
+    <div class="dialog-header">
+        <span class="fs-5">Add Color</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+
+    <div class="dialog-main">
+
+        <form class="row" [formGroup]="colorForm" autocomplete="off">
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="color_desc" class="form-label">Color Description</label>
+                    <input id="color_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['color_desc'].touched
+                        || getControls['color_desc'].dirty
+                    ) && getControls['color_desc'].invalid }" placeholder="Enter color Description" maxlength="30"
+                        formControlName="color_desc" alphabetOnly toUpperCase (keyup.enter)="color_code.focus()">
+                    <small class="validation-text">
+                        Please enter color description.
+                    </small>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="color_code" class="form-label">Color Code</label>
+                    <input #color_code id="color_code" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['color_code'].touched
+                        || getControls['color_code'].dirty
+                    ) && getControls['color_code'].invalid }" placeholder="Enter color code" maxlength="3"
+                        formControlName="color_code" alphabetOnly toUpperCase (keyup.enter)="saveBtn.focus()">
+                    <small class="validation-text">
+                        Please enter color code.
+                    </small>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="dialog-footer">
+        <button type="button" class="btn btn-outline-primary me-3" (click)="close()">Cancel</button>
+        <button #saveBtn id="save_btn" type="button" class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+
+</div>

@@ -1,0 +1,13 @@
+<div class="px-5 pt-4 pb-3">
+    <h2 class="content-header-title">Yarn Master</h2>
+    <app-tab-group>
+        <app-tab tabTitle="Yarn">
+            <app-yarn-master-list-presentation [yarnsRes]="yarnsList$|async" (createYarn)="createYarn($event)"
+                (removeYarn)="removeYarn($event)" (updateYarn)="updateYarn($event)"></app-yarn-master-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Type">
+            <app-yarn-type-list-presentation [yarnTypeRes]="yarnTypesList$|async"
+                (pageChange)="getYarnTypes($event)"></app-yarn-type-list-presentation>
+        </app-tab>
+    </app-tab-group>
+</div>

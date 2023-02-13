@@ -1,0 +1,338 @@
+<div class="drawer drawer-w800">
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Yarn</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+
+    <div class="drawer-main">
+        <form [formGroup]="yarnForm" autocomplete="off">
+            <!-- start: type and ply  -->
+            <div class="row">
+                <div class="col-6">
+                    <!-- type  -->
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarn_type" class="form-label">Type</label>
+                        <div *ngIf="yarnTypeLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <ng-select #yarnType placeholder="Select Type" id="yarn_type" [ngClass]="{ 'invalid': (
+                            getControls['yarn_type'].touched
+                            || getControls['yarn_type'].dirty
+                        ) && getControls['yarn_type'].invalid }" formControlName="yarn_type"
+                            (keyup.enter)="yarn_ply.focus()">
+                            <ng-template ng-header-tmp>
+                                <button class="btn btn-outline-primary w-100" (click)="openAddNew('yarnType')">Add
+                                    new</button>
+                            </ng-template>
+                            <ng-option *ngFor="let yarnType of yarnTypeList"
+                                [value]="yarnType?.id">{{yarnType?.type_desc}}-{{yarnType.count_type}}</ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select yarn type.
+                        </small>
+                    </div>
+                </div>
+
+                <!-- ply -->
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarn_ply" class="form-label">PLY</label>
+                        <ng-select #yarn_ply placeholder="Select ply" id="yarn_ply" [ngClass]="{ 'invalid': (
+                            getControls['yarn_ply'].touched
+                            || getControls['yarn_ply'].dirty
+                        ) && getControls['yarn_ply'].invalid }" formControlName="yarn_ply"
+                            (keyup.enter)="yarn_count.focus()">
+                            <ng-option *ngFor="let plyCount of plyCountList" [value]="plyCount">{{plyCount}}</ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select yarn ply.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <!-- end: type and ply  -->
+
+            <!-- start: quality and count  -->
+            <div class="row">
+                <!-- count -->
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarn_count" class="form-label">
+                            <ng-container *ngIf="selectedYarnType">
+                                <ng-container [ngSwitch]="selectedYarnType.count_type">
+                                    <span *ngSwitchCase="YarnTypeCountEnum.COUNT">Count</span>
+                                    <span *ngSwitchCase="YarnTypeCountEnum.DENIER">Denier</span>
+                                    <span *ngSwitchCase="YarnTypeCountEnum.LINEN">Lea</span>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="!selectedYarnType">
+                                <span>Count</span>
+                            </ng-container>
+                        </label>
+                        <input #yarn_count type="text" class="form-control" id="yarn_count" [ngClass]="{ 'invalid': (
+                            getControls['yarn_count'].touched
+                            || getControls['yarn_count'].dirty
+                        ) && getControls['yarn_count'].invalid }" placeholder="Enter number of counts" maxlength="5"
+                            formControlName="yarn_count" numberOnly (keyup.enter)="yarn_count.focus()">
+                        <small class="validation-text">
+                            Please enter yarn count.
+                        </small>
+                    </div>
+                </div>
+                <!-- quality -->
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="quality" class="form-label">Quality</label>
+                        <div *ngIf="yarnQualityLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <ng-select placeholder="Select Quality" id="quality" [ngClass]="{ 'invalid': (
+                            getControls['yarn_qly'].touched
+                            || getControls['yarn_qly'].dirty
+                        ) && getControls['yarn_qly'].invalid }" formControlName="yarn_qly">
+                            <ng-template ng-header-tmp>
+                                <button class="btn btn-outline-primary w-100" (click)="openAddNew('quality')">Add
+                                    new</button>
+                            </ng-template>
+                            <ng-option *ngFor="let quality of filteredQualityList"
+                                [value]="quality?.id">{{quality?.quality_desc}}</ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select yarn quality.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <!-- end: quality and count  -->
+
+            <!-- start twist and color  -->
+            <div class="row">
+                <!-- twist -->
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="twist" class="form-label">Twist</label>
+                        <ng-select placeholder="Select twist" id="twist" [ngClass]="{ 'invalid': (
+                            getControls['yarn_twist'].touched
+                            || getControls['yarn_twist'].dirty
+                        ) && getControls['yarn_twist'].invalid }" formControlName="yarn_twist">
+                            <ng-option *ngFor="let twist of twistList"
+                                [value]="twist.twist_code">{{twist.twist_name}}</ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select twist type.
+                        </small>
+                    </div>
+                </div>
+
+                <!-- color  -->
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="color" class="form-label">Color</label>
+                        <div *ngIf="yarnColorLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <ng-select placeholder="Select color" id="color" [ngClass]="{ 'invalid': (
+                            getControls['yarn_color'].touched
+                            || getControls['yarn_color'].dirty
+                        ) && getControls['yarn_color'].invalid }" formControlName="yarn_color">
+                            <ng-template ng-header-tmp>
+                                <button class="btn btn-outline-primary w-100" (click)="openAddNew('color')">Add
+                                    new</button>
+                            </ng-template>
+                            <ng-option *ngFor="let color of colorList"
+                                [value]="color?.id">{{color?.color_desc}}</ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select yarn color.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <!-- end: twist and color  -->
+
+            <!-- start yarn code and description  -->
+            <div class="row">
+                <!-- yarn code  -->
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarnCode" class="form-label">Yarn Code</label>
+                        <input type="text" class="form-control" [ngClass]="{ 'invalid': (
+                            getControls['yarn_code'].touched
+                            || getControls['yarn_code'].dirty
+                        ) && getControls['yarn_code'].invalid, 'disable-light':!isEditMode }" placeholder="Yarn Code"
+                            id="yarn_code" formControlName="yarn_code" (keyup.enter)="yarn_count.focus()">
+                        <small class="validation-text">
+                            yarn color is required.
+                        </small>
+                    </div>
+                </div>
+                <!-- yarn description -->
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarn_desc" class="form-label">Yarn description</label>
+                        <input #yarn_count type="text" class="form-control" [ngClass]="{ 'invalid': (
+                            getControls['yarn_desc'].touched
+                            || getControls['yarn_desc'].dirty
+                        ) && getControls['yarn_desc'].invalid }" id="yarn_desc" placeholder="Yarn Description"
+                            formControlName="yarn_desc" (keyup.enter)="yarn_count.focus()">
+                        <small class="validation-text">
+                            Please enter yarn description.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <!-- end yarn code and description  -->
+
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="engCount" class="form-label">ENG. Count</label>
+                        <input id="engCount" type="text" placeholder="Enter ENG. Count"
+                            class="form-control disable-light" [ngClass]="{ 'invalid': (
+                            getControls['eng_count'].touched
+                            || getControls['eng_count'].dirty
+                        ) && getControls['eng_count'].invalid }" formControlName="eng_count" />
+                        <small class="validation-text">
+                            Please enter eng. count.
+                        </small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="denier" class="form-label">Denier</label>
+                        <input id="denier" type="text" placeholder="Enter Denier" class="form-control disable-light"
+                            [ngClass]="{ 'invalid': (
+                            getControls['denier'].touched
+                            || getControls['denier'].dirty
+                        ) && getControls['denier'].invalid }" formControlName="denier" />
+                        <small class="validation-text">
+                            Please enter denier.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label class="form-label">Grey / Dyed</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gry_dye" id="gry_dye_gry"
+                                    [value]="YarnGryDyeEnum.GREY" formControlName="gry_dye">
+                                <label class="form-check-label" for="hsnType_hsn">Grey</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gry_dye" id="gry_dye_dye"
+                                    [value]="YarnGryDyeEnum.DYED" formControlName="gry_dye">
+                                <label class="form-check-label" for="hsnType_service">Dyed</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarn_category" class="form-label">Yarn category</label>
+                        <div *ngIf="yarnCategoryLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <ng-select placeholder="Select Yarn category" id="yarn_category" [ngClass]="{ 'invalid': (
+                            getControls['yarn_category'].touched
+                            || getControls['yarn_category'].dirty
+                        ) && getControls['yarn_category'].invalid }" formControlName="yarn_category">
+                            <ng-template ng-header-tmp>
+                                <button class="btn btn-outline-primary w-100" (click)="openAddNew('category')">Add
+                                    new</button>
+                            </ng-template>
+                            <ng-option *ngFor="let category of categoryList" [value]="category?.id">
+                                <span>{{category?.category_desc}}</span>
+                            </ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select yarn category.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarn_group" class="form-label">Yarn group</label>
+                        <div *ngIf="yarnGroupLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <ng-select placeholder="Select Yarn group" id="yarn_group" [ngClass]="{ 'invalid': (
+                            getControls['yarn_group'].touched
+                            || getControls['yarn_group'].dirty
+                        ) && getControls['yarn_group'].invalid }" formControlName="yarn_group">
+                            <ng-template ng-header-tmp>
+                                <button class="btn btn-outline-primary w-100" (click)="openAddNew('yarnGroup')">Add
+                                    new</button>
+                            </ng-template>
+                            <ng-option *ngFor="let yarnGrp of yarnGroupList"
+                                [value]="yarnGrp?.id">{{yarnGrp?.yarn_grp_name}}</ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select yarn group.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="hsn_code" class="form-label">HSN code</label>
+                        <div *ngIf="yarnHsnLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <ng-select placeholder="Select HSN Code" id="hsn_code" [ngClass]="{ 'invalid': (
+                            getControls['hsn_code'].touched
+                            || getControls['hsn_code'].dirty
+                        ) && getControls['hsn_code'].invalid }" formControlName="hsn_code">
+                            <ng-template ng-header-tmp>
+                                <button class="btn btn-outline-primary w-100" (click)="openAddNew('hsnCode')">Add
+                                    new</button>
+                            </ng-template>
+                            <ng-option *ngFor="let hsnCode of hsnCodeList" [value]="hsnCode?.id">{{hsnCode?.hsn_code}} -
+                                {{hsnCode?.hsn_desc}}</ng-option>
+                        </ng-select>
+                        <small class="validation-text">
+                            Please select hsn code.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-6">
+                    <div class="mb-3 form-control-wrapper">
+                        <label for="yarn_rate" class="form-label">Rate</label>
+                        <input id="yarn_rate" type="text" placeholder="Enter Rate" class="form-control" [ngClass]="{ 'invalid': (
+                            getControls['yarn_rate'].touched
+                            || getControls['yarn_rate'].dirty
+                        ) && getControls['yarn_rate'].invalid }" formControlName="yarn_rate" />
+                        <small class="validation-text">
+                            Please enter yarn rate.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button type="button" class="btn btn-primary btn px-4" (click)="saveYarn()">Save</button>
+    </div>
+</div>
