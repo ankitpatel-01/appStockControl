@@ -1,0 +1,18 @@
+<div class="dialog">
+    <!-- START: dialog header -->
+    <div class="dialog-header">
+        <span class="fs-5">{{ data.title }}</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="cancel()"></span>
+    </div>
+    <!-- END: dialog header -->
+    <!-- START: dialog body  -->
+    <div class="dialog-main">
+        <p class="dialog-message">{{ data.message }}</p>
+    </div>
+    <!-- END: dialog body  -->
+    <!-- START: dialog action  -->
+    <div class="dialog-footer">
+        <button type="button" class="btn btn-primary" (click)="confirm()" autofocus>Ok</button>
+    </div>
+    <!-- END: dialog action  -->
+</div>
