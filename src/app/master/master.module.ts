@@ -18,6 +18,7 @@ import { HsnAddDialogComponent } from './yarn-master-container/yarn-master-form-
 import { PaginatorModule, TabsModule } from '../custom-components';
 import { YarnTypeListPresentationComponent } from './yarn-master-container/yarn-type-list-presentation/yarn-type-list-presentation.component';
 import { YarnTypeFormPresentationComponent } from './yarn-master-container/yarn-type-list-presentation/yarn-type-form-presentation/yarn-type-form-presentation.component';
+import { MaterailTabsModule } from '../material';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { YarnTypeFormPresentationComponent } from './yarn-master-container/yarn-
     SharedModule,
     TabsModule,
     PaginatorModule,
+    MaterailTabsModule
   ],
   providers: [
     YarnMasterService
