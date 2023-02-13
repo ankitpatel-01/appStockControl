@@ -1,0 +1,21 @@
+.nav {
+    &.nav-tabs {
+        .nav-item {
+            padding: 0rem 0rem;
+
+            .nav-link {
+                border-radius: 0px;
+                border: 0;
+                padding: .625rem 1.825rem;
+
+                &:hover {
+                    background-color: $main-bg;
+                }
+
+                &.active {
+                    border-bottom: 4px solid $primary;
+                }
+            }
+        }
+    }
+}

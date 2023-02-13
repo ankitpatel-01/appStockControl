@@ -1,0 +1,26 @@
+.dialog {
+
+    background: $white;
+    border-radius: $dialog-border-radius;
+    width: $dialog-default-width;
+
+    @include media-breakpoint-down(sm) {
+        width: 90%;
+        margin: auto;
+    }
+
+    &-header {
+        padding: $dialog-padding-header;
+        border-bottom: $border-width $border-style $border-color;
+        @include flex($justify-content: space-between);
+    }
+
+    &-main {
+        padding: $dialog-padding-main;
+    }
+
+    &-footer {
+        padding: $dialog-padding-footer;
+        @include flex($justify-content: flex-end);
+    }
+}

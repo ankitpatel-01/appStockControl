@@ -5,6 +5,11 @@
         &:hover {
             .nav-link {
                 color: $nav-link-hover-color;
+
+                &.active {
+                    background-color: #ecf3fe;
+                    color: $primary;
+                }
             }
         }
     }
@@ -13,12 +18,16 @@
         border-radius: 4px;
         cursor: pointer;
 
+        &.active {
+            // background-color: #f0f4ff;
+            background-color: #377dff17;
+            color: $primary;
+            font-weight: 600;
+        }
+
         &:hover {
             background-color: $nav-hover-bg;
         }
 
-        &.active {
-            // background-color: ;
-        }
     }
 }
