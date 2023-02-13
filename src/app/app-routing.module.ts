@@ -5,12 +5,18 @@ import { HomeComponent } from './core/components/home/home.component';
 const routes: Routes = [
   {
     path: "",
-    pathMatch: "full",
-    redirectTo: "home",
-  },
-  {
-    path: "home",
     component: HomeComponent,
+    children: [
+      {
+        path: "",
+        pathMatch: "full",
+        redirectTo: "master",
+      },
+      {
+        path: "master",
+        loadChildren: () => import("./master/master.module").then(m => m.MasterModule),
+      }
+    ]
   }
 ];
 

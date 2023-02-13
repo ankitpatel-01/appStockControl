@@ -1,0 +1,7 @@
+<app-yarn-master-form-presentation [yarn]="yarnObj" [yarnTypeRes]="yarnTypesList$|async"
+    [qualityList]="qualityList$|async" [colorList]="colorList$|async" [categoryList]="categoryList$|async"
+    [yarnGroup]="yarnGroupList$|async" [hsnCodeList]="hsnCodeList$|async" [gstRateList]="gstRateList$|async"
+    (createYarn)="saveClick($event)" (updateYarn)="editClick($event)" (createYarnType)="createYarnTypes($event)"
+    (createQuality)="createQuality($event)" (createColor)="createColor($event)"
+    (createCategory)="createCategory($event)" (createYarnGroup)="createYarnGroup($event)"
+    (createHsnCode)="createHsnCode($event)" (cancel)="close()"></app-yarn-master-form-presentation>

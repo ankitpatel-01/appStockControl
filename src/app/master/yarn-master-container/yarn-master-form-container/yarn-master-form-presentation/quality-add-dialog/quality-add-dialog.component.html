@@ -1,0 +1,50 @@
+<div class="dialog">
+
+    <div class="dialog-header">
+        <span class="fs-5">Add Quality</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+
+    <div class="dialog-main">
+
+        <form class="row" [formGroup]="qualityForm" autocomplete="off">
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="quality_desc" class="form-label">Quality Description</label>
+                    <input id="quality_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['quality_desc'].touched
+                        || getControls['quality_desc'].dirty
+                    ) && getControls['quality_desc'].invalid }" placeholder="Enter Type Description" maxlength="30"
+                        formControlName="quality_desc" toUpperCase (keyup.enter)="type.focus()">
+                    <small class="validation-text">
+                        Please enter quality description.
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="type" class="form-label">Type</label>
+                    <ng-select #type [ngClass]="{ 'invalid': (
+                        getControls['type'].touched
+                        || getControls['type'].dirty
+                    ) && getControls['type'].invalid }" placeholder="Select Type" id="type" formControlName="type"
+                        (keyup.enter)="saveBtn.focus()">
+                        <ng-option *ngFor="let yarnType of yarnTypeList"
+                            [value]="yarnType?.id">{{yarnType?.type_desc}}</ng-option>
+                    </ng-select>
+                    <small class="validation-text">
+                        Please select type.
+                    </small>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="dialog-footer">
+        <button type="button" class="btn btn-outline-primary me-3" (click)="close()">Cancel</button>
+        <button #saveBtn id="save_btn" type="button" class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+
+</div>

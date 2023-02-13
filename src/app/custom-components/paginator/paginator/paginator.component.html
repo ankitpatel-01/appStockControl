@@ -1,0 +1,20 @@
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item" [ngClass]="{'disabled':currentPage <= 1}">
+            <!-- <a class="page-link ">Previous</a> -->
+            <a class="page-link cursor-pointer" aria-label="Previous" (click)="previousPage()">
+                <span aria-hidden="true">&lt; Prev </span>
+            </a>
+        </li>
+        <li *ngFor="let page of pages" class="page-item"
+            [ngClass]="{'active': page === currentPage,'disabled':page === '...'}">
+            <a class="page-link cursor-pointer" (click)="goToPage(page)">{{page}}</a>
+        </li>
+        <li class="page-item" [ngClass]="{'disabled':currentPage >= totalPages}">
+            <!-- <a class="page-link cursor-pointer" (click)="nextPage()">Next</a> -->
+            <a class="page-link" aria-label="Next" (click)="nextPage()">
+                <span aria-hidden="true">Next &gt;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

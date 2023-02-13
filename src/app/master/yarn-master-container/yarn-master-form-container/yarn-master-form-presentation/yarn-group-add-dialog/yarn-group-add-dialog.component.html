@@ -1,0 +1,34 @@
+<div class="dialog">
+
+    <div class="dialog-header">
+        <span class="fs-5">Add Yarn Group</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+
+    <div class="dialog-main">
+
+        <form class="row" [formGroup]="yarnGroupFrom" autocomplete="off">
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="yarn_grp_name" class="form-label">Yarn Group Description</label>
+                    <input id="yarn_grp_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['yarn_grp_name'].touched
+                        || getControls['yarn_grp_name'].dirty
+                    ) && getControls['yarn_grp_name'].invalid }" placeholder="Enter Yarn Group Description"
+                        maxlength="30" formControlName="yarn_grp_name" alphabetOnly toUpperCase
+                        (keyup.enter)="saveBtn.focus()">
+                    <small class="validation-text">
+                        Please enter yarn group description.
+                    </small>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="dialog-footer">
+        <button type="button" class="btn btn-outline-primary me-3" (click)="close()">Cancel</button>
+        <button #saveBtn id="save_btn" type="button" class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+
+</div>

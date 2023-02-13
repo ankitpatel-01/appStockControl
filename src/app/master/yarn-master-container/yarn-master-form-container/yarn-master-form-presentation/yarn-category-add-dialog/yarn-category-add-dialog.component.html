@@ -1,0 +1,34 @@
+<div class="dialog">
+
+    <div class="dialog-header">
+        <span class="fs-5">Add Category</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+
+    <div class="dialog-main">
+
+        <form class="row" [formGroup]="yarnCategoryFrom" autocomplete="off">
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="category_desc" class="form-label">Category Description</label>
+                    <input id="category_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['category_desc'].touched
+                        || getControls['category_desc'].dirty
+                    ) && getControls['category_desc'].invalid }" placeholder="Enter Category Description"
+                        maxlength="30" formControlName="category_desc" alphabetOnly toUpperCase
+                        (keyup.enter)="saveBtn.focus()">
+                    <small class="validation-text">
+                        Please enter category description.
+                    </small>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="dialog-footer">
+        <button type="button" class="btn btn-outline-primary me-3" (click)="close()">Cancel</button>
+        <button #saveBtn id="save_btn" type="button" class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+
+</div>
