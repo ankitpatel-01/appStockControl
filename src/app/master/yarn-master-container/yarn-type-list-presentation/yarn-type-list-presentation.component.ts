@@ -1,8 +1,10 @@
-import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PaginationMetaData } from 'src/app/shared/models/api-response.model';
+import { ConfirmDialogData } from 'src/app/shared/models/confirm-dialog-data.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
+import { DrawerService } from 'src/app/shared/services/drawer.service';
+import { UtitityService } from 'src/app/shared/services/utitity.service';
 import { YarnType } from '../../model/yarn-type.model';
 import { YarnTypeFormPresentationComponent } from './yarn-type-form-presentation/yarn-type-form-presentation.component';
 
@@ -20,7 +22,11 @@ export class YarnTypeListPresentationComponent implements OnInit {
     }
   }
 
-  @Output() pageChange: EventEmitter<number>
+  @Output() pageChange: EventEmitter<number>;
+  @Output() removeYarnTypeId: EventEmitter<number>;
+  @Output() createYarnType: EventEmitter<YarnType>;
+  @Output() updateYarnType: EventEmitter<YarnType>;
+
 
   public isYarnTypeLoading: boolean;
 
@@ -31,8 +37,11 @@ export class YarnTypeListPresentationComponent implements OnInit {
     return this._yarnTypeList;
   }
 
-  constructor(private _overlay: Overlay) {
+  constructor(private _drawerService: DrawerService, private _utilityService: UtitityService) {
     this.pageChange = new EventEmitter<number>();
+    this.removeYarnTypeId = new EventEmitter<number>();
+    this.createYarnType = new EventEmitter<YarnType>();
+    this.updateYarnType = new EventEmitter<YarnType>();
     this.isYarnTypeLoading = true;
     this._yarnTypeList = []
   }
@@ -41,52 +50,51 @@ export class YarnTypeListPresentationComponent implements OnInit {
 
   }
 
-  openAddForm() {
-    //config of overlay
-    let config = new OverlayConfig({
-      hasBackdrop: true,
-      height: '100%',
-      positionStrategy: this._overlay.position().global().centerHorizontally().right(),
-      panelClass: 'bg-white'
-    });
-
-    const overlayRef = this._overlay.create(config);
-
+  openYarnTypeForm(yarnTypeEdit?: YarnType) {
+    const overlayRef = this._drawerService.createRightDrawer();
     const component = new ComponentPortal(YarnTypeFormPresentationComponent);
     const componentRef = overlayRef.attach(component);
 
-    overlayRef.backdropClick().subscribe({
-      next: () => overlayRef.detach()
-    });
-
-    // if (yarnObj) {
-    //   componentRef.instance.yarnObj = yarnObj
-    // }
-
+    if (yarnTypeEdit) {
+      componentRef.instance.yarnType = yarnTypeEdit;
+    }
     componentRef.instance.cancel.subscribe({
       next: () => {
-        overlayRef.detach();
+        this._drawerService.closeRightDrawer(overlayRef);
       }
     })
-
     componentRef.instance.save.subscribe({
       next: (yarnType: YarnType) => {
-        // this._createYarn.next(createYarn);
-        console.log(yarnType);
-        overlayRef.detach();
+        if (yarnTypeEdit?.id) {
+          yarnType.id = yarnTypeEdit.id;
+          this.updateYarnType.emit(yarnType)
+        } else {
+          this.createYarnType.emit(yarnType)
+        }
+        this._drawerService.closeRightDrawer(overlayRef);
       }
     })
-
-    // componentRef.instance.edit.subscribe({
-    //   next: (updatedYarn: UpdateYarnDto) => {
-    //     this._updateYarn.next(updatedYarn);
-    //     overlayRef.detach();
-    //   }
-    // })
   }
 
   yarnTypeTrackBy(index: number, el: YarnType): number {
     return el.id as number;
+  }
+
+  removeYarnTypeById(yarnType: YarnType) {
+    const options: ConfirmDialogData = {
+      title: 'Confirm Deactive',
+      message: `Are you sure you want to deactive ${yarnType.type_desc}?`,
+      cancelText: 'Cancel',
+      confirmText: 'Deactive',
+    };
+
+    this._utilityService.openConfirmDialog(options);
+
+    this._utilityService.confirmDialogClose().subscribe(confirmed => {
+      if (confirmed) {
+        this.removeYarnTypeId.emit(yarnType.id);
+      }
+    });
   }
 
   gotoPage(page: number) {

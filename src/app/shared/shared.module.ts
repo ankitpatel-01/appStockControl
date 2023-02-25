@@ -10,6 +10,8 @@ import { DialogModule } from '@angular/cdk/dialog';
 import { NumberFloatDirective } from './directives/number-float.directive';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { UtitityService } from './services/utitity.service';
+import { DrawerService } from './services/drawer.service';
 
 const Directives = [
   ToUpperCaseDirective,
@@ -35,6 +37,9 @@ const Directives = [
     NgSelectModule,
     OverlayModule,
     DialogModule
+  ], providers: [
+    UtitityService,
+    DrawerService
   ]
 })
 export class SharedModule { }

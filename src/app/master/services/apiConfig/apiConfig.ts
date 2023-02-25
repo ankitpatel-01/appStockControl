@@ -8,6 +8,8 @@ export const masterAPI = {
     //yarn type
     YARN_TYPE_GET: 'master/yarn-type',
     YARN_TYPE_CREATE: 'master/yarn-type/create',
+    YARN_TYPE_UPDATE: 'master/yarn-type/update',
+    YARN_TYPE_REMOVE: 'master/yarn-type/remove',
 
     //Quality
     QUALITY_GET: 'master/quality',
@@ -28,8 +30,12 @@ export const masterAPI = {
     //gst
     GST_GET: 'master/gst',
     GST_CREATE: 'master/gst/create',
+    GST_UPDATE: 'master/gst/update',
+    GST_REMOVE: 'master/gst/remove',
 
     //hsn
     HSN_GET: 'master/hsn',
     HSN_CREATE: 'master/hsn/create',
+    HSN_UPDATE: 'master/hsn/update',
+    HSN_REMOVE: 'master/hsn/remove',
 }

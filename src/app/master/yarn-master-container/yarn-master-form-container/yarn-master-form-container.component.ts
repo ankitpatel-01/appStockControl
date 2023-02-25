@@ -4,14 +4,13 @@ import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { Category } from '../../model/category.model';
 import { Color } from '../../model/color.model';
 import { Gst } from '../../model/gst.model';
-import { Hsn } from '../../model/hsn.model';
+import { CreateHsnDto, Hsn } from '../../model/hsn.model';
 import { Quality } from '../../model/quality.model';
 import { CreateYarnDto, UpdateYarnDto } from '../../model/yarn-add-req.model';
 import { YarnGroup } from '../../model/yarn-group.model';
 import { YarnMaster } from '../../model/yarn-master.model';
 import { YarnType } from '../../model/yarn-type.model';
 import { YarnMasterService } from '../../services/yarn-master.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-yarn-master-form-container',
@@ -155,7 +154,7 @@ export class YarnMasterFormContainerComponent implements OnInit {
     this.hsnCodeList$ = this._yarnMasterService.getAllHsnCode();
   }
 
-  createHsnCode(hsnCode: Hsn): void {
+  createHsnCode(hsnCode: CreateHsnDto): void {
     this._yarnMasterService.createHsnCode(hsnCode).subscribe({
       next: (res) => {
         this.getAllHsnCode();

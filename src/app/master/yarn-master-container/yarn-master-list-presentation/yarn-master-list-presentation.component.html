@@ -14,13 +14,13 @@
         <table class="table bordered table-hover">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="num-col">#</th>
                     <th scope="col">Yarn Code</th>
                     <th scope="col">Description</th>
                     <th scope="col">Count</th>
                     <th scope="col">Denier</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" class="action-col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,7 +111,7 @@
                         </span>
                     </td>
                     <td>
-                        <span class="icon-trash cursor-pointer" (click)="removeYarnById(yarnitem.id)"></span>
+                        <span class="icon-trash cursor-pointer" (click)="removeYarnById(yarnitem)"></span>
                         <span class="icon-pen ms-3 cursor-pointer" (click)="openAddForm(yarnitem)"></span>
                     </td>
                 </tr>

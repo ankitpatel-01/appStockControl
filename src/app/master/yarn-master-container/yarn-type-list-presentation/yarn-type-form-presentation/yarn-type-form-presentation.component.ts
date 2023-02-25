@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { YarnType } from 'src/app/master/model/yarn-type.model';
 
@@ -8,15 +8,30 @@ import { YarnType } from 'src/app/master/model/yarn-type.model';
 })
 export class YarnTypeFormPresentationComponent implements OnInit {
 
-  public isEditMode: boolean;
-  public yarnTypeFrom: FormGroup;
+
+
+  @Input() public set yarnType(v: YarnType) {
+    if (v) {
+      this._yarnType = v;
+      this.isEditMode = true;
+    }
+  }
 
   @Output() save: EventEmitter<YarnType>
   @Output() cancel: EventEmitter<boolean>
+
+  public isEditMode: boolean;
+  public yarnTypeFrom: FormGroup;
+
+  private _yarnType: YarnType;
+  public get yarnType(): YarnType {
+    return this._yarnType;
+  }
+
   constructor(private _fb: FormBuilder) {
     this.isEditMode = false;
-    this.save = new EventEmitter<YarnType>;
-    this.cancel = new EventEmitter<boolean>;
+    this.save = new EventEmitter<YarnType>();
+    this.cancel = new EventEmitter<boolean>();
 
   }
 
@@ -27,17 +42,17 @@ export class YarnTypeFormPresentationComponent implements OnInit {
   buildYarnTypeForm() {
     return this._fb.group({
       type_desc: [{
-        value: '',
+        value: this.yarnType?.type_desc ? this.yarnType?.type_desc : '',
         disabled: false
       }, Validators.required],
 
       type: [{
-        value: '',
+        value: this.yarnType?.type ? this.yarnType?.type : '',
         disabled: false
       }, Validators.required],
 
       count_type: [{
-        value: '',
+        value: this.yarnType?.count_type ? this.yarnType?.count_type : '',
         disabled: false
       }, Validators.required],
     })

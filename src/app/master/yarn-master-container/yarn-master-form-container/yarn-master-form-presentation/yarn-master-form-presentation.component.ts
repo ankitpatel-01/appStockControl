@@ -3,7 +3,7 @@ import { YarnMasterFormPresenterService } from '../yarn-master-form-presenter/ya
 import { Category } from 'src/app/master/model/category.model';
 import { Color } from 'src/app/master/model/color.model';
 import { Gst } from 'src/app/master/model/gst.model';
-import { Hsn } from 'src/app/master/model/hsn.model';
+import { CreateHsnDto, Hsn } from 'src/app/master/model/hsn.model';
 import { Quality } from 'src/app/master/model/quality.model';
 import { YarnGroup } from 'src/app/master/model/yarn-group.model';
 import { YarnType } from '../../../model/yarn-type.model';
@@ -16,38 +16,14 @@ import { CreateYarnDto, UpdateYarnDto } from 'src/app/master/model/yarn-add-req.
 import { Subscription } from 'rxjs/internal/Subscription';
 import { YarnMaster } from 'src/app/master/model/yarn-master.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-yarn-master-form-presentation',
   templateUrl: './yarn-master-form-presentation.component.html',
   viewProviders: [YarnMasterFormPresenterService],
-  animations: [
-    // trigger('slideout', [
-    //   state('void', style({ transform: 'translateX(0%)' })),
-    //   transition('void => *', animate(300)),
-    //   transition('* => void', animate(300)),
-    // ]),
-    // trigger('slideIn', [
-    //   state('void', style({ transform: 'translateX(100%)' })),
-    //   transition('void => *', animate(300)),
-    // ])
-    // trigger('slideout', [
-    //   state('void', style({ transform: 'translateX(0%)' })),
-    //   transition('void => *', animate(300)),
-    //   transition('* => void', animate(300)),
-    // ]),
-    // trigger('drawer', [
-    //   state('close', style({ transform: 'translateX(100%)' })),
-    //   state('open', style({ transform: 'none' })),
-    //   transition('*=> open', animate(300)),
-    //   transition('close=>*', animate(300)),
-    // ])
-  ]
 })
 export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
 
-  // isOpen = true;
   @Input() public set yarn(yarn: YarnMaster | null) {
     if (yarn) {
       this._yarn = yarn;
@@ -119,7 +95,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
   @Output() public createColor: EventEmitter<Color>;
   @Output() public createCategory: EventEmitter<Category>;
   @Output() public createYarnGroup: EventEmitter<YarnGroup>;
-  @Output() public createHsnCode: EventEmitter<Hsn>;
+  @Output() public createHsnCode: EventEmitter<CreateHsnDto>;
 
   private _createYarnSub: Subscription;
   private _updateYarnSub: Subscription;
@@ -236,7 +212,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     this.createColor = new EventEmitter<Color>();
     this.createCategory = new EventEmitter<Category>();
     this.createYarnGroup = new EventEmitter<YarnGroup>();
-    this.createHsnCode = new EventEmitter<Hsn>();
+    this.createHsnCode = new EventEmitter<CreateHsnDto>();
   }
 
   ngOnInit(): void {
@@ -326,7 +302,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     })
 
     this._createHsnSub = this._yarnMasterFormPresenter.createHsnCode$.subscribe({
-      next: (hsnCode: Hsn) => {
+      next: (hsnCode: CreateHsnDto) => {
         this.createHsnCode.emit(hsnCode);
         this.yarnHsnLoading = true;
       }

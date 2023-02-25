@@ -18,6 +18,12 @@ import { HsnAddDialogComponent } from './yarn-master-container/yarn-master-form-
 import { PaginatorModule, TabsModule } from '../custom-components';
 import { YarnTypeListPresentationComponent } from './yarn-master-container/yarn-type-list-presentation/yarn-type-list-presentation.component';
 import { YarnTypeFormPresentationComponent } from './yarn-master-container/yarn-type-list-presentation/yarn-type-form-presentation/yarn-type-form-presentation.component';
+import { HsnMasterContainerComponent } from './miscellaneous/hsn-master-container/hsn-master-container.component';
+import { HsnMasterListPresentationComponent } from './miscellaneous/hsn-master-container/hsn-master-list-presentation/hsn-master-list-presentation.component';
+import { HsnMasterFormPresentationComponent } from './miscellaneous/hsn-master-container/hsn-master-form-presentation/hsn-master-form-presentation.component';
+import { TaxMasterContainerComponent } from './miscellaneous/tax-master-container/tax-master-container.component';
+import { TaxMasterListPresentationComponent } from './miscellaneous/tax-master-container/tax-master-list-presentation/tax-master-list-presentation.component';
+import { TaxMasterFormPresentationComponent } from './miscellaneous/tax-master-container/tax-master-form-presentation/tax-master-form-presentation.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +39,12 @@ import { YarnTypeFormPresentationComponent } from './yarn-master-container/yarn-
     HsnAddDialogComponent,
     YarnTypeListPresentationComponent,
     YarnTypeFormPresentationComponent,
+    HsnMasterContainerComponent,
+    HsnMasterListPresentationComponent,
+    HsnMasterFormPresentationComponent,
+    TaxMasterContainerComponent,
+    TaxMasterListPresentationComponent,
+    TaxMasterFormPresentationComponent,
   ],
   imports: [
     MasterRoutingModule,

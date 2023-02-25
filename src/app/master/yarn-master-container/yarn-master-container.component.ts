@@ -16,7 +16,7 @@ import { YarnMasterService } from '../services/yarn-master.service';
   templateUrl: './yarn-master-container.component.html',
 })
 export class YarnMasterContainerComponent implements OnInit {
-
+  private _currentPage: number;
   yarnsList$: Observable<PaginateResponse<YarnMaster[]>>;
   yarnTypesList$: Observable<PaginateResponse<YarnType[]>>;
   qualityList$: Observable<Quality[]>;
@@ -34,11 +34,16 @@ export class YarnMasterContainerComponent implements OnInit {
 
   _props(): void {
     this.getAllYarns();
-    this.getYarnTypes(1);
     this.getQuality();
     this.getAllColors();
     this.getAllCategory();
     this.getAllYarnGroup();
+  }
+
+  onTabChange(tabIndex: number) {
+    if (tabIndex === 1) {
+      this.getYarnTypes(1);
+    }
   }
 
   getAllYarns(page?: number, search?: string) {
@@ -62,7 +67,7 @@ export class YarnMasterContainerComponent implements OnInit {
         this.getAllYarns();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
   }
@@ -73,23 +78,46 @@ export class YarnMasterContainerComponent implements OnInit {
         this.getAllYarns();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
   }
 
   //yarn type
-  getYarnTypes(page?: number, search?: string): void {
+  getYarnTypes(page: number = 1, search: string = ""): void {
+    this._currentPage = page;
     this.yarnTypesList$ = this._yarnMasterService.getAllYarnType(page, search);
+  }
+
+  removeYarnType(id: number): void {
+    this._yarnMasterService.removeYarnType(id).subscribe({
+      next: (res) => {
+        this.getYarnTypes(1);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
   }
 
   createYarnTypes(yarnType: YarnType): void {
     this._yarnMasterService.createYarnTypes(yarnType).subscribe({
       next: (res) => {
-        this.getYarnTypes();
+        this.getYarnTypes(1);
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
+  }
+
+  updateYarnTypes(yarnType: YarnType): void {
+    this._yarnMasterService.updateYarnTypes(yarnType).subscribe({
+      next: (res) => {
+        this.getYarnTypes(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     });
   }

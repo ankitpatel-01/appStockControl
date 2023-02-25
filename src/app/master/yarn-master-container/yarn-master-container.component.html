@@ -1,13 +1,19 @@
-<div class="px-5 pt-4 pb-3">
+<div class="pt-4 container">
     <h2 class="content-header-title">Yarn Master</h2>
-    <app-tab-group>
+    <app-tab-group [verticalLayout]="true" (onTabChange)="onTabChange($event)">
         <app-tab tabTitle="Yarn">
             <app-yarn-master-list-presentation [yarnsRes]="yarnsList$|async" (createYarn)="createYarn($event)"
                 (removeYarn)="removeYarn($event)" (updateYarn)="updateYarn($event)"></app-yarn-master-list-presentation>
         </app-tab>
         <app-tab tabTitle="Type">
             <app-yarn-type-list-presentation [yarnTypeRes]="yarnTypesList$|async"
+                (removeYarnTypeId)="removeYarnType($event)" (createYarnType)="createYarnTypes($event)"
+                (updateYarnType)="updateYarnTypes($event)"
                 (pageChange)="getYarnTypes($event)"></app-yarn-type-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Color">
+            <!-- <app-yarn-type-list-presentation [yarnTypeRes]="yarnTypesList$|async"
+                (pageChange)="getYarnTypes($event)"></app-yarn-type-list-presentation> -->
         </app-tab>
     </app-tab-group>
 </div>

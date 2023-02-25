@@ -39,14 +39,14 @@ export class YarnMasterListPresentationComponent implements OnInit, OnDestroy {
   currentPage = 1;
 
   constructor(private _yarnMasterListPresenter: YarnMasterPresenterListService, private _utilityService: UtitityService) {
+    this.isYarnListLoading = true;
     this._yarnsList = [];
     this.createYarn = new EventEmitter<CreateYarnDto>;
     this.updateYarn = new EventEmitter<UpdateYarnDto>;
-    this.removeYarn = new EventEmitter<number>;
+    this.removeYarn = new EventEmitter<number>();
   }
 
   ngOnInit(): void {
-    this.isYarnListLoading = true;
     this._props();
   }
 
@@ -73,10 +73,10 @@ export class YarnMasterListPresentationComponent implements OnInit, OnDestroy {
     return el.id;
   }
 
-  removeYarnById(id: number) {
+  removeYarnById(yarn: YarnMaster) {
     const options: ConfirmDialogData = {
       title: 'Confirm Deactive',
-      message: 'Are you sure you want to deactive this item?',
+      message: `Are you sure you want to deactive ${yarn.yarn_code}?`,
       cancelText: 'Cancel',
       confirmText: 'Deactive',
     };
@@ -85,7 +85,7 @@ export class YarnMasterListPresentationComponent implements OnInit, OnDestroy {
 
     this._utilityService.confirmDialogClose().subscribe(confirmed => {
       if (confirmed) {
-        this.removeYarn.emit(id)
+        this.removeYarn.emit(yarn.id)
       }
     });
 
