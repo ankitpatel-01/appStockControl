@@ -11,9 +11,17 @@
                 (updateYarnType)="updateYarnTypes($event)"
                 (pageChange)="getYarnTypes($event)"></app-yarn-type-list-presentation>
         </app-tab>
+        <app-tab tabTitle="Quality">
+            <app-yarn-quality-list-presentation></app-yarn-quality-list-presentation>
+        </app-tab>
         <app-tab tabTitle="Color">
-            <!-- <app-yarn-type-list-presentation [yarnTypeRes]="yarnTypesList$|async"
-                (pageChange)="getYarnTypes($event)"></app-yarn-type-list-presentation> -->
+            <app-yarn-color-list-presentation></app-yarn-color-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Category">
+            <app-yarn-category-list-presentation></app-yarn-category-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Group">
+            <app-yarn-group-list-presentation></app-yarn-group-list-presentation>
         </app-tab>
     </app-tab-group>
 </div>

@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { MasterRoutingModule } from './master-routing.module';
+// ---------------------------------------------------------------------------
+import { SharedModule } from '../shared/shared.module';
+import { PaginatorModule, TabsModule } from '../custom-components';
+import { YarnMasterService } from './services/yarn-master.service';
+// ---------------------------------------------------------------------------
 import { YarnMasterContainerComponent } from './yarn-master-container/yarn-master-container.component';
 import { YarnMasterListPresentationComponent } from './yarn-master-container/yarn-master-list-presentation/yarn-master-list-presentation.component';
 import { YarnMasterFormPresentationComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-presentation/yarn-master-form-presentation.component';
-import { YarnMasterService } from './services/yarn-master.service';
 import { YarnMasterFormContainerComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-container.component';
 import { YarnTypeAddDialogComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-presentation/yarn-type-add-dialog/yarn-type-add-dialog.component';
-import { SharedModule } from '../shared/shared.module';
 import { QualityAddDialogComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-presentation/quality-add-dialog/quality-add-dialog.component';
 import { ColorAddDialogComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-presentation/color-add-dialog/color-add-dialog.component';
 import { YarnCategoryAddDialogComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-presentation/yarn-category-add-dialog/yarn-category-add-dialog.component';
 import { YarnGroupAddDialogComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-presentation/yarn-group-add-dialog/yarn-group-add-dialog.component';
 import { HsnAddDialogComponent } from './yarn-master-container/yarn-master-form-container/yarn-master-form-presentation/hsn-add-dialog/hsn-add-dialog.component';
-
-import { PaginatorModule, TabsModule } from '../custom-components';
 import { YarnTypeListPresentationComponent } from './yarn-master-container/yarn-type-list-presentation/yarn-type-list-presentation.component';
 import { YarnTypeFormPresentationComponent } from './yarn-master-container/yarn-type-list-presentation/yarn-type-form-presentation/yarn-type-form-presentation.component';
 import { HsnMasterContainerComponent } from './miscellaneous/hsn-master-container/hsn-master-container.component';
@@ -24,6 +23,14 @@ import { HsnMasterFormPresentationComponent } from './miscellaneous/hsn-master-c
 import { TaxMasterContainerComponent } from './miscellaneous/tax-master-container/tax-master-container.component';
 import { TaxMasterListPresentationComponent } from './miscellaneous/tax-master-container/tax-master-list-presentation/tax-master-list-presentation.component';
 import { TaxMasterFormPresentationComponent } from './miscellaneous/tax-master-container/tax-master-form-presentation/tax-master-form-presentation.component';
+import { YarnColorListPresentationComponent } from './yarn-master-container/yarn-color-list-presentation/yarn-color-list-presentation.component';
+import { YarnColorFormPresentationComponent } from './yarn-master-container/yarn-color-list-presentation/yarn-color-form-presentation/yarn-color-form-presentation.component';
+import { YarnQualityListPresentationComponent } from './yarn-master-container/yarn-quality-list-presentation/yarn-quality-list-presentation.component';
+import { YarnGroupListPresentationComponent } from './yarn-master-container/yarn-group-list-presentation/yarn-group-list-presentation.component';
+import { YarnCategoryListPresentationComponent } from './yarn-master-container/yarn-category-list-presentation/yarn-category-list-presentation.component';
+import { YarnCategoryFormPresentationComponent } from './yarn-master-container/yarn-category-list-presentation/yarn-category-form-presentation/yarn-category-form-presentation.component';
+import { YarnGroupFormPresentationComponent } from './yarn-master-container/yarn-group-list-presentation/yarn-group-form-presentation/yarn-group-form-presentation.component';
+import { YarnQualityFormPresentationComponent } from './yarn-master-container/yarn-quality-list-presentation/yarn-quality-form-presentation/yarn-quality-form-presentation.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +52,14 @@ import { TaxMasterFormPresentationComponent } from './miscellaneous/tax-master-c
     TaxMasterContainerComponent,
     TaxMasterListPresentationComponent,
     TaxMasterFormPresentationComponent,
+    YarnColorListPresentationComponent,
+    YarnColorFormPresentationComponent,
+    YarnQualityListPresentationComponent,
+    YarnGroupListPresentationComponent,
+    YarnCategoryListPresentationComponent,
+    YarnCategoryFormPresentationComponent,
+    YarnGroupFormPresentationComponent,
+    YarnQualityFormPresentationComponent,
   ],
   imports: [
     MasterRoutingModule,
