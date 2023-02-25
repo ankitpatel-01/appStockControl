@@ -11,7 +11,7 @@
 
     &-header {
         padding: $dialog-padding-header;
-        border-bottom: $border-width $border-style $border-color;
+        border-bottom: $border-width $border-style-solid $border-color;
         @include flex($justify-content: space-between);
     }
 

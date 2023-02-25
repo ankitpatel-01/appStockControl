@@ -24,7 +24,7 @@
     &-header {
         flex-shrink: 0;
         height: $drawer-header-height;
-        border-bottom: $border-width $border-style $border-color;
+        border-bottom: $border-width $border-style-solid $border-color;
         padding: $drawer-header-padding;
         background-color: $main-bg;
         @include flex($align-item: center, $justify-content: space-between);
@@ -47,7 +47,7 @@
         flex-shrink: 0;
         padding: $drawer-footer-padding;
         height: $drawer-footer-height;
-        border-top: $border-width $border-style $border-color;
+        border-top: $border-width $border-style-solid $border-color;
         background-color: $main-bg;
         @include flex($align-item: center, $justify-content: space-between);
     }

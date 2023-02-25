@@ -1,19 +1,69 @@
-.nav {
-    &.nav-tabs {
-        .nav-item {
-            padding: 0rem 0rem;
+.tabs-container {
 
-            .nav-link {
-                border-radius: 0px;
-                border: 0;
-                padding: .625rem 1.825rem;
+    @include media-breakpoint-up(md) {
+        &.layout-y {
+            display: flex;
+            margin-top: 0.825rem;
+        }
+    }
 
-                &:hover {
-                    background-color: $main-bg;
+
+    .nav {
+        &.nav-tabs {
+
+            @include media-breakpoint-up(xl) {
+                &.layout-y {
+                    min-width: 18%;
                 }
+            }
 
-                &.active {
-                    border-bottom: 4px solid $primary;
+            @include media-breakpoint-up(md) {
+                &.layout-y {
+                    padding-top: 1rem;
+                    flex-direction: column;
+                    min-width: 14%;
+                    border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
+                    border-bottom: 0;
+                    // padding-right: 1rem;
+                }
+            }
+
+            .nav-item {
+                padding: 0rem 0rem;
+
+                .nav-link {
+                    border-radius: 0px;
+                    border: 0;
+                    padding: .625rem 1.825rem;
+
+                    &.layout-y {
+                        padding: .825rem 1.625rem;
+                        // border-radius: 12px;
+                    }
+
+                    &:hover {
+                        background-color: transparent;
+                    }
+
+                    &.active {
+
+                        @include media-breakpoint-up(md) {
+                            &.layout-y {
+                                border-left: 4px solid $primary;
+                                // background-color: $nav-tabs-link-y-active-bg ;
+                            }
+                        }
+
+                        @include media-breakpoint-down(md) {
+                            & {
+                                border-bottom: 4px solid $primary;
+                            }
+                        }
+
+                        &:not(.layout-y) {
+                            border-bottom: 4px solid $primary;
+                        }
+                    }
                 }
             }
         }

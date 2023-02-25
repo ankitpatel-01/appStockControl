@@ -17,7 +17,7 @@ $btn-padding-x: 1.375rem;
 $input-focus-box-shadow: 0 3px 10px 0 rgb(34 41 47 / 3%);
 
 $border-width: 1px;
-$border-style: solid;
+$border-style-solid: solid;
 
 $dialog-border-radius: 14px;
 $dialog-default-width: 532px;
@@ -34,3 +34,4 @@ $drawer-footer-padding: 0px 1.5rem;
 
 // tabs
 $nav-tabs-border-width: 2px;
+$nav-tabs-border-color: $gray-300;

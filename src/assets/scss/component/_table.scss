@@ -5,6 +5,15 @@
     border-collapse: separate;
     border-spacing: 0; //no space between td
 
+    .num-col {
+        text-align: center;
+        width: 5%;
+    }
+
+    .action-col {
+        width: 9%;
+    }
+
     & thead>tr>th {
         background-color: $table-header-bg;
         color: $table-heading;

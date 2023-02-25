@@ -52,3 +52,15 @@
         background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
     }
 }
+
+.search-control {
+    background-image: url("data:image/svg+xml,%3Csvg role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 19.9 19.7'%3E%3Ctitle id='title'%3ESearch Icon%3C/title%3E%3Cdesc id='desc'%3EA magnifying glass icon.%3C/desc%3E%3Cg class='search-path' fill='none' stroke='%236e6b7b'%3E%3Cpath stroke-linecap='square' d='M18.5 18.3l-5.4-5.4'/%3E%3Ccircle cx='8' cy='8' r='7'/%3E%3C/g%3E%3C/svg%3E"); // add search icon as background image
+    background-position: 10px 50%; // adjust position of background image
+    background-repeat: no-repeat;
+    background-size: 16px 16px; // adjust size of background image
+    padding-left: 30px; // add padding for background image
+
+    &:focus {
+        background-image: url("data:image/svg+xml,%3Csvg role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 19.9 19.7'%3E%3Ctitle id='title'%3ESearch Icon%3C/title%3E%3Cdesc id='desc'%3EA magnifying glass icon.%3C/desc%3E%3Cg class='search-path' fill='none' stroke='%23a1a6f3'%3E%3Cpath stroke-linecap='square' d='M18.5 18.3l-5.4-5.4'/%3E%3Ccircle cx='8' cy='8' r='7'/%3E%3C/g%3E%3C/svg%3E"); // add search icon as background image
+    }
+}

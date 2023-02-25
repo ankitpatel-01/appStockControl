@@ -1,5 +1,5 @@
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, OnInit } from '@angular/core';
 import { AlertDialogData } from '../../models/alert-dialog.model';
 
 @Component({
@@ -8,7 +8,8 @@ import { AlertDialogData } from '../../models/alert-dialog.model';
 })
 export class AlertDialogComponent implements OnInit {
 
-  constructor(public dialogRef: DialogRef<boolean>, @Inject(DIALOG_DATA) public data: AlertDialogData) { }
+  constructor(@Inject(DIALOG_DATA) public data: AlertDialogData, public dialogRef: DialogRef<boolean>) {
+  }
 
   ngOnInit(): void {
   }

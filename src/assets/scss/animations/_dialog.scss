@@ -1,0 +1,22 @@
+@keyframes popIn {
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes popOut {
+    100% {
+        transform: scale(0);
+        ;
+    }
+}
+
+.dialog-popIn {
+    transform: scale(0);
+    animation: popIn .3s forwards;
+}
+
+.dailog-popOut {
+    transform: scale(1);
+    animation: popOut .3s forwards;
+}
