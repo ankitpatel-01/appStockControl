@@ -1,1 +1,55 @@
-<p>yarn-quality-form-presentation works!</p>
+<div class="drawer drawer-w600">
+    <!-- START:DRAWER HEADER -->
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Quality</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+    <!-- END:DRAWER HEADER -->
+    <!-- START:DRAWER BODY -->
+    <div class="drawer-main">
+        <form class="row" [formGroup]="qualityForm" autocomplete="off">
+            <!-- START:Quality Description -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="quality_desc" class="form-label">Quality Description</label>
+                    <input id="quality_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['quality_desc'].touched
+                        || getControls['quality_desc'].dirty
+                    ) && getControls['quality_desc'].invalid }" placeholder="Enter Type Description" maxlength="30"
+                        formControlName="quality_desc" toUpperCase (keyup.enter)="type.focus()">
+                    <!-- validation  -->
+                    <small class="validation-text">
+                        Please enter quality description.
+                    </small>
+                </div>
+            </div>
+            <!-- END:Quality Description -->
+            <!-- START:Quality Type -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="type" class="form-label">Type</label>
+                    <ng-select #type [ngClass]="{ 'invalid': (
+                        getControls['type'].touched
+                        || getControls['type'].dirty
+                    ) && getControls['type'].invalid }" placeholder="Select Type" id="type" formControlName="type"
+                        (keyup.enter)="saveBtn.focus()">
+                        <ng-option *ngFor="let yarnType of yarnTypeList"
+                            [value]="yarnType?.id">{{yarnType?.type_desc}}</ng-option>
+                    </ng-select>
+                    <!-- validation  -->
+                    <small class="validation-text">
+                        Please select type.
+                    </small>
+                </div>
+            </div>
+            <!-- END:Quality Type -->
+        </form>
+    </div>
+    <!-- END:DRAWER BODY -->
+    <!-- START:DRAWER FOOTER -->
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button #saveBtn type="button" class="btn btn-primary btn px-4" (click)="saveClick()">Save</button>
+    </div>
+    <!-- END:DRAWER FOOTER -->
+</div>

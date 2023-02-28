@@ -4,7 +4,7 @@ import { Category } from 'src/app/master/model/category.model';
 import { Color } from 'src/app/master/model/color.model';
 import { Gst } from 'src/app/master/model/gst.model';
 import { CreateHsnDto, Hsn } from 'src/app/master/model/hsn.model';
-import { Quality } from 'src/app/master/model/quality.model';
+import { CreateQualityDto, Quality } from 'src/app/master/model/quality.model';
 import { YarnGroup } from 'src/app/master/model/yarn-group.model';
 import { YarnType } from '../../../model/yarn-type.model';
 import { YarnTwist, yarnTwist } from 'src/app/master/constants/yarntwist';
@@ -30,10 +30,9 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     }
   }
 
-  @Input() public set yarnTypeRes(res: PaginateResponse<YarnType[]> | null) {
+  @Input() public set yarnTypeRes(res: YarnType[] | null) {
     if (res) {
-      this._yarnTypeList = res.data;
-      this._yarnMasterFormPresenter.yarnTypeList = this.yarnTypeList;
+      this._yarnTypeList = res;
       this.yarnTypeLoading = false;
     }
   }
@@ -91,7 +90,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
   @Output() public createYarn: EventEmitter<CreateYarnDto>;
   @Output() public updateYarn: EventEmitter<UpdateYarnDto>;
   @Output() public createYarnType: EventEmitter<YarnType>;
-  @Output() public createQuality: EventEmitter<Quality>;
+  @Output() public createQuality: EventEmitter<CreateQualityDto>;
   @Output() public createColor: EventEmitter<Color>;
   @Output() public createCategory: EventEmitter<Category>;
   @Output() public createYarnGroup: EventEmitter<YarnGroup>;
@@ -208,7 +207,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     this.createYarn = new EventEmitter<CreateYarnDto>();
     this.updateYarn = new EventEmitter<UpdateYarnDto>();
     this.createYarnType = new EventEmitter<YarnType>();
-    this.createQuality = new EventEmitter<Quality>();
+    this.createQuality = new EventEmitter<CreateQualityDto>();
     this.createColor = new EventEmitter<Color>();
     this.createCategory = new EventEmitter<Category>();
     this.createYarnGroup = new EventEmitter<YarnGroup>();
@@ -274,7 +273,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     });
 
     this._createQualitySub = this._yarnMasterFormPresenter.createQuality$.subscribe({
-      next: (quality: Quality) => {
+      next: (quality: CreateQualityDto) => {
         this.createQuality.emit(quality);
         this.yarnQualityLoading = true;
       }

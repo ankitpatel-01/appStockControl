@@ -1,7 +1,13 @@
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
+import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
+import { Subject } from 'rxjs/internal/Subject';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { PaginationMetaData } from 'src/app/shared/models/api-response.model';
 import { ConfirmDialogData } from 'src/app/shared/models/confirm-dialog-data.model';
+import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { DrawerService } from 'src/app/shared/services/drawer.service';
 import { UtitityService } from 'src/app/shared/services/utitity.service';
@@ -23,14 +29,18 @@ export class YarnTypeListPresentationComponent implements OnInit {
   }
 
   @Output() pageChange: EventEmitter<number>;
-  @Output() removeYarnTypeId: EventEmitter<number>;
+  @Output() removeYarnTypeId: EventEmitter<RemoveEmit>;
   @Output() createYarnType: EventEmitter<YarnType>;
   @Output() updateYarnType: EventEmitter<YarnType>;
+  @Output() yarnTypeSearch: EventEmitter<string>;
 
 
   public isYarnTypeLoading: boolean;
-
+  public searchControl: FormControl;
   public paginationMeta: PaginationMetaData;
+
+  private _searchSubject: Subject<string>;
+  private searchSubscription: Subscription;
 
   private _yarnTypeList: YarnType[];
   public get yarnTypeList(): YarnType[] {
@@ -39,15 +49,48 @@ export class YarnTypeListPresentationComponent implements OnInit {
 
   constructor(private _drawerService: DrawerService, private _utilityService: UtitityService) {
     this.pageChange = new EventEmitter<number>();
-    this.removeYarnTypeId = new EventEmitter<number>();
+    this.removeYarnTypeId = new EventEmitter<RemoveEmit>();
     this.createYarnType = new EventEmitter<YarnType>();
     this.updateYarnType = new EventEmitter<YarnType>();
+    this.yarnTypeSearch = new EventEmitter<string>();
     this.isYarnTypeLoading = true;
-    this._yarnTypeList = []
+    this._yarnTypeList = [];
+    this._searchSubject = new Subject<string>();
+    this.searchControl = new FormControl<string>("");
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
+    this._props();
+  }
 
+  _props(): void {
+    this.onSearchQueryEmit();
+    this._utilityService.resetSearchControl$.subscribe(() => this.searchControl.setValue(""));
+  }
+
+  /**
+   * emit search string to search subject
+   * @param event : input Event
+   */
+  onSearchQueryInput(event: Event): void {
+    const searchQuery = (event.target as HTMLInputElement).value;
+    this._searchSubject.next(searchQuery?.trim());
+  }
+
+  /**
+   * emit search string to container with .3s debounce
+   */
+  onSearchQueryEmit(): void {
+    this.searchSubscription = this._searchSubject
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+      )
+      .subscribe((searchStr) => (this.yarnTypeSearch.emit(searchStr)));
   }
 
   openYarnTypeForm(yarnTypeEdit?: YarnType) {
@@ -92,7 +135,7 @@ export class YarnTypeListPresentationComponent implements OnInit {
 
     this._utilityService.confirmDialogClose().subscribe(confirmed => {
       if (confirmed) {
-        this.removeYarnTypeId.emit(yarnType.id);
+        this.removeYarnTypeId.emit({ id: yarnType.id, length: this.yarnTypeList.length });
       }
     });
   }

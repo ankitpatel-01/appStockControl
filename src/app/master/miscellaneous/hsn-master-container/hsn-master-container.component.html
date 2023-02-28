@@ -3,5 +3,5 @@
     <app-hsn-master-list-presentation [hsnRes]="hsnList$ | async" [gstRateList]="gstRateList$ | async"
         (pageChange)="getAllHsnCodeList($event)" (createhsn)="createHsnCode($event)" (updatehsn)="updateHsnCode($event)"
         (removehsnId)="removeHsnCode($event)" (hsnSearch)="getAllHsnCodeList(1,$event,true)"
-        (pageChange)="getAllHsnCodeList($event)"></app-hsn-master-list-presentation>
+        (pageChange)="getAllHsnCodeList($event,searchString)"></app-hsn-master-list-presentation>
 </div>

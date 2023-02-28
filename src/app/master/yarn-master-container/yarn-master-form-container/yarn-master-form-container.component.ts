@@ -5,7 +5,7 @@ import { Category } from '../../model/category.model';
 import { Color } from '../../model/color.model';
 import { Gst } from '../../model/gst.model';
 import { CreateHsnDto, Hsn } from '../../model/hsn.model';
-import { Quality } from '../../model/quality.model';
+import { CreateQualityDto, Quality } from '../../model/quality.model';
 import { CreateYarnDto, UpdateYarnDto } from '../../model/yarn-add-req.model';
 import { YarnGroup } from '../../model/yarn-group.model';
 import { YarnMaster } from '../../model/yarn-master.model';
@@ -18,7 +18,7 @@ import { YarnMasterService } from '../../services/yarn-master.service';
 })
 export class YarnMasterFormContainerComponent implements OnInit {
 
-  yarnTypesList$: Observable<PaginateResponse<YarnType[]>>;
+  yarnTypesList$: Observable<YarnType[]>;
   qualityList$: Observable<Quality[]>;
   colorList$: Observable<Color[]>;
   categoryList$: Observable<Category[]>;
@@ -45,7 +45,7 @@ export class YarnMasterFormContainerComponent implements OnInit {
     this.cancel = new EventEmitter<boolean>();
     this.save = new EventEmitter<CreateYarnDto>();
     this.edit = new EventEmitter<UpdateYarnDto>();
-    this.yarnTypesList$ = new Observable<PaginateResponse<YarnType[]>>;
+    this.yarnTypesList$ = new Observable<YarnType[]>;
     this.qualityList$ = new Observable<Quality[]>;
     this.colorList$ = new Observable<Color[]>;
     this.categoryList$ = new Observable<Category[]>;
@@ -69,8 +69,8 @@ export class YarnMasterFormContainerComponent implements OnInit {
   }
 
   //yarn type
-  getYarnTypes(page: number = -1): void {
-    this.yarnTypesList$ = this._yarnMasterService.getAllYarnType(page);
+  getYarnTypes(): void {
+    this.yarnTypesList$ = this._yarnMasterService.getAllYarnTypes();
   }
 
   createYarnTypes(yarnType: YarnType): void {
@@ -90,7 +90,7 @@ export class YarnMasterFormContainerComponent implements OnInit {
   }
 
 
-  createQuality(quality: Quality): void {
+  createQuality(quality: CreateQualityDto): void {
     this._yarnMasterService.createQuality(quality).subscribe({
       next: (res) => {
         this.getQuality();

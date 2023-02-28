@@ -1,6 +1,10 @@
 <div class="py-4 h-100 d-flex flex-column">
 
     <div class="d-flex align-items-center justify-content-end">
+        <!-- Search  -->
+        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" id="searchQuery"
+            (input)="onSearchQueryInput($event)" [formControl]="searchControl">
+        <!-- Add button -->
         <button *ngIf="yarnTypeList.length > 0 && !isYarnTypeLoading" type="button" class="btn btn-primary"
             (click)="openYarnTypeForm()">
             <div class="d-flex align-items-center">

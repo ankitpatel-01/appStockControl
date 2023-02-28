@@ -9,6 +9,7 @@ import { YarnMasterService } from '../../services/yarn-master.service';
 import { Gst } from '../../model/gst.model';
 import { CreateHsnDto, Hsn, UpdateHsnDto } from '../../model/hsn.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
+import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 
 @Component({
   selector: 'app-hsn-master-container',
@@ -17,6 +18,7 @@ import { PaginateResponse } from 'src/app/shared/models/response.model';
 export class HsnMasterContainerComponent implements OnInit, OnDestroy {
 
   private _currentPage: number;
+  public searchString: string;
   public gstRateList$: Observable<Gst[]>;
   public hsnList$: Observable<PaginateResponse<Hsn[]>>
 
@@ -25,7 +27,9 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
   private updateHsnSub: Subscription;
   private removeHsnSub: Subscription;
 
-  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService) { }
+  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService) {
+    this.searchString = "";
+  }
 
   ngOnInit(): void {
     this._props();
@@ -50,6 +54,7 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
    */
   getAllHsnCodeList(page: number = 1, search: string = '', gst: boolean = true): void {
     this._currentPage = page;
+    this.searchString = search;
     this.hsnList$ = this._yarnMasterService.getAllHsnCodePaginate(page, search, gst);
   }
 
@@ -95,12 +100,13 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
   /**
    * remove hsn code by id
    * if id not exist throw not found exception
-   * @param hsn_id : hsn id to remove
+   * @param hsn : RemoveEmit
    */
-  removeHsnCode(hsn_id: number) {
-    this.removeHsnSub = this._yarnMasterService.removeHsnCode(hsn_id).subscribe({
+  removeHsnCode(hsn: RemoveEmit) {
+    this.removeHsnSub = this._yarnMasterService.removeHsnCode(hsn.id).subscribe({
       next: (res) => {
-        this.getAllHsnCodeList();
+        hsn.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getAllHsnCodeList(this._currentPage);
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);

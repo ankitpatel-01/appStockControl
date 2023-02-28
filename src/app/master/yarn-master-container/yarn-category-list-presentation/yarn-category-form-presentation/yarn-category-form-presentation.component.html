@@ -1,1 +1,37 @@
-<p>yarn-category-form-presentation works!</p>
+<div class="drawer drawer-w600">
+    <!-- START:DRAWER HEADER -->
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Category</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+    <!-- END:DRAWER HEADER -->
+    <!-- START:DRAWER BODY -->
+    <div class="drawer-main">
+        <form class="row" [formGroup]="categoryForm" autocomplete="off">
+            <!-- START:Category Description -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="category_desc" class="form-label">Category Description</label>
+                    <input id="category_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['category_desc'].touched
+                        || getControls['category_desc'].dirty
+                    ) && getControls['category_desc'].invalid }" placeholder="Enter category Description"
+                        maxlength="30" formControlName="category_desc" alphabetOnly toUpperCase
+                        (keyup.enter)="saveBtn.focus()">
+                    <!-- validation -->
+                    <small class="validation-text">
+                        Please enter category description.
+                    </small>
+                </div>
+            </div>
+            <!-- END:Category Description -->
+        </form>
+    </div>
+    <!-- END:DRAWER BODY -->
+    <!-- START:DRAWER FOOTER -->
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button #saveBtn type="button" class="btn btn-primary btn px-4" (click)="saveClick()">Save</button>
+    </div>
+    <!-- END:DRAWER FOOTER -->
+</div>

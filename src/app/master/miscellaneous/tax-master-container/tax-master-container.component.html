@@ -2,5 +2,5 @@
     <h2 class="content-header-title">Tax Master</h2>
     <app-tax-master-list-presentation [gstRateListRes]="gstRateList$ | async" (GstSearch)="getAllGstRateList(1,$event)"
         (createGst)="createGstRate($event)" (updateGst)="updateGstRate($event)" (removeGstId)="removeGstRate($event)"
-        (pageChange)="getAllGstRateList($event)"></app-tax-master-list-presentation>
+        (pageChange)="getAllGstRateList($event,searchString)"></app-tax-master-list-presentation>
 </div>

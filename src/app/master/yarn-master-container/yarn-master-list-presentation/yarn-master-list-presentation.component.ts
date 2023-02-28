@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ConfirmDialogData } from 'src/app/shared/models/confirm-dialog-data.model';
+import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { UtitityService } from 'src/app/shared/services/utitity.service';
 import { CreateYarnDto, UpdateYarnDto } from '../../model/yarn-add-req.model';
@@ -23,7 +24,7 @@ export class YarnMasterListPresentationComponent implements OnInit, OnDestroy {
 
   @Output() public createYarn: EventEmitter<CreateYarnDto>;
   @Output() public updateYarn: EventEmitter<UpdateYarnDto>;
-  @Output() public removeYarn: EventEmitter<number>;
+  @Output() public removeYarn: EventEmitter<RemoveEmit>;
 
 
   private _yarnsList: YarnMaster[];
@@ -43,7 +44,7 @@ export class YarnMasterListPresentationComponent implements OnInit, OnDestroy {
     this._yarnsList = [];
     this.createYarn = new EventEmitter<CreateYarnDto>;
     this.updateYarn = new EventEmitter<UpdateYarnDto>;
-    this.removeYarn = new EventEmitter<number>();
+    this.removeYarn = new EventEmitter<RemoveEmit>();
   }
 
   ngOnInit(): void {
@@ -85,7 +86,7 @@ export class YarnMasterListPresentationComponent implements OnInit, OnDestroy {
 
     this._utilityService.confirmDialogClose().subscribe(confirmed => {
       if (confirmed) {
-        this.removeYarn.emit(yarn.id)
+        this.removeYarn.emit({ id: yarn.id, length: this.yarnsList.length })
       }
     });
 

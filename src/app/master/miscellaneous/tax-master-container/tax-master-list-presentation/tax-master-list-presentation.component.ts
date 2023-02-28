@@ -14,6 +14,7 @@ import { PaginationMetaData } from 'src/app/shared/models/api-response.model';
 import { ConfirmDialogData } from 'src/app/shared/models/confirm-dialog-data.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { TaxMasterFormPresentationComponent } from '../tax-master-form-presentation/tax-master-form-presentation.component';
+import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 
 @Component({
   selector: 'app-tax-master-list-presentation',
@@ -33,7 +34,7 @@ export class TaxMasterListPresentationComponent implements OnInit {
   }
 
   @Output() pageChange: EventEmitter<number>;
-  @Output() removeGstId: EventEmitter<number>;
+  @Output() removeGstId: EventEmitter<RemoveEmit>;
   @Output() createGst: EventEmitter<CreateGstDto>;
   @Output() updateGst: EventEmitter<UpdateGstDto>;
   @Output() GstSearch: EventEmitter<string>;
@@ -56,7 +57,7 @@ export class TaxMasterListPresentationComponent implements OnInit {
     this.isGstLoading = true;
     this._gstRateList = []
     this.pageChange = new EventEmitter<number>();
-    this.removeGstId = new EventEmitter<number>();
+    this.removeGstId = new EventEmitter<RemoveEmit>();
     this.createGst = new EventEmitter<CreateGstDto>();
     this.updateGst = new EventEmitter<UpdateGstDto>();
     this.GstSearch = new EventEmitter<string>();
@@ -150,7 +151,7 @@ export class TaxMasterListPresentationComponent implements OnInit {
 
     this.GstRemoveDialogSub = this._utilityService.confirmDialogClose().subscribe(confirmed => {
       if (confirmed) {
-        this.removeGstId.emit(Gst.id);
+        this.removeGstId.emit({ id: Gst.id, length: this.gstRateList.length });
       }
     });
   }

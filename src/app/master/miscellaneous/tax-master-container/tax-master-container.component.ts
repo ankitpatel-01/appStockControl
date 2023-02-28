@@ -8,6 +8,7 @@ import { UtitityService } from 'src/app/shared/services/utitity.service';
 // --------------------------------------------------------------------------
 import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { CreateGstDto, Gst, UpdateGstDto } from '../../model/gst.model';
+import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 
 @Component({
   selector: 'app-tax-master-container',
@@ -16,6 +17,7 @@ import { CreateGstDto, Gst, UpdateGstDto } from '../../model/gst.model';
 export class TaxMasterContainerComponent implements OnInit {
 
   private _currentPage: number;
+  public searchString: string;
   public gstRateList$: Observable<PaginateResponse<Gst[]>>
 
   //Subscription
@@ -23,7 +25,9 @@ export class TaxMasterContainerComponent implements OnInit {
   private updateGstSub: Subscription;
   private removeGstSub: Subscription;
 
-  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService) { }
+  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService) {
+    this.searchString = "";
+  }
 
   ngOnInit(): void {
     this._props();
@@ -44,6 +48,7 @@ export class TaxMasterContainerComponent implements OnInit {
    */
   getAllGstRateList(page: number = 1, search: string = ''): void {
     this._currentPage = page;
+    this.searchString = search;
     this.gstRateList$ = this._yarnMasterService.getAllGstRatePaginate(page, search);
   }
 
@@ -82,12 +87,13 @@ export class TaxMasterContainerComponent implements OnInit {
   /**
    * remove gst Rate by id
    * if id not exist throw not found exception
-   * @param gst_id : gstRate id to remove
+   * @param gst : RemoveEmit 
    */
-  removeGstRate(gst_id: number) {
-    this.removeGstSub = this._yarnMasterService.removeGstRate(gst_id).subscribe({
+  removeGstRate(gst: RemoveEmit) {
+    this.removeGstSub = this._yarnMasterService.removeGstRate(gst.id).subscribe({
       next: (res) => {
-        this.getAllGstRateList();
+        gst.length == 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getAllGstRateList(this._currentPage);
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);

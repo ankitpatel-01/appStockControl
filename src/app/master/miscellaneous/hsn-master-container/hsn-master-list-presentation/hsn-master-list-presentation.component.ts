@@ -16,6 +16,7 @@ import { CreateHsnDto, Hsn, UpdateHsnDto } from 'src/app/master/model/hsn.model'
 import { PaginationMetaData } from 'src/app/shared/models/api-response.model';
 import { ConfirmDialogData } from 'src/app/shared/models/confirm-dialog-data.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
+import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 
 @Component({
   selector: 'app-hsn-master-list-presentation',
@@ -44,7 +45,7 @@ export class HsnMasterListPresentationComponent implements OnInit {
   }
 
   @Output() pageChange: EventEmitter<number>;
-  @Output() removehsnId: EventEmitter<number>;
+  @Output() removehsnId: EventEmitter<RemoveEmit>;
   @Output() createhsn: EventEmitter<CreateHsnDto>;
   @Output() updatehsn: EventEmitter<UpdateHsnDto>;
   @Output() hsnSearch: EventEmitter<string>;
@@ -74,7 +75,7 @@ export class HsnMasterListPresentationComponent implements OnInit {
     this._hsnList = [];
     this._gstRateList = [];
     this.pageChange = new EventEmitter<number>();
-    this.removehsnId = new EventEmitter<number>();
+    this.removehsnId = new EventEmitter<RemoveEmit>();
     this.createhsn = new EventEmitter<CreateHsnDto>();
     this.updatehsn = new EventEmitter<UpdateHsnDto>();
     this.hsnSearch = new EventEmitter<string>();
@@ -170,7 +171,7 @@ export class HsnMasterListPresentationComponent implements OnInit {
 
     this.hsnRemoveDialogSub = this._utilityService.confirmDialogClose().subscribe(confirmed => {
       if (confirmed) {
-        this.removehsnId.emit(hsn.id);
+        this.removehsnId.emit({ id: hsn.id, length: this.hsnList.length });
       }
     });
   }

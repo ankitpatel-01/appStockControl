@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { UtitityService } from 'src/app/shared/services/utitity.service';
-import { Category } from '../model/category.model';
-import { Color } from '../model/color.model';
-import { Quality } from '../model/quality.model';
+import { Category, CreateCategoryDto, UpdateCategoryDto } from '../model/category.model';
+import { Color, CreateColorDto, UpdateColorDto } from '../model/color.model';
+import { CreateQualityDto, Quality, UpdateQualityDto } from '../model/quality.model';
 import { CreateYarnDto, UpdateYarnDto } from '../model/yarn-add-req.model';
-import { YarnGroup } from '../model/yarn-group.model';
+import { CreateYarnGroupDto, UpdateYarnGroupDto, YarnGroup } from '../model/yarn-group.model';
 import { YarnMaster } from '../model/yarn-master.model';
 import { YarnType } from '../model/yarn-type.model';
 import { YarnMasterService } from '../services/yarn-master.service';
@@ -17,15 +18,24 @@ import { YarnMasterService } from '../services/yarn-master.service';
 })
 export class YarnMasterContainerComponent implements OnInit {
   private _currentPage: number;
+  public searchString: string;
   yarnsList$: Observable<PaginateResponse<YarnMaster[]>>;
-  yarnTypesList$: Observable<PaginateResponse<YarnType[]>>;
-  qualityList$: Observable<Quality[]>;
-  colorList$: Observable<Color[]>;
-  categoryList$: Observable<Category[]>;
-  yarnGroupList$: Observable<YarnGroup[]>;
+  yarnTypesListPaginated$: Observable<PaginateResponse<YarnType[]>>;
+  yarnTypesList$: Observable<YarnType[]>;
+  qualityListPaginated$: Observable<PaginateResponse<Quality[]>>;
+  colorListPaginated$: Observable<PaginateResponse<Color[]>>;
+  categoryListPaginated$: Observable<PaginateResponse<Category[]>>;
+  yarnGroupListPaginated$: Observable<PaginateResponse<YarnGroup[]>>;
 
   constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService) {
-    this.yarnsList$ = new Observable<PaginateResponse<YarnMaster[]>>
+    this.searchString = "";
+    this.yarnsList$ = new Observable<PaginateResponse<YarnMaster[]>>();
+    this.yarnTypesListPaginated$ = new Observable<PaginateResponse<YarnType[]>>();
+    this.qualityListPaginated$ = new Observable<PaginateResponse<Quality[]>>();
+    this.yarnTypesList$ = new Observable<YarnType[]>();
+    this.colorListPaginated$ = new Observable<PaginateResponse<Color[]>>();
+    this.categoryListPaginated$ = new Observable<PaginateResponse<Category[]>>();
+    this.yarnGroupListPaginated$ = new Observable<PaginateResponse<YarnGroup[]>>();
   }
 
   ngOnInit(): void {
@@ -33,27 +43,41 @@ export class YarnMasterContainerComponent implements OnInit {
   }
 
   _props(): void {
-    this.getAllYarns();
-    this.getQuality();
-    this.getAllColors();
-    this.getAllCategory();
-    this.getAllYarnGroup();
+    this.getAllYarnPaginate();
   }
 
   onTabChange(tabIndex: number) {
     if (tabIndex === 1) {
-      this.getYarnTypes(1);
+      this.getYarnTypesPaginate(1);
+      this._utilityService.resetSearchControl();
+    }
+    if (tabIndex === 2) {
+      this.getQualityPaginate(1);
+      this.getAllYarnTypes();
+      this._utilityService.resetSearchControl();
+    }
+    if (tabIndex === 3) {
+      this.getAllColorsPaginate();
+      this._utilityService.resetSearchControl();
+    }
+    if (tabIndex === 4) {
+      this.getCategoryPaginate();
+      this._utilityService.resetSearchControl();
+    }
+    if (tabIndex === 5) {
+      this.getAllYarnGroupPaginate();
+      this._utilityService.resetSearchControl();
     }
   }
 
-  getAllYarns(page?: number, search?: string) {
+  getAllYarnPaginate(page?: number, search?: string) {
     this.yarnsList$ = this._yarnMasterService.getAllYarns(page, search);
   }
 
   createYarn(yarn: CreateYarnDto) {
     this._yarnMasterService.createYarn(yarn).subscribe({
       next: (res) => {
-        this.getAllYarns();
+        this.getAllYarnPaginate();
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -64,7 +88,7 @@ export class YarnMasterContainerComponent implements OnInit {
   updateYarn(updatedYarn: UpdateYarnDto) {
     this._yarnMasterService.updateYarn(updatedYarn).subscribe({
       next: (res) => {
-        this.getAllYarns();
+        this.getAllYarnPaginate();
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -72,10 +96,11 @@ export class YarnMasterContainerComponent implements OnInit {
     })
   }
 
-  removeYarn(yarn_id: number) {
-    this._yarnMasterService.removeYarn(yarn_id).subscribe({
+  removeYarn(yarn: RemoveEmit) {
+    this._yarnMasterService.removeYarn(yarn.id).subscribe({
       next: (res) => {
-        this.getAllYarns();
+        yarn.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getAllYarnPaginate(this._currentPage);
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -84,15 +109,16 @@ export class YarnMasterContainerComponent implements OnInit {
   }
 
   //yarn type
-  getYarnTypes(page: number = 1, search: string = ""): void {
+  getYarnTypesPaginate(page: number = 1, search: string = ""): void {
     this._currentPage = page;
-    this.yarnTypesList$ = this._yarnMasterService.getAllYarnType(page, search);
+    this.yarnTypesListPaginated$ = this._yarnMasterService.getAllYarnTypesPaginate(page, search);
   }
 
-  removeYarnType(id: number): void {
-    this._yarnMasterService.removeYarnType(id).subscribe({
+  removeYarnType(yarnType: RemoveEmit): void {
+    this._yarnMasterService.removeYarnType(yarnType.id).subscribe({
       next: (res) => {
-        this.getYarnTypes(1);
+        yarnType.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getYarnTypesPaginate(this._currentPage);
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -103,7 +129,7 @@ export class YarnMasterContainerComponent implements OnInit {
   createYarnTypes(yarnType: YarnType): void {
     this._yarnMasterService.createYarnTypes(yarnType).subscribe({
       next: (res) => {
-        this.getYarnTypes(1);
+        this.getYarnTypesPaginate(1);
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -114,7 +140,7 @@ export class YarnMasterContainerComponent implements OnInit {
   updateYarnTypes(yarnType: YarnType): void {
     this._yarnMasterService.updateYarnTypes(yarnType).subscribe({
       next: (res) => {
-        this.getYarnTypes(this._currentPage);
+        this.getYarnTypesPaginate(this._currentPage);
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -123,68 +149,171 @@ export class YarnMasterContainerComponent implements OnInit {
   }
 
   //quality
-  getQuality(): void {
-    this.qualityList$ = this._yarnMasterService.getAllQuality();
+  getQualityPaginate(page: number = 1, search: string = ""): void {
+    this._currentPage = page;
+    this.searchString = search;
+    this.qualityListPaginated$ = this._yarnMasterService.getAllQualityPaginate(page, search);
   }
 
+  getAllYarnTypes(): void {
+    this.yarnTypesList$ = this._yarnMasterService.getAllYarnTypes()
+  }
 
-  createQuality(quality: Quality): void {
+  createQuality(quality: CreateQualityDto): void {
     this._yarnMasterService.createQuality(quality).subscribe({
       next: (res) => {
-        this.getQuality();
+        this.getQualityPaginate(1);
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
+  }
+
+  updateQuality(quality: UpdateQualityDto): void {
+    this._yarnMasterService.updateQuality(quality).subscribe({
+      next: (res) => {
+        this.getQualityPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
+  }
+
+  removeQuality(quality: RemoveEmit): void {
+    this._yarnMasterService.removeQuality(quality.id).subscribe({
+      next: (res) => {
+        quality.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getQualityPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     });
   }
 
   //color
-  getAllColors(): void {
-    this.colorList$ = this._yarnMasterService.getAllColor();
+  getAllColorsPaginate(page: number = 1, search: string = ""): void {
+    this._currentPage = page;
+    this.searchString = search;
+    this.colorListPaginated$ = this._yarnMasterService.getAllColorPaginate(page, search);
   }
 
-  createColor(color: Color): void {
+  createColor(color: CreateColorDto): void {
     this._yarnMasterService.createColor(color).subscribe({
       next: (res) => {
-        this.getAllColors();
+        this.getAllColorsPaginate(1);
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
+  }
+
+  updateColor(color: UpdateColorDto): void {
+    this._yarnMasterService.updateColor(color).subscribe({
+      next: (res) => {
+        this.getAllColorsPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
+  }
+
+  removeColor(color: RemoveEmit): void {
+    this._yarnMasterService.removeColor(color.id).subscribe({
+      next: (res) => {
+        color.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getAllColorsPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
   }
 
   //category
-  getAllCategory(): void {
-    this.categoryList$ = this._yarnMasterService.getAllCategory();
+  getCategoryPaginate(page: number = 1, search: string = ""): void {
+    this._currentPage = page;
+    this.searchString = search;
+    this.categoryListPaginated$ = this._yarnMasterService.getAllCategoryPaginate(page, search);
   }
 
-  createCategory(category: Category): void {
+  createCategory(category: CreateCategoryDto): void {
     this._yarnMasterService.createCategory(category).subscribe({
       next: (res) => {
-        this.getAllCategory();
+        this.getCategoryPaginate();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
+  }
+
+  updateCategory(category: UpdateCategoryDto): void {
+    this._yarnMasterService.updateCategory(category).subscribe({
+      next: (res) => {
+        this.getCategoryPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
+  }
+
+  removeCategory(category: RemoveEmit): void {
+    this._yarnMasterService.removeCategory(category.id).subscribe({
+      next: (res) => {
+        category.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getCategoryPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
   }
 
   //yarn group
-  getAllYarnGroup(): void {
-    this.yarnGroupList$ = this._yarnMasterService.getAllYarnGroup();
+  getAllYarnGroupPaginate(page: number = 1, search: string = ""): void {
+    this._currentPage = page;
+    this.searchString = search;
+    this.yarnGroupListPaginated$ = this._yarnMasterService.getAllYarnGroupPaginate(page, search);
   }
 
-  createYarnGroup(yarnGroup: YarnGroup): void {
+  createYarnGroup(yarnGroup: CreateYarnGroupDto): void {
     this._yarnMasterService.createYarnGroup(yarnGroup).subscribe({
       next: (res) => {
-        this.getAllYarnGroup();
+        this.getAllYarnGroupPaginate();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
+  }
+
+  updateYarnGroup(yarnGroup: UpdateYarnGroupDto): void {
+    this._yarnMasterService.updateYarnGroup(yarnGroup).subscribe({
+      next: (res) => {
+        this.getAllYarnGroupPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
+  }
+
+  removeYarnGroup(yarnGroup: RemoveEmit): void {
+    this._yarnMasterService.removeYarnGroup(yarnGroup.id).subscribe({
+      next: (res) => {
+        yarnGroup.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        this.getAllYarnGroupPaginate(this._currentPage);
+      },
+      error: (err) => {
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+      }
+    });
   }
 
 }
