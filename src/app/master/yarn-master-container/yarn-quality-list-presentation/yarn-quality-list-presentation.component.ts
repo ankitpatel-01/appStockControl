@@ -18,6 +18,7 @@ import { CreateQualityDto, Quality, UpdateQualityDto } from '../../model/quality
 import { YarnType } from '../../model/yarn-type.model';
 import { FormControl } from '@angular/forms';
 import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
+import { Loader, LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-yarn-quality-list-presentation',
@@ -29,7 +30,7 @@ export class YarnQualityListPresentationComponent implements OnInit, OnDestroy {
     if (res) {
       this._yarnQualityList = res.data;
       this.paginationMeta = res.meta as PaginationMetaData;
-      this.isYarnQualityLoading = false;
+      this._loader.stopLoader('qulityList');
     }
   }
 
@@ -61,7 +62,7 @@ export class YarnQualityListPresentationComponent implements OnInit, OnDestroy {
     return this._yarnTypeList;
   }
 
-  constructor(private _drawerService: DrawerService, private _utilityService: UtitityService) {
+  constructor(private _drawerService: DrawerService, private _utilityService: UtitityService, private _loader: LoaderService) {
     this.pageChange = new EventEmitter<number>();
     this.removeQualityId = new EventEmitter<RemoveEmit>();
     this.createQuality = new EventEmitter<CreateQualityDto>();
@@ -83,6 +84,11 @@ export class YarnQualityListPresentationComponent implements OnInit, OnDestroy {
   _props(): void {
     this.onSearchQueryEmit();
     this._utilityService.resetSearchControl$.subscribe(() => this.searchControl.setValue(""));
+    this._loader.compontentLoader$.subscribe((loader: Loader) => {
+      if (loader.name === "qulityList" || loader.name === "All") {
+        this.isYarnQualityLoading = loader.state;
+      }
+    })
   }
 
   /**

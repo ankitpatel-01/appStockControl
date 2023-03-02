@@ -234,21 +234,21 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._updateYarnSub.unsubscribe();
-    this._createYarnSub.unsubscribe();
-    this._createYarnTypeSub.unsubscribe();
-    this._createQualitySub.unsubscribe();
-    this._createColorSub.unsubscribe();
-    this._createCategorySub.unsubscribe();
-    this._createYarnGroupSub.unsubscribe();
-    this._createHsnSub.unsubscribe();
-    this._yarn_typeSub.unsubscribe();
-    this._yarn_countSub.unsubscribe();
-    this._yarn_plySub.unsubscribe();
+    this._updateYarnSub?.unsubscribe();
+    this._createYarnSub?.unsubscribe();
+    this._createYarnTypeSub?.unsubscribe();
+    this._createQualitySub?.unsubscribe();
+    this._createColorSub?.unsubscribe();
+    this._createCategorySub?.unsubscribe();
+    this._createYarnGroupSub?.unsubscribe();
+    this._createHsnSub?.unsubscribe();
+    this._yarn_typeSub?.unsubscribe();
+    this._yarn_countSub?.unsubscribe();
+    this._yarn_plySub?.unsubscribe();
     this._yarn_qlySub.unsubscribe()
-    this._yarn_twistSub.unsubscribe();
-    this._yarn_colorSub.unsubscribe();
-    this._yarn_engCountSub.unsubscribe();
+    this._yarn_twistSub?.unsubscribe();
+    this._yarn_colorSub?.unsubscribe();
+    this._yarn_engCountSub?.unsubscribe();
   }
 
   _props(): void {

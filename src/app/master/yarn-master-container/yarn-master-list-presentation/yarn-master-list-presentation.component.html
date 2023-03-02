@@ -1,8 +1,11 @@
 <div class="py-4 h-100 d-flex flex-column">
 
     <div class="d-flex align-items-center justify-content-end">
-        <button *ngIf="yarnsList.length > 0 && !isYarnListLoading" type="button" class="btn btn-primary"
-            (click)="openAddForm()">
+        <!-- search control  -->
+        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
+            id="searchQuery" (input)="onSearchQueryInput($event)">
+        <!-- Add button  -->
+        <button type="button" class="btn btn-primary" (click)="openAddForm()">
             <div class="d-flex align-items-center">
                 <span class="icon-plus-solid pe-2"></span>
                 <span class="ps-1">Add New</span>
@@ -25,9 +28,9 @@
             </thead>
             <tbody>
                 <tr *ngFor="let yarnitem of [1,2,3,4,5];let i = index;" class="placeholder-glow">
-                    <td scope="row">
+                    <td scope="row" class="num-col">
                         <span class="placeholder">
-                            some index
+                            #
                         </span>
                     </td>
                     <td>
@@ -55,9 +58,9 @@
                             some category
                         </span>
                     </td>
-                    <td>
+                    <td td class="action-col">
                         <span class="placeholder">
-                            some action
+                            action
                         </span>
                     </td>
                 </tr>
@@ -80,7 +83,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let yarnitem of yarnsList;let i = index;trackBy: yarnTrackBy">
-                    <td scope="row" class="text-center">
+                    <td scope="row" class="num-col">
                         <span>
                             {{i + 1}}
                         </span>
@@ -110,7 +113,7 @@
                             {{yarnitem?.category?.category_desc}}
                         </span>
                     </td>
-                    <td>
+                    <td class="action-col">
                         <span class="icon-trash cursor-pointer" (click)="removeYarnById(yarnitem)"></span>
                         <span class="icon-pen ms-3 cursor-pointer" (click)="openAddForm(yarnitem)"></span>
                     </td>
@@ -118,9 +121,11 @@
             </tbody>
         </table>
 
-        <!-- <app-paginator [totalPages]="20" [currentPage]="currentPage" [ellipses]="false"
-            (pageChanged)="gotoPage($event)">
-        </app-paginator> -->
+        <div *ngIf="paginationMeta.current_page" class="d-flex align-items-center justify-content-end">
+            <app-paginator [totalPages]="paginationMeta.total_pages" [currentPage]="paginationMeta.current_page"
+                [ellipses]="false" (pageChanged)="gotoPage($event)">
+            </app-paginator>
+        </div>
     </div>
 
     <div *ngIf="yarnsList.length === 0 && !isYarnListLoading"

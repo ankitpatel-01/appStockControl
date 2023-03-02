@@ -5,6 +5,7 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { Loader, LoaderService } from 'src/app/core/services/loader.service';
 import { PaginationMetaData } from 'src/app/shared/models/api-response.model';
 import { ConfirmDialogData } from 'src/app/shared/models/confirm-dialog-data.model';
 import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
@@ -22,9 +23,9 @@ export class YarnTypeListPresentationComponent implements OnInit {
 
   @Input() public set yarnTypeRes(res: PaginateResponse<YarnType[]> | null) {
     if (res) {
+      this._loader.stopLoader('yarnTypeList');
       this._yarnTypeList = res.data;
       this.paginationMeta = res.meta as PaginationMetaData;
-      this.isYarnTypeLoading = false;
     }
   }
 
@@ -33,7 +34,6 @@ export class YarnTypeListPresentationComponent implements OnInit {
   @Output() createYarnType: EventEmitter<YarnType>;
   @Output() updateYarnType: EventEmitter<YarnType>;
   @Output() yarnTypeSearch: EventEmitter<string>;
-
 
   public isYarnTypeLoading: boolean;
   public searchControl: FormControl;
@@ -47,13 +47,12 @@ export class YarnTypeListPresentationComponent implements OnInit {
     return this._yarnTypeList;
   }
 
-  constructor(private _drawerService: DrawerService, private _utilityService: UtitityService) {
+  constructor(private _drawerService: DrawerService, private _utilityService: UtitityService, private _loader: LoaderService) {
     this.pageChange = new EventEmitter<number>();
     this.removeYarnTypeId = new EventEmitter<RemoveEmit>();
     this.createYarnType = new EventEmitter<YarnType>();
     this.updateYarnType = new EventEmitter<YarnType>();
     this.yarnTypeSearch = new EventEmitter<string>();
-    this.isYarnTypeLoading = true;
     this._yarnTypeList = [];
     this._searchSubject = new Subject<string>();
     this.searchControl = new FormControl<string>("");
@@ -70,6 +69,11 @@ export class YarnTypeListPresentationComponent implements OnInit {
   _props(): void {
     this.onSearchQueryEmit();
     this._utilityService.resetSearchControl$.subscribe(() => this.searchControl.setValue(""));
+    this._loader.compontentLoader$.subscribe((loader: Loader) => {
+      if (loader.name === "yarnTypeList" || loader.name === "All") {
+        this.isYarnTypeLoading = loader.state;
+      }
+    })
   }
 
   /**
@@ -141,7 +145,6 @@ export class YarnTypeListPresentationComponent implements OnInit {
   }
 
   gotoPage(page: number) {
-    this.paginationMeta.current_page = 2;
     this.pageChange.emit(page)
   }
 

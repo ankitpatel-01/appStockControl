@@ -2,8 +2,8 @@
     <!-- START:Action row -->
     <div class="d-flex align-items-center justify-content-end">
         <!-- Search  -->
-        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" id="searchQuery"
-            (input)="onSearchQueryInput($event)" [formControl]="searchControl">
+        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
+            id="searchQuery" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
         <!-- Add button -->
         <button type="button" class="btn btn-primary" (click)="openQualityForm()">
             <div class="d-flex align-items-center">

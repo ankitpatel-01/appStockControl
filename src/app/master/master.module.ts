@@ -31,6 +31,7 @@ import { YarnCategoryListPresentationComponent } from './yarn-master-container/y
 import { YarnCategoryFormPresentationComponent } from './yarn-master-container/yarn-category-list-presentation/yarn-category-form-presentation/yarn-category-form-presentation.component';
 import { YarnGroupFormPresentationComponent } from './yarn-master-container/yarn-group-list-presentation/yarn-group-form-presentation/yarn-group-form-presentation.component';
 import { YarnQualityFormPresentationComponent } from './yarn-master-container/yarn-quality-list-presentation/yarn-quality-form-presentation/yarn-quality-form-presentation.component';
+import { LoaderService } from '../core/services/loader.service';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { YarnQualityFormPresentationComponent } from './yarn-master-container/ya
     PaginatorModule,
   ],
   providers: [
-    YarnMasterService
+    YarnMasterService,
+    LoaderService
   ]
 })
 export class MasterModule { }

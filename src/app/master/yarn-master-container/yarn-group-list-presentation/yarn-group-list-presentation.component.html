@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center justify-content-end">
         <!-- Search  -->
         <input #searchQuery class="form-control search-control w-auto me-3" type="text" placeholder="Search"
-            id="searchQuery" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
+            autocomplete="off" id="searchQuery" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
         <!-- Add button -->
         <button type="button" class="btn btn-primary" (click)="openYarnGroupForm()">
             <div class="d-flex align-items-center">

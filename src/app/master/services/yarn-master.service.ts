@@ -29,7 +29,7 @@ export class YarnMasterService {
   }
 
   //yarn master
-  getAllYarns(page?: number, search?: string): Observable<PaginateResponse<YarnMaster[]>> {
+  getAllYarnsPaginate(page: number = 1, search: string = ""): Observable<PaginateResponse<YarnMaster[]>> {
     const params = {
       ...(page && { page }),
       ...(search && { search }),

@@ -2,8 +2,8 @@
     <!-- START:ACTION ROW  -->
     <div class="d-flex align-items-center justify-content-end">
         <!-- search control  -->
-        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" id="searchQuery"
-            (input)="onSearchQueryInput($event)">
+        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
+            id="searchQuery" (input)="onSearchQueryInput($event)">
         <!-- Add button  -->
         <button type="button" class="btn btn-primary" (click)="openHsnForm()">
             <div class="d-flex align-items-center">
@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let yarnType of [1,2,3,4,5];let i = index;" class="placeholder-glow">
-                    <td scope="row">
+                    <td scope="row" class="num-col">
                         <span class="placeholder">
                             #
                         </span>
@@ -53,7 +53,7 @@
                             some hsn gst rate
                         </span>
                     </td>
-                    <td>
+                    <td class="action-col">
                         <span class="placeholder">
                             action
                         </span>

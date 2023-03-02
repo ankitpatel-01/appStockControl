@@ -2,8 +2,9 @@
     <h2 class="content-header-title">Yarn Master</h2>
     <app-tab-group [verticalLayout]="true" (onTabChange)="onTabChange($event)">
         <app-tab tabTitle="Yarn">
-            <app-yarn-master-list-presentation [yarnsRes]="yarnsList$|async" (createYarn)="createYarn($event)"
-                (removeYarn)="removeYarn($event)" (updateYarn)="updateYarn($event)"></app-yarn-master-list-presentation>
+            <app-yarn-master-list-presentation [yarnsRes]="yarnsList$|async" (yarnSearch)="getAllYarnPaginate(1,$event)"
+                (createYarn)="createYarn($event)" (removeYarn)="removeYarn($event)" (updateYarn)="updateYarn($event)"
+                (pageChange)="getAllYarnPaginate($event,searchString)"></app-yarn-master-list-presentation>
         </app-tab>
         <app-tab tabTitle="Type">
             <app-yarn-type-list-presentation [yarnTypeRes]="yarnTypesListPaginated$|async"

@@ -2,11 +2,10 @@
 
     <div class="d-flex align-items-center justify-content-end">
         <!-- Search  -->
-        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" id="searchQuery"
-            (input)="onSearchQueryInput($event)" [formControl]="searchControl">
+        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
+            id="searchQuery" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
         <!-- Add button -->
-        <button *ngIf="yarnTypeList.length > 0 && !isYarnTypeLoading" type="button" class="btn btn-primary"
-            (click)="openYarnTypeForm()">
+        <button type="button" class="btn btn-primary" (click)="openYarnTypeForm()">
             <div class="d-flex align-items-center">
                 <span class="icon-plus-solid pe-2"></span>
                 <span class="ps-1">Add New</span>
@@ -18,18 +17,18 @@
         <table class="table bordered table-hover">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="num-col">#</th>
                     <th scope="col">Description</th>
                     <th scope="col">Type</th>
                     <th scope="col">Count type</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" class="action-col">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let yarnType of [1,2,3,4,5];let i = index;" class="placeholder-glow">
-                    <td scope="row">
+                    <td scope="row" class="num-col">
                         <span class="placeholder">
-                            some index
+                            #
                         </span>
                     </td>
                     <td>
@@ -47,9 +46,9 @@
                             some denier
                         </span>
                     </td>
-                    <td>
+                    <td class="action-col">
                         <span class="placeholder">
-                            some action
+                            action
                         </span>
                     </td>
                 </tr>
@@ -70,7 +69,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let yarnType of yarnTypeList;let i = index;trackBy: yarnTypeTrackBy">
-                    <td scope="row" class="text-center">
+                    <td scope="row" class="num-col">
                         <span>
                             {{i + 1 + (paginationMeta.per_page * (paginationMeta.current_page-1))}}
                         </span>
@@ -90,7 +89,7 @@
                             {{yarnType?.count_type}}
                         </span>
                     </td>
-                    <td>
+                    <td class="action-col">
                         <span class="icon-trash cursor-pointer" (click)="removeYarnTypeById(yarnType)"></span>
                         <span class="icon-pen ms-3 cursor-pointer" (click)="openYarnTypeForm(yarnType)"></span>
                     </td>
