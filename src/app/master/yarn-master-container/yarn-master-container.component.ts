@@ -110,7 +110,7 @@ export class YarnMasterContainerComponent implements OnInit {
     this._loader.startLoader('yarn');
     this._yarnMasterService.removeYarn(yarn.id).subscribe({
       next: (res) => {
-        yarn.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        yarn.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getAllYarnPaginate(this._currentPage);
       },
       error: (err) => {
@@ -132,7 +132,7 @@ export class YarnMasterContainerComponent implements OnInit {
     this._loader.startLoader('yarnTypeList');
     this._yarnMasterService.removeYarnType(yarnType.id).subscribe({
       next: (res) => {
-        yarnType.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        yarnType.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getYarnTypesPaginate(this._currentPage);
       },
       error: (err) => {
@@ -210,7 +210,7 @@ export class YarnMasterContainerComponent implements OnInit {
     this._loader.startLoader('qulityList');
     this._yarnMasterService.removeQuality(quality.id).subscribe({
       next: (res) => {
-        quality.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        quality.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getQualityPaginate(this._currentPage);
       },
       error: (err) => {
@@ -252,7 +252,7 @@ export class YarnMasterContainerComponent implements OnInit {
   removeColor(color: RemoveEmit): void {
     this._yarnMasterService.removeColor(color.id).subscribe({
       next: (res) => {
-        color.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        color.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getAllColorsPaginate(this._currentPage);
       },
       error: (err) => {
@@ -293,7 +293,7 @@ export class YarnMasterContainerComponent implements OnInit {
   removeCategory(category: RemoveEmit): void {
     this._yarnMasterService.removeCategory(category.id).subscribe({
       next: (res) => {
-        category.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        category.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getCategoryPaginate(this._currentPage);
       },
       error: (err) => {
@@ -334,7 +334,7 @@ export class YarnMasterContainerComponent implements OnInit {
   removeYarnGroup(yarnGroup: RemoveEmit): void {
     this._yarnMasterService.removeYarnGroup(yarnGroup.id).subscribe({
       next: (res) => {
-        yarnGroup.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        yarnGroup.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getAllYarnGroupPaginate(this._currentPage);
       },
       error: (err) => {
