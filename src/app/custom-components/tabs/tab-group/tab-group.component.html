@@ -1,10 +1,11 @@
-<div class="tabs-container">
-    <ul class="nav nav-tabs">
+<div class="tabs-container" [ngClass]="{'layout-y':verticalLayout}">
+    <ul class="nav nav-tabs" [ngClass]="{'layout-y':verticalLayout}">
         <li *ngFor="let tab of tabs" class="nav-item" (click)="selectTab(tab)">
-            <a class="nav-link" [ngClass]="{'active': tab.active === true }">{{ tab.tabTitle }}</a>
+            <a class="nav-link" [ngClass]="{'active': tab.active === true,'layout-y':verticalLayout }">{{ tab.tabTitle
+                }}</a>
         </li>
     </ul>
-    <div>
+    <div [ngClass]="{'flex-grow-1 ps-3':verticalLayout}">
         <ng-content></ng-content>
     </div>
 </div>

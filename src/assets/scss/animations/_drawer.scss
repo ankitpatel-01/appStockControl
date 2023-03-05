@@ -1,0 +1,21 @@
+@keyframes slideIn {
+    100% {
+        transform: translate(0%);
+    }
+}
+
+@keyframes slideOut {
+    100% {
+        transform: translate(100%);
+    }
+}
+
+.drawer-slideIn {
+    transform: translate(100%);
+    animation: slideIn .15s forwards;
+}
+
+.drawer-slideOut {
+    transform: translate(0%);
+    animation: slideOut .15s forwards;
+}

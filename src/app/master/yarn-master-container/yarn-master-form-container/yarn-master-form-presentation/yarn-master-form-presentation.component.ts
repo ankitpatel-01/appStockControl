@@ -3,8 +3,8 @@ import { YarnMasterFormPresenterService } from '../yarn-master-form-presenter/ya
 import { Category } from 'src/app/master/model/category.model';
 import { Color } from 'src/app/master/model/color.model';
 import { Gst } from 'src/app/master/model/gst.model';
-import { Hsn } from 'src/app/master/model/hsn.model';
-import { Quality } from 'src/app/master/model/quality.model';
+import { CreateHsnDto, Hsn } from 'src/app/master/model/hsn.model';
+import { CreateQualityDto, Quality } from 'src/app/master/model/quality.model';
 import { YarnGroup } from 'src/app/master/model/yarn-group.model';
 import { YarnType } from '../../../model/yarn-type.model';
 import { YarnTwist, yarnTwist } from 'src/app/master/constants/yarntwist';
@@ -16,48 +16,23 @@ import { CreateYarnDto, UpdateYarnDto } from 'src/app/master/model/yarn-add-req.
 import { Subscription } from 'rxjs/internal/Subscription';
 import { YarnMaster } from 'src/app/master/model/yarn-master.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-yarn-master-form-presentation',
   templateUrl: './yarn-master-form-presentation.component.html',
   viewProviders: [YarnMasterFormPresenterService],
-  animations: [
-    // trigger('slideout', [
-    //   state('void', style({ transform: 'translateX(0%)' })),
-    //   transition('void => *', animate(300)),
-    //   transition('* => void', animate(300)),
-    // ]),
-    // trigger('slideIn', [
-    //   state('void', style({ transform: 'translateX(100%)' })),
-    //   transition('void => *', animate(300)),
-    // ])
-    // trigger('slideout', [
-    //   state('void', style({ transform: 'translateX(0%)' })),
-    //   transition('void => *', animate(300)),
-    //   transition('* => void', animate(300)),
-    // ]),
-    // trigger('drawer', [
-    //   state('close', style({ transform: 'translateX(100%)' })),
-    //   state('open', style({ transform: 'none' })),
-    //   transition('*=> open', animate(300)),
-    //   transition('close=>*', animate(300)),
-    // ])
-  ]
 })
 export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
 
-  // isOpen = true;
   @Input() public set yarn(yarn: YarnMaster | null) {
     if (yarn) {
       this._yarn = yarn;
     }
   }
 
-  @Input() public set yarnTypeRes(res: PaginateResponse<YarnType[]> | null) {
+  @Input() public set yarnTypeRes(res: YarnType[] | null) {
     if (res) {
-      this._yarnTypeList = res.data;
-      this._yarnMasterFormPresenter.yarnTypeList = this.yarnTypeList;
+      this._yarnTypeList = res;
       this.yarnTypeLoading = false;
     }
   }
@@ -115,11 +90,11 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
   @Output() public createYarn: EventEmitter<CreateYarnDto>;
   @Output() public updateYarn: EventEmitter<UpdateYarnDto>;
   @Output() public createYarnType: EventEmitter<YarnType>;
-  @Output() public createQuality: EventEmitter<Quality>;
+  @Output() public createQuality: EventEmitter<CreateQualityDto>;
   @Output() public createColor: EventEmitter<Color>;
   @Output() public createCategory: EventEmitter<Category>;
   @Output() public createYarnGroup: EventEmitter<YarnGroup>;
-  @Output() public createHsnCode: EventEmitter<Hsn>;
+  @Output() public createHsnCode: EventEmitter<CreateHsnDto>;
 
   private _createYarnSub: Subscription;
   private _updateYarnSub: Subscription;
@@ -232,11 +207,11 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     this.createYarn = new EventEmitter<CreateYarnDto>();
     this.updateYarn = new EventEmitter<UpdateYarnDto>();
     this.createYarnType = new EventEmitter<YarnType>();
-    this.createQuality = new EventEmitter<Quality>();
+    this.createQuality = new EventEmitter<CreateQualityDto>();
     this.createColor = new EventEmitter<Color>();
     this.createCategory = new EventEmitter<Category>();
     this.createYarnGroup = new EventEmitter<YarnGroup>();
-    this.createHsnCode = new EventEmitter<Hsn>();
+    this.createHsnCode = new EventEmitter<CreateHsnDto>();
   }
 
   ngOnInit(): void {
@@ -259,21 +234,21 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._updateYarnSub.unsubscribe();
-    this._createYarnSub.unsubscribe();
-    this._createYarnTypeSub.unsubscribe();
-    this._createQualitySub.unsubscribe();
-    this._createColorSub.unsubscribe();
-    this._createCategorySub.unsubscribe();
-    this._createYarnGroupSub.unsubscribe();
-    this._createHsnSub.unsubscribe();
-    this._yarn_typeSub.unsubscribe();
-    this._yarn_countSub.unsubscribe();
-    this._yarn_plySub.unsubscribe();
+    this._updateYarnSub?.unsubscribe();
+    this._createYarnSub?.unsubscribe();
+    this._createYarnTypeSub?.unsubscribe();
+    this._createQualitySub?.unsubscribe();
+    this._createColorSub?.unsubscribe();
+    this._createCategorySub?.unsubscribe();
+    this._createYarnGroupSub?.unsubscribe();
+    this._createHsnSub?.unsubscribe();
+    this._yarn_typeSub?.unsubscribe();
+    this._yarn_countSub?.unsubscribe();
+    this._yarn_plySub?.unsubscribe();
     this._yarn_qlySub.unsubscribe()
-    this._yarn_twistSub.unsubscribe();
-    this._yarn_colorSub.unsubscribe();
-    this._yarn_engCountSub.unsubscribe();
+    this._yarn_twistSub?.unsubscribe();
+    this._yarn_colorSub?.unsubscribe();
+    this._yarn_engCountSub?.unsubscribe();
   }
 
   _props(): void {
@@ -298,7 +273,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     });
 
     this._createQualitySub = this._yarnMasterFormPresenter.createQuality$.subscribe({
-      next: (quality: Quality) => {
+      next: (quality: CreateQualityDto) => {
         this.createQuality.emit(quality);
         this.yarnQualityLoading = true;
       }
@@ -326,7 +301,7 @@ export class YarnMasterFormPresentationComponent implements OnInit, OnDestroy {
     })
 
     this._createHsnSub = this._yarnMasterFormPresenter.createHsnCode$.subscribe({
-      next: (hsnCode: Hsn) => {
+      next: (hsnCode: CreateHsnDto) => {
         this.createHsnCode.emit(hsnCode);
         this.yarnHsnLoading = true;
       }

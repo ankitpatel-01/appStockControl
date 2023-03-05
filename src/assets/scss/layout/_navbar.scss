@@ -7,7 +7,7 @@
                 color: $nav-link-hover-color;
 
                 &.active {
-                    background-color: #ecf3fe;
+                    background-color: $nav-active-bg;
                     color: $primary;
                 }
             }

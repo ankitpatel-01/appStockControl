@@ -1,0 +1,156 @@
+<div class="py-4 h-100 d-flex flex-column">
+
+    <!-- START:Action row -->
+    <div class="d-flex align-items-center justify-content-end">
+        <!-- Search  -->
+        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
+            id="searchQuery" (input)="onSearchQueryInput($event)">
+        <!-- Add button -->
+        <button type="button" class="btn btn-primary" (click)="openGstForm()">
+            <div class="d-flex align-items-center">
+                <span class="icon-plus-solid pe-2"></span>
+                <span class="ps-1">Add New</span>
+            </div>
+        </button>
+    </div>
+    <!-- END:Action row -->
+
+    <!-- START:GST LIST VIEW TABLE LOADER -->
+    <div *ngIf="isGstLoading" class="mt-3 table-responsive" aria-hidden="true">
+        <table class="table bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="num-col">#</th>
+                    <th scope="col">gst description</th>
+                    <th scope="col">gst rate</th>
+                    <th scope="col">igst</th>
+                    <th scope="col">sgst</th>
+                    <th scope="col">cgst</th>
+                    <th scope="col" class="action-col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let yarnType of [1,2,3,4,5];let i = index;" class="placeholder-glow">
+                    <td scope="row" class="num-col">
+                        <span class="placeholder">
+                            #
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some Gst code discription
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some Gst rate
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some igst
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some sgst
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some cgst
+                        </span>
+                    </td>
+                    <td class="action-col">
+                        <span class="placeholder">
+                            action
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- END:GST LIST VIEW TABLE LOADER -->
+
+    <!-- START: GST LIST VIEW -->
+    <div *ngIf="gstRateList.length > 0 && !isGstLoading" class="mt-3 table-responsive">
+        <table class="table bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="num-col">#</th>
+                    <th scope="col">gst description</th>
+                    <th scope="col">gst rate</th>
+                    <th scope="col">igst</th>
+                    <th scope="col">sgst</th>
+                    <th scope="col">cgst</th>
+                    <th scope="col" class="action-col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let gst of gstRateList;let i = index;trackBy: GstTrackBy">
+                    <td scope="row" class="num-col">
+                        <span>
+                            {{i + 1 + (paginationMeta.per_page * (paginationMeta.current_page-1))}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{gst?.gst_desc?gst.gst_desc:'N/A'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{gst?.gst_rate?gst.gst_rate:gst.gst_rate===0?0:'N/A'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{gst?.igst?gst.igst:gst.igst===0?0:'N/A'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{gst?.sgst?gst.sgst:gst.sgst===0?0:'N/A'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{gst?.cgst?gst.cgst:gst.cgst===0?0:'N/A'}}
+                        </span>
+                    </td>
+                    <td class="action-col">
+                        <span class="icon-trash cursor-pointer" (click)="removeGstById(gst)"></span>
+                        <span class="icon-pen ms-3 cursor-pointer" (click)="openGstForm(gst)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="paginationMeta.current_page" class="d-flex align-items-center justify-content-end">
+            <app-paginator [totalPages]="paginationMeta.total_pages" [currentPage]="paginationMeta.current_page"
+                [ellipses]="false" (pageChanged)="gotoPage($event)">
+            </app-paginator>
+        </div>
+    </div>
+    <!-- END: GST LIST VIEW -->
+
+    <!-- START: NO DATA SCREEN -->
+    <div *ngIf="gstRateList.length === 0 && !isGstLoading"
+        class="mt-3 flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+        <!-- image  -->
+        <figure>
+            <img class="no-data pe-3" src="../../../../assets/svgs/no_data.svg" alt="no-data-found" />
+        </figure>
+        <p class="fs-3">No Data Found</p>
+        <small class="text-muted">Look's like you haven't added any data. no worries.</small>
+        <small class="text-muted">Click the "Add New" button.</small>
+        <!-- Add button -->
+        <button type="button" class="btn btn-primary mt-3" (click)="openGstForm()">
+            <div class="d-flex align-items-center">
+                <span class="icon-plus-solid pe-2"></span>
+                <span class="ps-1">Add New</span>
+            </div>
+        </button>
+    </div>
+    <!-- END: NO DATA SCREEN -->
+</div>

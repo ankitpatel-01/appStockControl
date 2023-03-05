@@ -1,0 +1,37 @@
+<div class="drawer drawer-w600">
+    <!-- START:DRAWER HEADER -->
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Yarn Group</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+    <!-- END:DRAWER HEADER -->
+    <!-- START:DRAWER BODY -->
+    <div class="drawer-main">
+        <form class="row" [formGroup]="yarnGroupForm" autocomplete="off">
+            <!-- START:Yarn Group Description -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="yarn_grp_name" class="form-label">Group Description</label>
+                    <input id="yarn_grp_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['yarn_grp_name'].touched
+                        || getControls['yarn_grp_name'].dirty
+                    ) && getControls['yarn_grp_name'].invalid }" placeholder="Enter yarnGroup Description"
+                        maxlength="30" formControlName="yarn_grp_name" alphabetOnly toUpperCase
+                        (keyup.enter)="saveBtn.focus()">
+                    <!-- validation -->
+                    <small class="validation-text">
+                        Please enter group description.
+                    </small>
+                </div>
+            </div>
+            <!-- END:Yarn Group Description -->
+        </form>
+    </div>
+    <!-- END:DRAWER BODY -->
+    <!-- START:DRAWER FOOTER -->
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button #saveBtn type="button" class="btn btn-primary btn px-4" (click)="saveClick()">Save</button>
+    </div>
+    <!-- END:DRAWER FOOTER -->
+</div>

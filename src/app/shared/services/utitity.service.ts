@@ -1,5 +1,6 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { take } from 'rxjs/internal/operators/take';
@@ -8,15 +9,23 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dia
 import { AlertDialogData } from '../models/alert-dialog.model';
 import { ConfirmDialogData } from '../models/confirm-dialog-data.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UtitityService {
 
   confirmDialogRef: DialogRef<any, ConfirmDialogComponent>;
   alertDialogRef: DialogRef<any, AlertDialogComponent>;
 
-  constructor(private dialog: Dialog) { }
+  private _resetSearchControl: BehaviorSubject<boolean>;
+  public resetSearchControl$: Observable<boolean>;
+
+  constructor(private dialog: Dialog) {
+    this._resetSearchControl = new BehaviorSubject<boolean>(true);
+    this.resetSearchControl$ = this._resetSearchControl.asObservable();
+  }
+
+  resetSearchControl(): void {
+    this._resetSearchControl.next(true);
+  }
 
   /**
    * open Confirm Dialog pass title, message, cancel btn text and confirm btn text
@@ -30,7 +39,8 @@ export class UtitityService {
         message: options.message,
         cancelText: options.cancelText,
         confirmText: options.confirmText
-      }
+      },
+      panelClass: 'dialog-popIn'
     });
   }
 
@@ -56,9 +66,12 @@ export class UtitityService {
       message,
     }
 
-    this.alertDialogRef = this.dialog.open(AlertDialogComponent, { data });
+    this.alertDialogRef = this.dialog.open(AlertDialogComponent, {
+      data,
+      panelClass: 'dialog-popIn'
+    });
 
-    this.alertDialogClose().subscribe()
+    this.alertDialogClose().subscribe();
   }
 
   /**
@@ -68,7 +81,6 @@ export class UtitityService {
   public alertDialogClose(): Observable<boolean> {
     return this.alertDialogRef.closed.pipe(take(1), map(res => {
       return res;
-    }
-    ));
+    }));
   }
 }

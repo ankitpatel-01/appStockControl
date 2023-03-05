@@ -8,9 +8,9 @@ import { Color } from 'src/app/master/model/color.model';
 import { DialogData } from 'src/app/master/model/dialog-data.model';
 import { Gst } from 'src/app/master/model/gst.model';
 import { HsnDialogData } from 'src/app/master/model/hsn-dialog.model';
-import { Hsn } from 'src/app/master/model/hsn.model';
-import { YarnForm } from 'src/app/master/model/interface/yarnForm';
-import { Quality } from 'src/app/master/model/quality.model';
+import { CreateHsnDto } from 'src/app/master/model/hsn.model';
+import { YarnForm } from 'src/app/master/model/interface/yarnForm.interface';
+import { CreateQualityDto, Quality } from 'src/app/master/model/quality.model';
 import { CreateYarnDto, UpdateYarnDto } from 'src/app/master/model/yarn-add-req.model';
 import { YarnGroup } from 'src/app/master/model/yarn-group.model';
 import { YarnType } from 'src/app/master/model/yarn-type.model';
@@ -34,8 +34,8 @@ export class YarnMasterFormPresenterService {
   private _createYarnType: Subject<YarnType>;
   public createYarnType$: Observable<YarnType>
 
-  private _createQuality: Subject<Quality>;
-  public createQuality$: Observable<Quality>;
+  private _createQuality: Subject<CreateQualityDto>;
+  public createQuality$: Observable<CreateQualityDto>;
 
   private _createColor: Subject<Color>;
   public createColor$: Observable<Color>;
@@ -46,8 +46,8 @@ export class YarnMasterFormPresenterService {
   private _createYarnGroup: Subject<YarnGroup>;
   public createYarnGroup$: Observable<YarnGroup>;
 
-  private _createHsnCode: Subject<Hsn>;
-  public createHsnCode$: Observable<Hsn>;
+  private _createHsnCode: Subject<CreateHsnDto>;
+  public createHsnCode$: Observable<CreateHsnDto>;
 
   public yarnTypeList: YarnType[];
   public gstRateList: Gst[];
@@ -63,7 +63,7 @@ export class YarnMasterFormPresenterService {
     this._createYarnType = new Subject<YarnType>;
     this.createYarnType$ = this._createYarnType.asObservable();
 
-    this._createQuality = new Subject<Quality>;
+    this._createQuality = new Subject<CreateQualityDto>;
     this.createQuality$ = this._createQuality.asObservable();
 
     this._createColor = new Subject<Color>;
@@ -75,7 +75,7 @@ export class YarnMasterFormPresenterService {
     this._createYarnGroup = new Subject<YarnGroup>;
     this.createYarnGroup$ = this._createYarnGroup.asObservable();
 
-    this._createHsnCode = new Subject<Hsn>;
+    this._createHsnCode = new Subject<CreateHsnDto>;
     this.createHsnCode$ = this._createHsnCode.asObservable();
   }
 
@@ -83,6 +83,7 @@ export class YarnMasterFormPresenterService {
     let dialogRef = this._dialog.open(component, {
       minWidth: '300px',
       data,
+      panelClass: 'dialog-popIn'
     });
 
     dialogRef.closed.subscribe({
@@ -101,7 +102,7 @@ export class YarnMasterFormPresenterService {
         break;
       }
       case "quality": {
-        this._createQuality.next(dialogData.data as Quality);
+        this._createQuality.next(dialogData.data as CreateQualityDto);
         break;
       }
       case "color": {
@@ -117,7 +118,7 @@ export class YarnMasterFormPresenterService {
         break;
       }
       case "hsnCode": {
-        this._createHsnCode.next(dialogData.data as Hsn);
+        this._createHsnCode.next(dialogData.data as CreateHsnDto);
         break;
       }
     }

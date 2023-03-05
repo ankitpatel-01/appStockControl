@@ -1,6 +1,6 @@
 <div class="d-flex flex-column h-100 overflow-hidden">
     <app-horizontal-nav-menu></app-horizontal-nav-menu>
-    <main class="main-warpper flex-grow-1 overflow-y-auto">
-        <router-outlet></router-outlet>
+    <main class="main-warpper flex-grow-1 overflow-y-auto" [@FadeInOut]="o.isActivated ? o.activatedRoute : ''">
+        <router-outlet #o="outlet"></router-outlet>
     </main>
 </div>

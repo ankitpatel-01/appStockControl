@@ -1,0 +1,107 @@
+<div class="py-4 h-100 d-flex flex-column">
+    <!-- START:Action row -->
+    <div class="d-flex align-items-center justify-content-end">
+        <!-- Search  -->
+        <input #searchQuery class="form-control search-control w-auto me-3" type="text" placeholder="Search"
+            autocomplete="off" id="searchQuery" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
+        <!-- Add button -->
+        <button type="button" class="btn btn-primary" (click)="openYarnGroupForm()">
+            <div class="d-flex align-items-center">
+                <span class="icon-plus-solid pe-2"></span>
+                <span class="ps-1">Add New</span>
+            </div>
+        </button>
+    </div>
+    <!-- END:Action row -->
+
+    <!-- START:QUALITY LIST VIEW TABLE LOADER -->
+    <div *ngIf="isYarnGroupLoading" class="mt-3 table-responsive" aria-hidden="true">
+        <table class="table bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="num-col">#</th>
+                    <th scope="col">Group description</th>
+                    <th scope="col" class="action-col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let yarnType of [1,2,3,4,5];let i = index;" class="placeholder-glow">
+                    <td scope="row" class="num-col">
+                        <span class="placeholder">
+                            #
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some yarnGroup description
+                        </span>
+                    </td>
+                    <td class="action-col">
+                        <span class="placeholder">
+                            action
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- END:QUALITY LIST VIEW TABLE LOADER -->
+    <!-- START:QUALITY LIST VIEW -->
+    <div *ngIf="yarnGroupList.length > 0 && !isYarnGroupLoading" class="mt-3 table-responsive">
+        <table class="table bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="num-col">#</th>
+                    <th scope="col">Group description</th>
+                    <th scope="col" class="action-col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let yarnGroup of yarnGroupList;let i = index;trackBy: yarnGroupTrackBy">
+                    <td scope="row" class="num-col">
+                        <span>
+                            {{i + 1 + (paginationMeta.per_page * (paginationMeta.current_page-1))}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{yarnGroup?.yarn_grp_name ?yarnGroup?.yarn_grp_name :'N/A'}}
+                        </span>
+                    </td>
+                    <td class="action-col">
+                        <span class="icon-trash cursor-pointer" (click)="removeYarnGroupById(yarnGroup)"></span>
+                        <span class="icon-pen ms-3 cursor-pointer" (click)="openYarnGroupForm(yarnGroup)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="paginationMeta.current_page" class="d-flex align-items-center justify-content-end">
+            <app-paginator [totalPages]="paginationMeta.total_pages" [currentPage]="paginationMeta.current_page"
+                [ellipses]="false" (pageChanged)="gotoPage($event)">
+            </app-paginator>
+        </div>
+    </div>
+    <!-- END:QUALITY LIST VIEW -->
+    <!-- START: NO DATA SCREEN -->
+    <div *ngIf="yarnGroupList.length === 0 && !isYarnGroupLoading"
+        class="mt-3 flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+        <!-- image  -->
+        <figure>
+            <img class="no-data pe-3" src="../../../../assets/svgs/no_data.svg" alt="no-data-found" />
+        </figure>
+        <p class="fs-3">No Result Found</p>
+        <!-- <ng-container *ngIf="!searchQuery.value"> -->
+        <small class="text-muted">Look's like you haven't added any data. no worries.</small>
+        <small class="text-muted">Click the "Add New" button.</small>
+        <!-- </ng-container> -->
+        <!-- Add button -->
+        <button type="button" class="btn btn-primary mt-3" (click)="openYarnGroupForm()">
+            <div class="d-flex align-items-center">
+                <span class="icon-plus-solid pe-2"></span>
+                <span class="ps-1">Add New</span>
+            </div>
+        </button>
+    </div>
+    <!-- END: NO DATA SCREEN -->
+</div>

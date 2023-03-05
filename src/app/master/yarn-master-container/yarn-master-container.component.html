@@ -1,13 +1,41 @@
-<div class="px-5 pt-4 pb-3">
+<div class="pt-4 container">
     <h2 class="content-header-title">Yarn Master</h2>
-    <app-tab-group>
+    <app-tab-group [verticalLayout]="true" (onTabChange)="onTabChange($event)">
         <app-tab tabTitle="Yarn">
-            <app-yarn-master-list-presentation [yarnsRes]="yarnsList$|async" (createYarn)="createYarn($event)"
-                (removeYarn)="removeYarn($event)" (updateYarn)="updateYarn($event)"></app-yarn-master-list-presentation>
+            <app-yarn-master-list-presentation [yarnsRes]="yarnsList$|async" (yarnSearch)="getAllYarnPaginate(1,$event)"
+                (createYarn)="createYarn($event)" (removeYarn)="removeYarn($event)" (updateYarn)="updateYarn($event)"
+                (pageChange)="getAllYarnPaginate($event,searchString)"></app-yarn-master-list-presentation>
         </app-tab>
         <app-tab tabTitle="Type">
-            <app-yarn-type-list-presentation [yarnTypeRes]="yarnTypesList$|async"
-                (pageChange)="getYarnTypes($event)"></app-yarn-type-list-presentation>
+            <app-yarn-type-list-presentation [yarnTypeRes]="yarnTypesListPaginated$|async"
+                (yarnTypeSearch)="getYarnTypesPaginate(1,$event)" (removeYarnTypeId)="removeYarnType($event)"
+                (createYarnType)="createYarnTypes($event)" (updateYarnType)="updateYarnTypes($event)"
+                (pageChange)="getYarnTypesPaginate($event,searchString)"></app-yarn-type-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Quality">
+            <app-yarn-quality-list-presentation [yarnQualityRes]="qualityListPaginated$ | async"
+                [yarnTypeList]="yarnTypesList$ | async" (qualitySearch)="getQualityPaginate(1,$event)"
+                (removeQualityId)="removeQuality($event)" (createQuality)="createQuality($event)"
+                (updateQuality)="updateQuality($event)"
+                (pageChange)="getQualityPaginate($event,searchString)"></app-yarn-quality-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Color">
+            <app-yarn-color-list-presentation [colorRes]="colorListPaginated$|async"
+                (colorSearch)="getAllColorsPaginate(1,$event)" (createColor)="createColor($event)"
+                (updateColor)="updateColor($event)" (removeColorId)="removeColor($event)"
+                (pageChange)="getAllColorsPaginate($event,searchString)"></app-yarn-color-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Category">
+            <app-yarn-category-list-presentation [categoryRes]="categoryListPaginated$ |async"
+                (categorySearch)="getCategoryPaginate(1,$event)" (createCategory)="createCategory($event)"
+                (updateCategory)="updateCategory($event)" (removeCategoryId)="removeCategory($event)"
+                (pageChange)="getCategoryPaginate($event,searchString)"></app-yarn-category-list-presentation>
+        </app-tab>
+        <app-tab tabTitle="Group">
+            <app-yarn-group-list-presentation [yarnGroupRes]="yarnGroupListPaginated$ |async"
+                (yarnGroupSearch)="getAllYarnGroupPaginate(1,$event)" (createYarnGroup)="createYarnGroup($event)"
+                (updateYarnGroup)="updateYarnGroup($event)" (removeYarnGroupId)="removeYarnGroup($event)"
+                (pageChange)="getAllYarnGroupPaginate($event,searchString)"></app-yarn-group-list-presentation>
         </app-tab>
     </app-tab-group>
 </div>

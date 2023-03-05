@@ -1,0 +1,52 @@
+<div class="drawer drawer-w600">
+    <!-- START:DRAWER HEADER -->
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Color</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+    <!-- END:DRAWER HEADER -->
+    <!-- START:DRAWER BODY -->
+    <div class="drawer-main">
+        <form class="row" [formGroup]="colorForm" autocomplete="off">
+            <!-- START:Color Description -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="color_desc" class="form-label">Color Description</label>
+                    <input id="color_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['color_desc'].touched
+                        || getControls['color_desc'].dirty
+                    ) && getControls['color_desc'].invalid }" placeholder="Enter color Description" maxlength="30"
+                        formControlName="color_desc" alphabetOnly toUpperCase (keyup.enter)="color_code.focus()">
+                    <!-- validation -->
+                    <small class="validation-text">
+                        Please enter color description.
+                    </small>
+                </div>
+            </div>
+            <!-- END:Color Description -->
+            <!-- START:Color Code -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="color_code" class="form-label">Color Code</label>
+                    <input #color_code id="color_code" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['color_code'].touched
+                        || getControls['color_code'].dirty
+                    ) && getControls['color_code'].invalid }" placeholder="Enter color code" maxlength="3"
+                        formControlName="color_code" alphabetOnly toUpperCase (keyup.enter)="saveBtn.focus()">
+                    <!-- validation -->
+                    <small class="validation-text">
+                        Please enter color code.
+                    </small>
+                </div>
+            </div>
+            <!-- END:Color Code -->
+        </form>
+    </div>
+    <!-- END:DRAWER BODY -->
+    <!-- START:DRAWER FOOTER -->
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button #saveBtn type="button" class="btn btn-primary btn px-4" (click)="saveClick()">Save</button>
+    </div>
+    <!-- END:DRAWER FOOTER -->
+</div>

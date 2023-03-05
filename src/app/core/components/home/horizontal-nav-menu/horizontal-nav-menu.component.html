@@ -1,51 +1,56 @@
 <!-- START: Header  -->
-<div class="px-4 w-100 border-bottom bg-white">
-    <ul class="nav">
-        <!-- START: Master  -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-link dropdown-toggle-down px-4"
-                [ngClass]="{'active':isActive('/master')}">Master</a>
+<div class="border-bottom bg-white">
+    <div class="container">
+        <ul class="nav">
+            <!-- START: Master  -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-link dropdown-toggle-down px-4"
+                    [ngClass]="{'active':isActive('/master')}">Master</a>
 
-            <!-- START: MASTER MENU  -->
-            <ul class="dropdown-container">
-                <li class="dropdown-item" [ngClass]="{'active':isActive('/master/general')}">
-                    <span>General</span>
-                </li>
-                <li class="dropdown-item">
-                    <span>Account</span>
-                </li>
-                <li class="dropdown-item" [ngClass]="{'active':isActive('/master/yarn')}">
-                    <span>Yarn Master</span>
-                </li>
-                <li class="dropdown-item">
-                    <span>Fabric</span>
-                </li>
-                <li class="dropdown-item dropdown-toggle-right">
-                    <span>Miscellaneous</span>
-                    <ul class="dropdown-container">
-                        <li class="dropdown-item">
-                            <span>Hsn master</span>
-                        </li>
-                        <li class="dropdown-item">
-                            <span>Tax master</span>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- END: MASTER MENU  -->
+                <!-- START: MASTER MENU  -->
+                <ul class="dropdown-container">
+                    <li class="dropdown-item" [ngClass]="{'active':isActive('/master/general')}">
+                        <span>General</span>
+                    </li>
+                    <li class="dropdown-item">
+                        <span>Account</span>
+                    </li>
+                    <li class="dropdown-item" routerLink="/master/yarn"
+                        [ngClass]="{'active':isActive('/master/yarn',true)}">
+                        <span>Yarn Master</span>
+                    </li>
+                    <li class="dropdown-item">
+                        <span>Fabric</span>
+                    </li>
+                    <li class="dropdown-item dropdown-toggle-right" [ngClass]="{'active':isActive('/master/misc')}">
+                        <span>Miscellaneous</span>
+                        <ul class="dropdown-container">
+                            <li class="dropdown-item" routerLink="/master/misc/hsn"
+                                [ngClass]="{'active':isActive('/master/misc/hsn',true)}">
+                                <span>Hsn master</span>
+                            </li>
+                            <li class="dropdown-item" routerLink="/master/misc/tax"
+                                [ngClass]="{'active':isActive('/master/misc/tax',true)}">
+                                <span>Tax master</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- END: MASTER MENU  -->
 
-        </li>
-        <!-- END: Master  -->
+            </li>
+            <!-- END: Master  -->
 
-        <li class="nav-item dropdown">
-            <a class="nav-link nav-link dropdown-link dropdown-toggle-down px-4">Link</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link px-4">Link</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link px-4 disabled">Disabled</a>
-        </li>
-    </ul>
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-link dropdown-link dropdown-toggle-down px-4">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link px-4">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link px-4 disabled">Disabled</a>
+            </li>
+        </ul>
+    </div>
 </div>
 <!-- END: Header  -->

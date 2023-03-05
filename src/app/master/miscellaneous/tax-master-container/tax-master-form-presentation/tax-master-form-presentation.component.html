@@ -1,0 +1,100 @@
+<div class="drawer drawer-w600">
+    <!-- START:DRAWER HEADER -->
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} GST Rate</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+    <!-- END:DRAWER HEADER -->
+    <!-- START:DRAWER BODY -->
+    <div class="drawer-main">
+        <form class="row" [formGroup]="gstRateForm" autocomplete="off">
+            <!--START: Gst Description -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="gst_desc" class="form-label">Gst Description</label>
+                    <input #gst_desc id="gst_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['gst_desc'].touched
+                        || getControls['gst_desc'].dirty
+                    ) && getControls['gst_desc'].invalid }" placeholder="Enter gst description"
+                        formControlName="gst_desc" toUpperCase (keyup.enter)="gst_rate.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter gst description.
+                    </small>
+                </div>
+            </div>
+            <!--END: Gst Description -->
+            <!-- START: Gst Rate  -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="gst_rate" class="form-label">Gst Rate</label>
+                    <input #gst_rate id="gst_rate" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['gst_rate'].touched
+                        || getControls['gst_rate'].dirty
+                    ) && getControls['gst_rate'].invalid }" placeholder="Enter gst rate" formControlName="gst_rate"
+                        numberFloat (keyup.enter)="igst.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter gst rate.
+                    </small>
+                </div>
+            </div>
+            <!-- END: Gst Rate  -->
+            <!-- START: Igst Rate  -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="igst" class="form-label">Igst Rate</label>
+                    <input #igst id="igst" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['igst'].touched
+                        || getControls['igst'].dirty
+                    ) && getControls['igst'].invalid }" placeholder="Enter igst rate" formControlName="igst"
+                        numberFloat (keyup.enter)="sgst.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter igst rate.
+                    </small>
+                </div>
+            </div>
+            <!-- END: Igst Rate  -->
+            <!-- START: Sgst Rate  -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="sgst" class="form-label">Sgst Rate</label>
+                    <input #sgst id="sgst" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['sgst'].touched
+                        || getControls['sgst'].dirty
+                    ) && getControls['sgst'].invalid }" placeholder="Enter sgst rate" formControlName="sgst"
+                        numberFloat (keyup.enter)="cgst.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter sgst rate.
+                    </small>
+                </div>
+            </div>
+            <!-- END: Sgst Rate  -->
+            <!-- START: Cgst Rate  -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="cgst" class="form-label">Cgst Rate</label>
+                    <input #cgst id="cgst" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['cgst'].touched
+                        || getControls['cgst'].dirty
+                    ) && getControls['cgst'].invalid }" placeholder="Enter cgst rate" formControlName="cgst"
+                        numberFloat (keyup.enter)="saveBtn.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter cgst rate.
+                    </small>
+                </div>
+            </div>
+            <!-- END: Cgst Rate  -->
+        </form>
+    </div>
+    <!-- END:DRAWER BODY -->
+    <!-- START:DRAWER FOOTER -->
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button #saveBtn type="button" class="btn btn-primary btn px-4" (click)="saveClick()">Save</button>
+    </div>
+    <!-- END:DRAWER FOOTER -->
+</div>

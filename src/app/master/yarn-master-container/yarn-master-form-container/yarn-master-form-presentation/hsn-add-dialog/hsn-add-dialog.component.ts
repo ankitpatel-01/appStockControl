@@ -5,6 +5,7 @@ import { HsnTypeEnum } from 'src/app/master/constants/enums/hsn-type.enum';
 import { DialogData } from 'src/app/master/model/dialog-data.model';
 import { Gst } from 'src/app/master/model/gst.model';
 import { HsnDialogData } from 'src/app/master/model/hsn-dialog.model';
+import { CreateHsnDto } from 'src/app/master/model/hsn.model';
 
 @Component({
   selector: 'app-hsn-add-dialog',
@@ -63,10 +64,17 @@ export class HsnAddDialogComponent implements OnInit {
   }
 
   save() {
-    if (this.hsnForm.valid)
-      this.dialogRef.close({ type: 'hsnCode', isSave: true, data: this.hsnForm.value })
-    else
+    if (this.hsnForm.valid) {
+      const data: CreateHsnDto = {
+        hsn_code: this.getControls['hsn_code'].value,
+        hsn_desc: this.getControls['hsn_desc'].value,
+        hsn_type: this.getControls['hsn_type'].value,
+        gst_id: this.getControls['gst'].value
+      }
+      this.dialogRef.close({ type: 'hsnCode', isSave: true, data })
+    } else {
       this.hsnForm.markAllAsTouched();
+    }
   }
 
 }
