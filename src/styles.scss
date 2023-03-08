@@ -19,6 +19,9 @@
 // Utilies 
 @import './assets/scss/utilities/index';
 
+//Animations
+@import './assets/scss/animations/index';
+
 //CDk -overlay styles
 @import '@angular/cdk/overlay-prebuilt.css';
 
@@ -28,5 +31,6 @@
 //ng-select
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
-//Animations
-@import './assets/scss/animations/index';
+//ngx-toastr
+// regular style toast
+@import 'ngx-toastr/toastr';

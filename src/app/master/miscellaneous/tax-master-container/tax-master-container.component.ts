@@ -92,7 +92,7 @@ export class TaxMasterContainerComponent implements OnInit {
   removeGstRate(gst: RemoveEmit) {
     this.removeGstSub = this._yarnMasterService.removeGstRate(gst.id).subscribe({
       next: (res) => {
-        gst.length == 1 ? this._currentPage -= 1 : this._currentPage;
+        gst.length == 1 ? this._currentPage = 1 : this._currentPage;
         this.getAllGstRateList(this._currentPage);
       },
       error: (err) => {
