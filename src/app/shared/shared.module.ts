@@ -12,6 +12,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { UtitityService } from './services/utitity.service';
 import { DrawerService } from './services/drawer.service';
+import { EventService } from './services/event.service';
 
 const Directives = [
   ToUpperCaseDirective,
@@ -39,7 +40,8 @@ const Directives = [
     DialogModule
   ], providers: [
     UtitityService,
-    DrawerService
+    DrawerService,
+    EventService
   ]
 })
 export class SharedModule { }

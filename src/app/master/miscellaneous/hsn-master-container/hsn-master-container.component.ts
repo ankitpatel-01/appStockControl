@@ -10,6 +10,7 @@ import { Gst } from '../../model/gst.model';
 import { CreateHsnDto, Hsn, UpdateHsnDto } from '../../model/hsn.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
+import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
   selector: 'app-hsn-master-container',
@@ -27,7 +28,7 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
   private updateHsnSub: Subscription;
   private removeHsnSub: Subscription;
 
-  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService) {
+  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService, private _event: EventService) {
     this.searchString = "";
   }
 
@@ -105,8 +106,9 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
   removeHsnCode(hsn: RemoveEmit) {
     this.removeHsnSub = this._yarnMasterService.removeHsnCode(hsn.id).subscribe({
       next: (res) => {
-        hsn.length === 1 ? this._currentPage -= 1 : this._currentPage;
+        hsn.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getAllHsnCodeList(this._currentPage);
+        this._event.showSuccessSnackBar("HSN removed successcdfully");
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
