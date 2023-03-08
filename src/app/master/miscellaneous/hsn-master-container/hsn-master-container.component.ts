@@ -75,6 +75,7 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
     this.createHsnSub = this._yarnMasterService.createHsnCode(hsn).subscribe({
       next: (res) => {
         this.getAllHsnCodeList();
+        this._event.showSuccessSnackBar("HSN code created");
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -91,6 +92,7 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
     this.updateHsnSub = this._yarnMasterService.updateHsnCode(hsn).subscribe({
       next: (res) => {
         this.getAllHsnCodeList(this._currentPage);
+        this._event.showSuccessSnackBar("HSN code updated");
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -108,7 +110,7 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
       next: (res) => {
         hsn.length === 1 ? this._currentPage = 1 : this._currentPage;
         this.getAllHsnCodeList(this._currentPage);
-        this._event.showSuccessSnackBar("HSN removed successcdfully");
+        this._event.showSuccessSnackBar("HSN code removed");
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);

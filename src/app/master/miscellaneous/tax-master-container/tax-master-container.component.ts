@@ -9,6 +9,7 @@ import { UtitityService } from 'src/app/shared/services/utitity.service';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { CreateGstDto, Gst, UpdateGstDto } from '../../model/gst.model';
 import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
+import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
   selector: 'app-tax-master-container',
@@ -25,7 +26,7 @@ export class TaxMasterContainerComponent implements OnInit {
   private updateGstSub: Subscription;
   private removeGstSub: Subscription;
 
-  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService) {
+  constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService, private _event: EventService) {
     this.searchString = "";
   }
 
@@ -61,6 +62,7 @@ export class TaxMasterContainerComponent implements OnInit {
     this.createGstSub = this._yarnMasterService.createGstRate(gstRate).subscribe({
       next: (res) => {
         this.getAllGstRateList();
+        this._event.showSuccessSnackBar("GST code created");
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -77,6 +79,7 @@ export class TaxMasterContainerComponent implements OnInit {
     this.updateGstSub = this._yarnMasterService.updateGstRate(gstRate).subscribe({
       next: (res) => {
         this.getAllGstRateList(this._currentPage);
+        this._event.showSuccessSnackBar("GST code updated");
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
@@ -94,6 +97,7 @@ export class TaxMasterContainerComponent implements OnInit {
       next: (res) => {
         gst.length == 1 ? this._currentPage = 1 : this._currentPage;
         this.getAllGstRateList(this._currentPage);
+        this._event.showSuccessSnackBar("GST code removed");
       },
       error: (err) => {
         this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
