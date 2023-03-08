@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { PaginateResponse } from 'src/app/shared/models/response.model';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { UtitityService } from 'src/app/shared/services/utitity.service';
 import { Category } from '../../model/category.model';
 import { Color } from '../../model/color.model';
 import { Gst } from '../../model/gst.model';
@@ -16,7 +17,7 @@ import { YarnMasterService } from '../../services/yarn-master.service';
   selector: 'app-yarn-master-form-container',
   templateUrl: './yarn-master-form-container.component.html',
 })
-export class YarnMasterFormContainerComponent implements OnInit {
+export class YarnMasterFormContainerComponent implements OnInit, OnDestroy {
 
   yarnTypesList$: Observable<YarnType[]>;
   qualityList$: Observable<Quality[]>;
@@ -40,8 +41,18 @@ export class YarnMasterFormContainerComponent implements OnInit {
     }
   }
 
+  //Subscription
+  createYarnTypeSub: Subscription;
+  createQualitySub: Subscription;
+  createColorSub: Subscription;
+  createCategorySub: Subscription;
+  createGroupSub: Subscription;
+  createHsnSub: Subscription;
 
-  constructor(private _yarnMasterService: YarnMasterService) {
+  constructor(
+    private _yarnMasterService: YarnMasterService,
+    private _utilityService: UtitityService,
+  ) {
     this.cancel = new EventEmitter<boolean>();
     this.save = new EventEmitter<CreateYarnDto>();
     this.edit = new EventEmitter<UpdateYarnDto>();
@@ -52,6 +63,15 @@ export class YarnMasterFormContainerComponent implements OnInit {
     this.yarnGroupList$ = new Observable<YarnGroup[]>;
     this.hsnCodeList$ = new Observable<Hsn[]>;
     this.gstRateList$ = new Observable<Gst[]>;
+  }
+
+  ngOnDestroy(): void {
+    this.createYarnTypeSub?.unsubscribe();
+    this.createQualitySub?.unsubscribe();
+    this.createColorSub?.unsubscribe();
+    this.createCategorySub?.unsubscribe();
+    this.createGroupSub?.unsubscribe();
+    this.createHsnSub?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -74,12 +94,12 @@ export class YarnMasterFormContainerComponent implements OnInit {
   }
 
   createYarnTypes(yarnType: YarnType): void {
-    this._yarnMasterService.createYarnTypes(yarnType).subscribe({
+    this.createYarnTypeSub = this._yarnMasterService.createYarnTypes(yarnType).subscribe({
       next: (res) => {
         this.getYarnTypes();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     });
   }
@@ -91,12 +111,12 @@ export class YarnMasterFormContainerComponent implements OnInit {
 
 
   createQuality(quality: CreateQualityDto): void {
-    this._yarnMasterService.createQuality(quality).subscribe({
+    this.createQualitySub = this._yarnMasterService.createQuality(quality).subscribe({
       next: (res) => {
         this.getQuality();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     });
   }
@@ -107,12 +127,12 @@ export class YarnMasterFormContainerComponent implements OnInit {
   }
 
   createColor(color: Color): void {
-    this._yarnMasterService.createColor(color).subscribe({
+    this.createColorSub = this._yarnMasterService.createColor(color).subscribe({
       next: (res) => {
         this.getAllColors();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
   }
@@ -123,12 +143,12 @@ export class YarnMasterFormContainerComponent implements OnInit {
   }
 
   createCategory(category: Category): void {
-    this._yarnMasterService.createCategory(category).subscribe({
+    this.createCategorySub = this._yarnMasterService.createCategory(category).subscribe({
       next: (res) => {
         this.getAllCategory();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
   }
@@ -139,12 +159,12 @@ export class YarnMasterFormContainerComponent implements OnInit {
   }
 
   createYarnGroup(yarnGroup: YarnGroup): void {
-    this._yarnMasterService.createYarnGroup(yarnGroup).subscribe({
+    this.createCategorySub = this._yarnMasterService.createYarnGroup(yarnGroup).subscribe({
       next: (res) => {
         this.getAllYarnGroup();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
   }
@@ -155,30 +175,19 @@ export class YarnMasterFormContainerComponent implements OnInit {
   }
 
   createHsnCode(hsnCode: CreateHsnDto): void {
-    this._yarnMasterService.createHsnCode(hsnCode).subscribe({
+    this.createHsnSub = this._yarnMasterService.createHsnCode(hsnCode).subscribe({
       next: (res) => {
         this.getAllHsnCode();
       },
       error: (err) => {
-        console.log(err);
+        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
       }
     })
   }
 
-  //gst
+  // gst
   getAllGstRate(): void {
     this.gstRateList$ = this._yarnMasterService.getAllGstRate();
-  }
-
-  createGstRate(gstRate: Gst): void {
-    this._yarnMasterService.createGstRate(gstRate).subscribe({
-      next: (res) => {
-        this.getAllGstRate();
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
   }
 
   saveClick(createYarn: CreateYarnDto) {

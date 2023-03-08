@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DelayInterceptor } from './core/helpers/delay.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthInterceptor } from './core/helpers/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -30,7 +31,12 @@ import { ToastrModule } from 'ngx-toastr';
       provide: HTTP_INTERCEPTORS,
       useClass: DelayInterceptor,
       multi: true
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
