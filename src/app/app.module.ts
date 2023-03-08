@@ -7,6 +7,9 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DelayInterceptor } from './core/helpers/delay.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthService } from './core/services/auth.service';
+import { AuthInterceptor } from './core/helpers/auth.interceptor';
+import { AuthGuard } from './core/guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       provide: HTTP_INTERCEPTORS,
       useClass: DelayInterceptor,
       multi: true
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

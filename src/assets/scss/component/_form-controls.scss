@@ -1,6 +1,18 @@
 .form-control-wrapper {
     position: relative;
 
+    .password-input-wrapper {
+        position: relative;
+
+        .password-icon {
+            position: absolute;
+            top: 26%;
+            right: 2%;
+            color: #6c758e;
+            font-size: 1rem;
+        }
+    }
+
     .ng-select.invalid {
         .ng-select-container {
             border-color: $danger;
