@@ -1,0 +1,68 @@
+<div class="drawer drawer-w600">
+    <!-- START:DRAWER HEADER -->
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Location</span>
+        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+    <!-- END:DRAWER HEADER -->
+    <!-- START:DRAWER BODY -->
+    <div class="drawer-main">
+        <form class="row" [formGroup]="locationForm" autocomplete="off">
+            <!--START: location_name -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="location_name" class="form-label">Loction Name</label>
+                    <input #location_name id="location_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['location_name'].touched
+                        || getControls['location_name'].dirty
+                    ) && getControls['location_name'].invalid }" placeholder="Enter location name"
+                        formControlName="location_name" toUpperCase (keyup.enter)="factory_name.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter location name.
+                    </small>
+                </div>
+            </div>
+            <!--END: location_name -->
+            <!--START: factory name -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="factory_name" class="form-label">Factory Name</label>
+                    <input #factory_name id="factory_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['factory_name'].touched
+                        || getControls['factory_name'].dirty
+                    ) && getControls['factory_name'].invalid }" placeholder="Enter factory name"
+                        formControlName="factory_name" toUpperCase (keyup.enter)="factory_city.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter factory name.
+                    </small>
+                </div>
+            </div>
+            <!--END: factory name -->
+            <!--START: factory city -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="location_name" class="form-label">Factory City</label>
+                    <input #factory_city id="factory_city" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['factory_city'].touched
+                        || getControls['factory_city'].dirty
+                    ) && getControls['factory_city'].invalid }" placeholder="Enter factory city"
+                        formControlName="factory_city" toUpperCase (keyup.enter)="saveBtn.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter factory city name.
+                    </small>
+                </div>
+            </div>
+            <!--END: factory city -->
+        </form>
+    </div>
+    <!-- END:DRAWER BODY -->
+    <!-- START:DRAWER FOOTER -->
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button #saveBtn type="button" class="btn btn-primary btn px-4" (click)="saveClick()">Save</button>
+    </div>
+    <!-- END:DRAWER FOOTER -->
+</div>

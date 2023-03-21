@@ -32,7 +32,7 @@
                         getControls['hsn_desc'].touched
                         || getControls['hsn_desc'].dirty
                     ) && getControls['hsn_desc'].invalid }" placeholder="Enter hsn description" maxlength="30"
-                        formControlName="hsn_desc" alphabetOnly toUpperCase (keyup.enter)="gst.focus()">
+                        formControlName="hsn_desc" toUpperCase (keyup.enter)="gst.focus()">
                     <!-- validation message  -->
                     <small class="validation-text">
                         Please hsn description.

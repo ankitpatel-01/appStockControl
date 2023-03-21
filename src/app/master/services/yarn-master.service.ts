@@ -18,6 +18,8 @@ import { PAGE_PER_LIMIT } from 'src/app/shared/constants/constants';
 import { CreateQualityDto, Quality, UpdateQualityDto } from '../model/quality.model';
 import { Color, CreateColorDto, UpdateColorDto } from '../model/color.model';
 import { Category, CreateCategoryDto, UpdateCategoryDto } from '../model/category.model';
+import { CreateLocationMasterDto, LocationMaster, UpdateLocationMasterDto } from '../model/location.model';
+import { CreateUnitDto, Unit, UpdateUnitDto } from '../model/unit.model';
 
 @Injectable()
 export class YarnMasterService {
@@ -245,6 +247,62 @@ export class YarnMasterService {
 
   removeGstRate(gst_id: number): Observable<Gst> {
     return this.HttpClient.delete<APIResponse<Gst>>(this.baseUrl + masterAPI.GST_REMOVE + `/${gst_id}`).pipe(map((res: APIResponse<Gst>) => res.data));
+  }
+
+  //--------------------- Location master ----------------
+  getAllLocation(): Observable<LocationMaster[]> {
+    return this.HttpClient.get<APIResponse<LocationMaster[]>>(this.baseUrl + masterAPI.LOCATION_MASTER_GET).pipe(map((res: APIResponse<LocationMaster[]>) => res.data));
+  }
+
+  getAllLocationPaginate(page?: number, search?: string): Observable<PaginateResponse<LocationMaster[]>> {
+    const params = {
+      ...(page && { page }),
+      ...(search && { search }),
+      limit: PAGE_PER_LIMIT,
+    }
+    return this.HttpClient.get<APIResponse<LocationMaster[]>>(this.baseUrl + masterAPI.LOCATION_MASTER_GET, {
+      params
+    }).pipe(map((res: APIResponse<LocationMaster[]>) => { return { data: res.data, meta: res.meta } }));
+  }
+
+  createLocation(location: CreateLocationMasterDto): Observable<LocationMaster> {
+    return this.HttpClient.post<APIResponse<LocationMaster>>(this.baseUrl + masterAPI.LOCATION_MASTER_CREATE, location).pipe(map((res: APIResponse<LocationMaster>) => res.data));
+  }
+
+  updateLocation(location: UpdateLocationMasterDto): Observable<LocationMaster> {
+    return this.HttpClient.put<APIResponse<LocationMaster>>(this.baseUrl + masterAPI.LOCATION_MASTER_UPDATE, location).pipe(map((res: APIResponse<LocationMaster>) => res.data));
+  }
+
+  removeLocation(location_id: number): Observable<LocationMaster> {
+    return this.HttpClient.delete<APIResponse<LocationMaster>>(this.baseUrl + masterAPI.LOCATION_MASTER_REMOVE + `/${location_id}`).pipe(map((res: APIResponse<LocationMaster>) => res.data));
+  }
+
+  //--------------------- Unit master ----------------
+  getAllUnit(): Observable<Unit[]> {
+    return this.HttpClient.get<APIResponse<Unit[]>>(this.baseUrl + masterAPI.UNIT_MASTER_GET).pipe(map((res: APIResponse<Unit[]>) => res.data));
+  }
+
+  getAllUnitPaginate(page?: number, search?: string): Observable<PaginateResponse<Unit[]>> {
+    const params = {
+      ...(page && { page }),
+      ...(search && { search }),
+      limit: PAGE_PER_LIMIT,
+    }
+    return this.HttpClient.get<APIResponse<Unit[]>>(this.baseUrl + masterAPI.UNIT_MASTER_GET, {
+      params
+    }).pipe(map((res: APIResponse<Unit[]>) => { return { data: res.data, meta: res.meta } }));
+  }
+
+  createUnit(location: CreateUnitDto): Observable<Unit> {
+    return this.HttpClient.post<APIResponse<Unit>>(this.baseUrl + masterAPI.UNIT_MASTER_CREATE, location).pipe(map((res: APIResponse<Unit>) => res.data));
+  }
+
+  updateUnit(location: UpdateUnitDto): Observable<Unit> {
+    return this.HttpClient.put<APIResponse<Unit>>(this.baseUrl + masterAPI.UNIT_MASTER_UPDATE, location).pipe(map((res: APIResponse<Unit>) => res.data));
+  }
+
+  removeUnit(location_id: number): Observable<Unit> {
+    return this.HttpClient.delete<APIResponse<Unit>>(this.baseUrl + masterAPI.UNIT_MASTER_REMOVE + `/${location_id}`).pipe(map((res: APIResponse<Unit>) => res.data));
   }
 
 }

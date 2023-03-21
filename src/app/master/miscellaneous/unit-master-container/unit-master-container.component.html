@@ -1,0 +1,6 @@
+<div class="container pt-4">
+    <h2 class="content-header-title">Unit Master</h2>
+    <app-unit-master-presentation [unitListRes]="unitList$|async" (pageChange)="getAllUnitList($event,searchString)"
+        (UnitSearch)="getAllUnitList(1,$event)" (createUnit)="createUnit($event)" (updateUnit)="updateUnit($event)"
+        (removeUnitId)="removeUnit($event)"></app-unit-master-presentation>
+</div>

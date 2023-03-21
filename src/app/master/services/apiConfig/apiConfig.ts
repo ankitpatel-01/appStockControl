@@ -46,4 +46,16 @@ export const masterAPI = {
     HSN_CREATE: 'master/hsn/create',
     HSN_UPDATE: 'master/hsn/update',
     HSN_REMOVE: 'master/hsn/remove',
+
+    //---------------- location master ---------------
+    LOCATION_MASTER_GET: 'master/location',
+    LOCATION_MASTER_CREATE: 'master/location/create',
+    LOCATION_MASTER_UPDATE: 'master/location/update',
+    LOCATION_MASTER_REMOVE: 'master/location/remove',
+
+    //---------------- unit master ---------------
+    UNIT_MASTER_GET: 'master/unit',
+    UNIT_MASTER_CREATE: 'master/unit/create',
+    UNIT_MASTER_UPDATE: 'master/unit/update',
+    UNIT_MASTER_REMOVE: 'master/unit/remove',
 }

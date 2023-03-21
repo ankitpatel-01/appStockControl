@@ -1,0 +1,7 @@
+<div class="container pt-4">
+    <h2 class="content-header-title">Location Master</h2>
+    <app-location-master-presentation [locationListRes]="locationList$|async"
+        (pageChange)="getAllLocationList($event,searchString)" (LocationMasterSearch)="getAllLocationList(1,$event)"
+        (createLocationMaster)="createLocation($event)" (updateLocationMaster)="updateLocation($event)"
+        (removeLocationMasterId)="removeLocation($event)"></app-location-master-presentation>
+</div>
