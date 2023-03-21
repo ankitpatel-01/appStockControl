@@ -1,0 +1,38 @@
+.upperSlider {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+    width: calc(100vw);
+
+    &-header {
+        flex-shrink: 0;
+        height: $upperSlider-header-height;
+        border-bottom: $border-width $border-style-solid $border-color;
+        padding: $upperSlider-header-padding;
+        background-color: $main-bg;
+        @include flex($align-item: center, $justify-content: space-between);
+
+        .upperSlider-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+    }
+
+    &-main {
+        background-color: $body-bg;
+        flex-grow: 1;
+        padding: $upperSlider-main-padding;
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+
+    &-footer {
+        flex-shrink: 0;
+        padding: $upperSlider-footer-padding;
+        height: $upperSlider-footer-height;
+        border-top: $border-width $border-style-solid $border-color;
+        background-color: $main-bg;
+        @include flex($align-item: center, $justify-content: space-between);
+    }
+}

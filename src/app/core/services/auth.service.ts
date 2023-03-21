@@ -36,38 +36,38 @@ export class AuthService {
 
   /**
    * @name setAccessToken
-   * @description sets access token to localStorage
+   * @description sets access token to sessionStorage
    * @return void
    */
   public setAccessToken(access_token: string): void {
-    localStorage.setItem("access_token", access_token);
+    sessionStorage.setItem("access_token", access_token);
   }
 
   /**
    * @name setRefreshToken
-   * @description sets refresh token to localStorage
+   * @description sets refresh token to sessionStorage
    * @return void
    */
   public setRefreshToken(refresh_token: string): void {
-    localStorage.setItem("refresh_token", refresh_token);
+    sessionStorage.setItem("refresh_token", refresh_token);
   }
 
   /**
     * @name getAccessToken
-    * @description gets access token from localStorage
+    * @description gets access token from sessionStorage
     * @return access_token
     */
   public getAccessToken(): string {
-    return localStorage.getItem("access_token") ?? '';
+    return sessionStorage.getItem("access_token") ?? '';
   }
 
   /**
   * @name getRefreshToken
-  * @description gets refresh token from localStorage
+  * @description gets refresh token from sessionStorage
   * @return refresh_token
   */
   public getRefreshToken(): string {
-    return localStorage.getItem("refresh_token") ?? '';
+    return sessionStorage.getItem("refresh_token") ?? '';
   }
 
   /**
@@ -102,9 +102,9 @@ export class AuthService {
    * @description remove token and other data from localStorage
    * @return void
    */
-  public clearLocalStorage(): void {
+  public clearSessionStorage(): void {
     this.keysToRemove.forEach(key =>
-      localStorage.removeItem(key)
+      sessionStorage.removeItem(key)
     )
   }
 

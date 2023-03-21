@@ -19,3 +19,25 @@
     transform: translate(0%);
     animation: slideOut .15s forwards;
 }
+
+@keyframes slideDown {
+    100% {
+        transform: translate(0%);
+    }
+}
+
+@keyframes slideUp {
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.drawer-slideDown {
+    transform: translateY(-100%);
+    animation: slideDown .15s forwards;
+}
+
+.drawer-slideUp {
+    transform: translateY(0%);
+    animation: slideUp .15s forwards;
+}

@@ -36,13 +36,13 @@
                             class="form-control" [ngClass]="{ 'invalid': (
                                 getControls['password'].touched
                                 || getControls['password'].dirty
-                            ) && getControls['password'].invalid }" maxlength="8">
+                            ) && getControls['password'].invalid }" maxlength="8" (keyup.enter)="loginbtn.focus()">
                         <span #eyeIcon *ngIf="getControls['password'].valid" id="eyeIcon" class="password-icon"
-                            ngClass="{{'icon-eye-' + passwordField.className}}"
-                            (click)="togglePasswordVisibility()"></span>
+                            ngClass="{{'icon-eye-' + passwordField.className}}" (mousedown)="togglePasswordVisibility()"
+                            (mouseup)="togglePasswordVisibility()"></span>
                         <!-- validation message  -->
                         <small class="validation-text">
-                            Please enter your Password.
+                            Please enter your password.
                         </small>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
             <!-- END: Password  -->
             <!-- Start: login btn  -->
             <div class="col-12 d-grid mt-3 mx-auto">
-                <button class="btn btn-primary" type="button" [disabled]="isLogingIn" (click)="login()">
+                <button #loginbtn class="btn btn-primary" type="button" [disabled]="isLogingIn" (click)="login()">
                     <span *ngIf="isLogingIn" class="spinner-border spinner-border-sm" role="status"
                         aria-hidden="true"></span>
                     Login

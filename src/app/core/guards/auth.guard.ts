@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate {
 
     if (this._authSerive.isTokenExpired(access_token)) {
       this._authSerive.setLoggedInStatus(false);
+      this._authSerive.clearSessionStorage();
       if (!loggedIn && route.routeConfig?.path === 'login') {
         return true;
       }

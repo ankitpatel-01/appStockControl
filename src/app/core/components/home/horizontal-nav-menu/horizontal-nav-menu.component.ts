@@ -36,7 +36,7 @@ export class HorizontalNavMenuComponent implements OnInit, OnDestroy {
   logout() {
     this.logutSub = this._authService.logout().subscribe({
       next: () => {
-        this._authService.clearLocalStorage();
+        this._authService.clearSessionStorage();
         this._authService.setLoggedInStatus(false);
         this._router.navigate(['/login']);
       },
