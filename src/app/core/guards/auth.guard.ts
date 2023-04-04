@@ -21,18 +21,18 @@ export class AuthGuard implements CanActivate {
     if (this._authSerive.isTokenExpired(access_token)) {
       this._authSerive.setLoggedInStatus(false);
       this._authSerive.clearSessionStorage();
-      if (!loggedIn && route.routeConfig?.path === 'login') {
+      if (!loggedIn && (route.routeConfig?.path === 'login' || route.routeConfig?.path === 'signup')) {
         return true;
       }
       this._router.navigate(['/login'])
       return false;
     }
 
-    if (!loggedIn && route.routeConfig?.path === 'login') {
+    if (!loggedIn && (route.routeConfig?.path === 'login' || route.routeConfig?.path === 'signup')) {
       return true;
     }
 
-    if (loggedIn && route.routeConfig?.path === 'login') {
+    if (loggedIn && (route.routeConfig?.path === 'login' || route.routeConfig?.path === 'signup')) {
       this._router.navigate(['/'])
     }
 

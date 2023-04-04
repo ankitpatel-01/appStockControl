@@ -1,0 +1,135 @@
+.signup-stepper {
+    align-self: center;
+    justify-self: center;
+    padding: 30px 0;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+
+        li {
+            counter-increment: step-counter;
+
+            &.step {
+                .name {
+                    display: flex;
+                    align-items: center;
+                    color: $gray-600;
+                    font-size: 1.25rem;
+
+                    &:before {
+                        content: counter(step-counter);
+                        width: 24px;
+                        height: 24px;
+                        display: inline-block;
+                        border-radius: 50%;
+                        margin-right: 8px;
+                        background: $gray-600;
+                        color: $white;
+                        text-align: center;
+                        display: grid;
+                        align-content: center;
+                        font-size: 1rem;
+                    }
+                }
+
+                &.completed {
+                    .name {
+                        color: $success;
+
+                        &:before {
+                            content: '\2713';
+                            color: white;
+                            font-size: .8em;
+                            text-align: center;
+                            background: $success;
+                            text-align: center;
+                            display: grid;
+                            align-content: center;
+                            font-size: 1rem;
+
+                        }
+                    }
+                }
+
+                &.current {
+                    .name {
+                        color: $primary;
+
+                        &:before {
+                            background: $primary;
+                            color: $white;
+                            box-shadow: 0 0 24px lighten($primary, 24%);
+                            animation: 1750ms linear infinite pulse;
+                            text-align: center;
+                            display: grid;
+                            align-content: center;
+                            font-size: 1rem;
+
+                        }
+                    }
+                }
+
+                &:not(:last-child):after {
+                    height: 48px;
+                    width: 3px;
+                    content: '';
+                    display: block;
+                    background-color: $gray-600;
+                    margin-left: 10px;
+                    margin-top: 8px;
+                    margin-bottom: 8px;
+                    font-size: 1rem;
+
+                }
+
+                &.completed {
+                    &:not(:last-child):after {
+                        background-color: $success;
+                    }
+                }
+            }
+        }
+    }
+
+    &.done {
+        ul li {
+            &.step {
+                .name {
+                    color: #33673B;
+
+                    &:before {
+                        background: #33673B;
+                        box-shadow: none;
+                        content: '\2713';
+                        color: white;
+                        font-size: .8em;
+                        text-align: center;
+                    }
+                }
+
+                &:not(:last-child):after {
+                    background-color: #33673B;
+                    box-shadow: 0 0 8px lighten(#33673B, 35%);
+                }
+            }
+        }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 2px lighten($primary, 24%);
+    }
+
+    80% {
+        box-shadow: 0 0 24px lighten($primary, 24%);
+    }
+
+    100% {
+        box-shadow: 0 0 2px lighten($primary, 24%);
+    }
+}

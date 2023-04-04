@@ -37,7 +37,8 @@ const Directives = [
     ReactiveFormsModule,
     NgSelectModule,
     OverlayModule,
-    DialogModule
+    DialogModule,
+
   ], providers: [
     UtitityService,
     DrawerService,

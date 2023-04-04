@@ -1,4 +1,4 @@
-<div class="container-fluid d-flex align-items-center h-100">
+<div class="container-fluid d-flex align-items-center h-100 overflow-y-auto">
     <!-- image section  -->
     <div class="h-100 w-50 d-flex flex-column align-items-center justify-content-center main-bg">
         <img class="img-fluid" src="../../../../assets/svgs/login.svg" />
@@ -14,7 +14,7 @@
             <div class="col-12">
                 <div class="mb-3 form-control-wrapper">
                     <label for="username" class="form-label">Username</label>
-                    <input #hsn_code id="username" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                    <input id="username" type="text" class="form-control" [ngClass]="{ 'invalid': (
                         getControls['username'].touched
                         || getControls['username'].dirty
                     ) && getControls['username'].invalid }" placeholder="Enter your username" maxlength="30"

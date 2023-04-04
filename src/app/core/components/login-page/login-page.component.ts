@@ -11,28 +11,33 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
 
-  loginForm: FormGroup;
-  isLogingIn: boolean;
-  loginSub: Subscription;
-  passwordField: {
-    className: "hide" | "show";
+  // Declare variables
+  loginForm: FormGroup; // Login form group
+  isLogingIn: boolean; // Flag for whether user is logging in or not
+  loginSub: Subscription; // Subscription to login service
+  passwordField: { // Object for password field
+    className: "hide" | "show"; // String property for password field visibility
   }
 
   constructor(private _fb: FormBuilder, private _authService: AuthService, private _router: Router) {
+    // Initialize password field and login status
     this.passwordField = {
       className: "hide"
     }
     this.isLogingIn = false;
   }
 
+  // Unsubscribe from subscription when component is destroyed
   ngOnDestroy(): void {
     this.loginSub?.unsubscribe();
   }
 
+  // Initialize login form when component is initialized
   ngOnInit(): void {
     this.loginForm = this.buildLoginForm();
   }
 
+  // Build login form using FormBuilder
   buildLoginForm() {
     return this._fb.group({
       username: [{
@@ -47,22 +52,30 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     })
   }
 
+  // Get login form controls
   public get getControls() {
     return this.loginForm['controls'];
   }
 
   /**
-  * @description for password visibility
+  * @description Toggle password visibility
   */
   public togglePasswordVisibility(): void {
     this.passwordField.className = this.passwordField.className === "hide" ? "show" : "hide";
   }
 
+  /**
+  * @description Login user
+  */
   public login() {
+    // Check if login form is valid
     if (this.loginForm.valid) {
+      // Set login flag to true
       this.isLogingIn = true;
+      // Subscribe to login service and handle response
       this.loginSub = this._authService.login(this.loginForm.value).subscribe({
         next: (res: Tokens) => {
+          // Set access and refresh tokens, set logged in status to true, set login flag to false, and navigate to home page
           this._authService.setAccessToken(res.access_token);
           this._authService.setRefreshToken(res.refresh_token);
           this._authService.setLoggedInStatus(true);
@@ -70,11 +83,13 @@ export class LoginPageComponent implements OnInit, OnDestroy {
           this._router.navigate(['/'])
         },
         error: (error: any) => {
+          // Set login flag to false and log error to console
           this.isLogingIn = false;
           console.log(error)
         }
       })
     } else {
+      // Mark all fields as touched if form is not valid
       this.loginForm.markAllAsTouched();
     }
   }
