@@ -1,0 +1,11 @@
+.bs-datepicker-container {
+    padding: .5rem;
+}
+
+.bs-datepicker-head {
+    background-color: $primary !important;
+}
+
+.bs-datepicker-body table td span.selected {
+    background-color: $primary !important;
+}

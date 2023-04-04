@@ -8,7 +8,7 @@
                     [ngClass]="{'active':isActive('/master')}">Master</a>
 
                 <!-- START: MASTER MENU  -->
-                <ul class="dropdown-container">
+                <ul class="dropdown-container" *ngIf="showDropdown">
                     <!-- General -->
                     <li class="dropdown-item" [ngClass]="{'active':isActive('/master/general')}">
                         <span>General</span>

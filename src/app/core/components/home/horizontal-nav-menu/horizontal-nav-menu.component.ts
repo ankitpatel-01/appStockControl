@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class HorizontalNavMenuComponent implements OnInit, OnDestroy {
 
   logutSub: Subscription;
+  showDropdown = true;
 
   constructor(
     private _router: Router,
@@ -21,6 +22,16 @@ export class HorizontalNavMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._router.events.subscribe(event => {
+      // hide the dropdown when the route changes
+      if (event instanceof NavigationStart) {
+        this.showDropdown = false;
+      } else {
+        setTimeout(() => {
+          this.showDropdown = true;
+        }, 100);
+      }
+    });
   }
 
   /**
