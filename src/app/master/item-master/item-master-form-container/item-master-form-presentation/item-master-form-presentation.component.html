@@ -1,68 +1,165 @@
-<!-- <div class="container pt-4">
-    <h2 class="content-header-title text-center">Item Master</h2>
-
-    <div class="container row">
-        <div class="col-6">
-            <div class="row">
-                <div class="col-10">
-                    <div class="mb-3 form-control-wrapper">
-                        <label class="form-label">Item Name</label>
-                        <input type="text" class="form-control" placeholder="Enter item name">
-                        validation message 
-                        <small class="validation-text">
-                            Please enter hsn code.
-                        </small>
-                    </div>
-                </div>
-                <div class="col-10">
-                    <div class="mb-3 form-control-wrapper">
-                        <label class="form-label">Print Name</label>
-                        <input type="text" class="form-control" placeholder="Enter print name">
-                        validation message 
-                        <small class="validation-text">
-                            Please enter print name.
-                        </small>
-                    </div>
-                </div>
-                <div class="col-5">
-                    <div class="mb-3 form-control-wrapper">
-                        <label class="form-label">Unit</label>
-                        <ng-select placeholder="Select unit">
-                            <ng-option value="" disabled>Select Count Type</ng-option>
-                        </ng-select>
-                        <small class="validation-text">
-                            Please enter print name.
-                        </small>
-                    </div>
-                </div>
-                START:Bar Code No
-                <div class="col-5">
-                    <div class="mb-3 form-control-wrapper">
-                        <label class="form-label">Bar Code No</label>
-                        <input type="text" class="form-control" placeholder="Enter bar code number">
-                        validation message 
-                        <small class="validation-text">
-                            Please enter print name.
-                        </small>
-                    </div>
-                </div>
-                END:Bar Code No
-            </div>
+<section class="h-100 d-flex flex-column">
+    <div class="form-header-wrapper">
+        <div class="container">
+            <span class="form-title">{{false?'Edit':'Add'}} Item</span>
+            <span class="icon-mid icon-x fw-bold fs-4 cursor-pointer" (click)="close()"></span>
         </div>
     </div>
-
-</div> -->
-
-<div class="upperSlider">
-    <!-- START:DRAWER HEADER -->
-    <div class="upperSlider-header">
-        <span class="upperSlider-title"> HSN</span>
-        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+    <form class="flex-grow-1 container ">
+        <div class="row pt-4">
+            <div class="col-9 ">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3 form-control-wrapper">
+                            <label class="form-label">Item Name</label>
+                            <input type="text" class="form-control" placeholder="Enter item name">
+                            <small class="validation-text">
+                                Please enter hsn code.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3 form-control-wrapper">
+                            <label class="form-label">Print Name</label>
+                            <input type="text" class="form-control" placeholder="Enter print name">
+                            <small class="validation-text">
+                                Please enter print name.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-3 form-control-wrapper">
+                            <label class="form-label">Category</label>
+                            <ng-select placeholder="Select unit">
+                                <ng-option value="" disabled>Select Count Type</ng-option>
+                            </ng-select>
+                            <small class="validation-text">
+                                Please enter print name.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-3 form-control-wrapper">
+                            <label class="form-label">Unit</label>
+                            <ng-select placeholder="Select unit">
+                                <ng-option value="" disabled>Select Count Type</ng-option>
+                            </ng-select>
+                            <small class="validation-text">
+                                Please enter print name.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-3 form-control-wrapper">
+                            <label class="form-label">Group Name</label>
+                            <ng-select placeholder="Select unit">
+                                <ng-option value="" disabled>Select Count Type</ng-option>
+                            </ng-select>
+                            <small class="validation-text">
+                                Please enter print name.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3 form-control-wrapper">
+                            <label class="form-label">Use For</label>
+                            <input type="text" class="form-control" placeholder="Enter item name">
+                            <small class="validation-text">
+                                Please enter hsn code.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <!-- Empty -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <app-file-upload (filesSelected)="onFilesSelected($event)"></app-file-upload>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <fieldset>
+                <legend>IDENTIFICATION</legend>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="mb-3 form-control-wrapper">
+                                <label class="form-label">Bar Code No</label>
+                                <input type="text" class="form-control" placeholder="Enter item name">
+                                <small class="validation-text">
+                                    Please enter hsn code.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3 form-control-wrapper">
+                                <label class="form-label">Catalog No</label>
+                                <input type="text" class="form-control" placeholder="Enter print name">
+                                <small class="validation-text">
+                                    Please enter print name.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3 form-control-wrapper">
+                                <label class="form-label">Catalog No</label>
+                                <input type="text" class="form-control" placeholder="Enter print name">
+                                <small class="validation-text">
+                                    Please enter print name.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3 form-control-wrapper">
+                                <label class="form-label">Unit</label>
+                                <ng-select placeholder="Select unit">
+                                    <ng-option value="" disabled>Select Count Type</ng-option>
+                                </ng-select>
+                                <small class="validation-text">
+                                    Please enter print name.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3 form-control-wrapper">
+                                <label class="form-label">Group Name</label>
+                                <ng-select placeholder="Select unit">
+                                    <ng-option value="" disabled>Select Count Type</ng-option>
+                                </ng-select>
+                                <small class="validation-text">
+                                    Please enter print name.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3 form-control-wrapper">
+                                <label class="form-label">Use For</label>
+                                <input type="text" class="form-control" placeholder="Enter item name">
+                                <small class="validation-text">
+                                    Please enter hsn code.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <!-- Empty -->
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="col-3">
+            </div>
+        </div>
+    </form>
+    <div>
+        <!-- START:DRAWER FOOTER -->
+        <div class="form-footer-wrapper">
+            <div class="container">
+                <button type="button" class="btn btn-secondary px-4" (click)="close()">Cancel</button>
+                <button #saveBtn type="button" class="btn btn-primary btn px-4 ms-4">Save</button>
+            </div>
+        </div>
+        <!-- END:DRAWER FOOTER -->
     </div>
-    <!-- END:DRAWER HEADER -->
-    <!-- START:DRAWER BODY -->
-    <div class="upperSlider-main">
-
-    </div>
-    <!-- END:DRAWER BODY -->
-</div>
+</section>

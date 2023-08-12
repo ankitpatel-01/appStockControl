@@ -6,7 +6,7 @@ export class EventService {
 
   snackbarConfig: Partial<IndividualConfig> = {
     closeButton: true,
-    timeOut: 1200,
+    timeOut: 3000,
     easing: 'ease-in',
     easeTime: 150,
     newestOnTop: true,
@@ -18,7 +18,7 @@ export class EventService {
 
   toastrConfig: Partial<IndividualConfig> = {
     closeButton: true,
-    timeOut: 1200,
+    timeOut: 3000,
     easing: 'ease-in',
     easeTime: 150,
     newestOnTop: true,

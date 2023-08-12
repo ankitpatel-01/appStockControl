@@ -1,0 +1,47 @@
+<div class="drop-zone" (drop)="onDrop($event)" (dragover)="onDragOver($event)" [hidden]="files.length !== 0">
+    <input type="file" (change)="onFileSelected($event)" #fileInput hidden />
+    <div class="upload-area">
+        <p><span class="fs-2 icon-upload-cloud"></span></p>
+        <p>Drag and drop images here</p>
+        <p class="small">Or</p>
+        <button class="btn btn-outline-success" (click)="fileInput.click()">Browse Files</button>
+    </div>
+</div>
+<div *ngIf="files.length !== 0" class="preview-area">
+    <div class="main-preview  p-2 border border-1 rounded d-flex flex-column ">
+        <div class="d-flex justify-content-center align-items-center position-relative main-img-wrapper">
+            <img [src]="getPreviewImageUrl(mainPreview)" alt="Main Image Preview" *ngIf="mainPreview" />
+            <div (click)="viewImageModel=true"
+                class="overlay rounded d-flex justify-content-center align-items-center cursor-pointer">
+                <span class="icon-zoom-in text-white fs-1"></span>
+            </div>
+        </div>
+        <div>
+            <span *ngIf="mainPreview" class="icon-delete_outline cursor-pointer fs-4 float-end"
+                (click)="removeFile()"></span>
+        </div>
+    </div>
+    <div class="small-previews pt-2">
+        <ng-container *ngFor="let file of files; let i = index">
+            <div class="preview-item p-2 border border-1 rounded" (click)="changeMainPreview(i)">
+                <img [src]="getPreviewImageUrl(file)" alt="Image Preview" />
+            </div>
+        </ng-container>
+        <button type="button" class="btn btn-outline-secondary p-1" (click)="openFileInput()"><span
+                class="icon-add text-black text-center fs-2"></span></button>
+    </div>
+</div>
+
+<div class="image-viewer" *ngIf="viewImageModel">
+    <div class="image-modal" *ngIf="mainPreview">
+        <span class="icon-navigate_before text-white rounded-circle bg-black fs-1 p-2 prevImg-btn cursor-pointer"
+            *ngIf="!isFirst(mainPreview)" (click)="previousImg()"></span>
+        <div>
+            <img class="img-preview img-fluid" [src]="getPreviewImageUrl(mainPreview)" alt="Main Image Preview" />
+        </div>
+        <span class="icon-navigate_next text-white rounded-circle bg-black fs-1 p-2 nextImg-btn cursor-pointer"
+            *ngIf="!isLast(mainPreview)" (click)="nextImg()"></span>
+        <span class="close-icon icon-mid icon-x fw-bold fs-4 cursor-pointer bg-black text-white rounded-circle p-2"
+            (click)="viewImageModel=false"></span>
+    </div>
+</div>

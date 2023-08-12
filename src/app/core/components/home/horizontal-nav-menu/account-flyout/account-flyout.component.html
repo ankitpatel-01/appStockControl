@@ -1,0 +1,40 @@
+<section class="account-flyout d-flex flex-column overflow-hidden">
+    <div class="user-pro-section">
+        <span class="close-details icon-mid icon-x text-muted cursor-pointer" (click)="close()"></span>
+        <div class="user-pro mt-3 mb-2">
+            <app-avatar [height]="75" [width]="75"
+                [name]="(userProfile.first_name + ' ' +userProfile.last_name)"></app-avatar>
+            <div class="mt-3 fs-5">
+                {{userProfile.first_name + ' ' +userProfile.last_name}}
+            </div>
+            <small class="text-muted ">
+                {{selectedBranch.name}}
+            </small>
+            <p class="mt-2">
+                <small class="text-primary cursor-pointer">My Account </small>
+                <span class="text-muted" style="padding:0 10px;">|</span>
+                <small class="text-danger cursor-pointer" (click)="logout()"> Sign Out </small>
+            </p>
+        </div>
+    </div>
+    <div class="border-bottom border-1 text-muted d-flex align-items-center justify-content-between px-4 py-0"><span
+            class="text-draft py-3">My
+            Branch/Locations</span>
+        <div class="cursor-pointer d-flex align-items-center text-primary">
+            <span class="icon icon-settings1 me-2"></span>
+            <span>Manage</span>
+        </div>
+    </div>
+    <div class="flex-grow-1 overflow-auto">
+        <div class="overflow-auto">
+            <ng-container *ngFor="let branch of companyBranchList">
+                <div class="p-3 border-bottom border-1 d-flex align-items-center justify-content-start">
+                    <div class="p-3 border border-1 rounded-4 d-flex align-items-center justify-content-center me-3">
+                        <span class="icon-office fs-4 text-muted"></span>
+                    </div>
+                    <span>{{branch.name}} </span>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</section>

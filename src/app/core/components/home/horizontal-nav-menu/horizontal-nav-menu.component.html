@@ -1,6 +1,6 @@
 <!-- START: Header  -->
-<div class="border-bottom bg-white">
-    <div class="container d-flex align-items-center justify-content-between">
+<div class="border-bottom bg-white header-height">
+    <div class="container d-flex align-items-center justify-content-between h-100">
         <ul class="nav">
             <!-- START: Master  -->
             <li class="nav-item dropdown">
@@ -76,10 +76,17 @@
         </ul>
 
         <!-- START:LOGOUT BUTTON -->
-        <button class="btn btn-primary" type="button" (click)="logout()">
+        <!-- <button class="btn btn-primary" type="button" (click)="logout()">
             Logout
-        </button>
+        </button> -->
         <!-- START:LOGOUT BUTTON -->
+        <div class="d-flex align-items-center" *ngIf="selectedBranch">
+            <span (click)="accountFlyoutClicked()"
+                class="d-flex align-items-center me-3 cursor-pointer">{{selectedBranch.name}}<span
+                    class="icon icon-chevron-down ms-2"></span></span>
+            <app-avatar class="cursor-pointer" (click)="accountFlyoutClicked()"
+                [name]="(userProfile.first_name + ' ' +userProfile.last_name)"></app-avatar>
+        </div>
 
     </div>
 </div>

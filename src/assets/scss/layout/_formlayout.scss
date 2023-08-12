@@ -1,0 +1,28 @@
+.form-header-wrapper {
+    border-bottom: $border-width $border-style-solid $border-color;
+    background-color: $white;
+
+    .container {
+        flex-shrink: 0;
+        height: $drawer-header-height;
+        padding: $drawer-header-padding;
+        @include flex($align-item: center, $justify-content: space-between);
+
+        .form-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+    }
+}
+
+.form-footer-wrapper {
+    border-top: $border-width $border-style-solid $border-color;
+    background-color: $white;
+
+    .container {
+        flex-shrink: 0;
+        padding: $drawer-footer-padding;
+        height: $drawer-footer-height;
+        @include flex($align-item: center, $justify-content: flex-end);
+    }
+}

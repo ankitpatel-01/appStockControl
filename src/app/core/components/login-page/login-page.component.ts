@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Tokens } from '../../models/token.model';
 import { AuthService } from '../../services/auth.service';
+import { CompanyBranchList } from '../../models/company-branch.model';
+import { UserProfile } from '../../models/user-profile.model';
 
 @Component({
   selector: 'app-login-page',
@@ -75,12 +77,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       // Subscribe to login service and handle response
       this.loginSub = this._authService.login(this.loginForm.value).subscribe({
         next: (res: Tokens) => {
-          // Set access and refresh tokens, set logged in status to true, set login flag to false, and navigate to home page
-          this._authService.setAccessToken(res.access_token);
-          this._authService.setRefreshToken(res.refresh_token);
-          this._authService.setLoggedInStatus(true);
-          this.isLogingIn = false;
-          this._router.navigate(['/'])
+          this.getUserProfile(res)
+          this.getCompanyBranchList(res);
         },
         error: (error: any) => {
           // Set login flag to false and log error to console
@@ -92,6 +90,48 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       // Mark all fields as touched if form is not valid
       this.loginForm.markAllAsTouched();
     }
+  }
+
+
+  getCompanyBranchList(tokens: Tokens) {
+    this._authService.getCompanyBranchList(tokens.access_token).subscribe({
+      next: (res: CompanyBranchList[]) => {
+        if (res && res.length > 0) {
+          this._authService.setBranchListToStorage(res)
+        }
+        if (res.length == 1) {
+          this.setUserLoggedIn(tokens, res[0]?.id)
+        } else {
+
+        }
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
+
+  getUserProfile(tokens: Tokens) {
+    this._authService.getUserProfile(tokens.access_token).subscribe({
+      next: (res: UserProfile) => {
+        if (res) {
+          this._authService.setUserProfileToStorage(res)
+        }
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
+
+  setUserLoggedIn(tokens: Tokens, loggedInBranchId: number) {
+    // Set access and refresh tokens, set logged in status to true, set login flag to false, and navigate to home page
+    this._authService.setAccessToken(tokens.access_token);
+    this._authService.setRefreshToken(tokens.refresh_token);
+    this._authService.setLoggedInBranchId(loggedInBranchId);
+    this._authService.setLoggedInStatus(true);
+    this.isLogingIn = false;
+    this._router.navigate(['/'])
   }
 
 

@@ -8,6 +8,7 @@ import { AlertDialogComponent } from '../components/alert-dialog/alert-dialog.co
 import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
 import { AlertDialogData } from '../models/alert-dialog.model';
 import { ConfirmDialogData } from '../models/confirm-dialog-data.model';
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class UtitityService {
@@ -18,7 +19,8 @@ export class UtitityService {
   private _resetSearchControl: BehaviorSubject<boolean>;
   public resetSearchControl$: Observable<boolean>;
 
-  constructor(private dialog: Dialog) {
+  constructor(private _dialog: Dialog,
+    private _datePipe: DatePipe) {
     this._resetSearchControl = new BehaviorSubject<boolean>(true);
     this.resetSearchControl$ = this._resetSearchControl.asObservable();
   }
@@ -33,7 +35,7 @@ export class UtitityService {
    * follow confirmDialogClose() method
    */
   public openConfirmDialog(options: ConfirmDialogData) {
-    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+    this.confirmDialogRef = this._dialog.open(ConfirmDialogComponent, {
       data: {
         title: options.title,
         message: options.message,
@@ -66,7 +68,7 @@ export class UtitityService {
       message,
     }
 
-    this.alertDialogRef = this.dialog.open(AlertDialogComponent, {
+    this.alertDialogRef = this._dialog.open(AlertDialogComponent, {
       data,
       panelClass: 'dialog-popIn'
     });
@@ -83,4 +85,28 @@ export class UtitityService {
       return res;
     }));
   }
+
+  /**
+   * convert date to dd/MM/yyyy date string formate
+   * @param date : Date
+   * @returns date string in dd/MM/yyyy or empty string if pass in valid date
+   */
+  getFormatedDate(date: Date): string {
+    return this._datePipe.transform(date, 'dd/MM/yyyy') ?? '';
+  }
+
+  /**
+   * convert date string dd/MM/yyyy to date object
+   * @param dateStr : date string
+   * @returns Date object
+   */
+  convertToDate(dateStr: string): Date {
+    const dateParts = dateStr.split('/');
+    const year = +dateParts[2];
+    const month = +dateParts[1] - 1;
+    const day = +dateParts[0];
+    return new Date(year, month, day);
+  }
+
+
 }

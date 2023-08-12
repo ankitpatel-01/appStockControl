@@ -1,13 +1,13 @@
 <div class="container-fluid d-flex align-items-center h-100 overflow-y-auto">
     <!-- image section  -->
     <div class="h-100 w-50 d-flex flex-column align-items-center justify-content-center main-bg">
-        <img class="img-fluid" src="../../../../assets/svgs/login.svg" />
+        <img class="img-fluid" src="../../../../assets/svgs/login.svg" alt="login-banner" />
     </div>
     <!-- login form  -->
     <div class="h-100 w-50 d-flex flex-column align-items-center justify-content-center">
         <form [formGroup]="loginForm" class="row justify-content-center w-75" autocomplete="off">
             <div class="col-12">
-                <p class="fs-1 fw-semibold text-start mb-0">Welcome back</p>
+                <p class="fs-2 fw-semibold text-start mb-0">Welcome back!</p>
                 <p class="fs-6 text-start">welcome back! Please enter your credentials.</p>
             </div>
             <!-- START: Username  -->
@@ -31,15 +31,14 @@
                 <div class="mb-3 form-control-wrapper">
                     <label for="password" class="form-label">Password</label>
                     <div class="password-input-wrapper">
-                        <input #password type="{{ passwordField.className == 'hide' ? 'password' : 'text' }}"
-                            id="password" formControlName="password" placeholder="Enter your password"
-                            class="form-control" [ngClass]="{ 'invalid': (
+                        <input #password [type]="passwordField.className == 'hide' ? 'password' : 'text'" id="password"
+                            formControlName="password" placeholder="Enter your password" class="form-control" [ngClass]="{ 'invalid': (
                                 getControls['password'].touched
                                 || getControls['password'].dirty
                             ) && getControls['password'].invalid }" maxlength="8" (keyup.enter)="loginbtn.focus()">
                         <span #eyeIcon *ngIf="getControls['password'].valid" id="eyeIcon" class="password-icon"
-                            ngClass="{{'icon-eye-' + passwordField.className}}" (mousedown)="togglePasswordVisibility()"
-                            (mouseup)="togglePasswordVisibility()"></span>
+                            [ngClass]="passwordField.className == 'hide' ? 'icon icon-remove_red_eye' : 'icon icon-visibility_off'"
+                            (mousedown)="togglePasswordVisibility()" (mouseup)="togglePasswordVisibility()"></span>
                         <!-- validation message  -->
                         <small class="validation-text">
                             Please enter your password.

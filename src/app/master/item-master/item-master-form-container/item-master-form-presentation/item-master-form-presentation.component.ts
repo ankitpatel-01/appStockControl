@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-master-form-presentation',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class ItemMasterFormPresentationComponent implements OnInit {
 
   @Output() cancel: EventEmitter<boolean>
-  constructor() {
+  constructor(private _router: Router) {
     this.cancel = new EventEmitter<boolean>();
   }
 
@@ -15,7 +16,12 @@ export class ItemMasterFormPresentationComponent implements OnInit {
   }
 
   close() {
-    this.cancel.emit(true)
+    this._router.navigate(['/master/item-master'])
+  }
+
+  onFilesSelected(files: File[]) {
+    // Do something with the selected files
+    console.log(files);
   }
 
 }

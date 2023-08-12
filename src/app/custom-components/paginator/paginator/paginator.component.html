@@ -2,7 +2,7 @@
     <ul class="pagination">
         <li class="page-item" [ngClass]="{'disabled':currentPage <= 1}">
             <!-- <a class="page-link ">Previous</a> -->
-            <a class="page-link cursor-pointer" aria-label="Previous" (click)="previousPage()">
+            <a class="page-link cursor-pointer" (click)="previousPage()">
                 <span aria-hidden="true">&lt; Prev </span>
             </a>
         </li>
@@ -12,7 +12,7 @@
         </li>
         <li class="page-item" [ngClass]="{'disabled':currentPage >= totalPages}">
             <!-- <a class="page-link cursor-pointer" (click)="nextPage()">Next</a> -->
-            <a class="page-link" aria-label="Next" (click)="nextPage()">
+            <a class="page-link" (click)="nextPage()">
                 <span aria-hidden="true">Next &gt;</span>
             </a>
         </li>

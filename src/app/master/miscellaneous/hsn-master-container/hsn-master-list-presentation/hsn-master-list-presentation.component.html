@@ -3,11 +3,11 @@
     <div class="d-flex align-items-center justify-content-end">
         <!-- search control  -->
         <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
-            id="searchQuery" (input)="onSearchQueryInput($event)">
+            id="searchHsn" (input)="onSearchQueryInput($event)">
         <!-- Add button  -->
         <button type="button" class="btn btn-primary" (click)="openHsnForm()">
             <div class="d-flex align-items-center">
-                <span class="icon-plus-solid pe-2"></span>
+                <span class="icon icon-plus pe-2"></span>
                 <span class="ps-1">Add New</span>
             </div>
         </button>
@@ -105,7 +105,7 @@
                     </td>
                     <td class="action-col">
                         <span class="icon-trash cursor-pointer" (click)="removeHsnById(hsn)"></span>
-                        <span class="icon-pen ms-3 cursor-pointer" (click)="openHsnForm(hsn)"></span>
+                        <span class="icon-edit ms-3 cursor-pointer" (click)="openHsnForm(hsn)"></span>
                     </td>
                 </tr>
             </tbody>
@@ -129,7 +129,7 @@
         <small class="text-muted">Click the "Add New" button.</small>
         <button type="button" class="btn btn-primary mt-3" (click)="openHsnForm()">
             <div class="d-flex align-items-center">
-                <span class="icon-plus-solid pe-2"></span>
+                <span class="icon icon-plus pe-2"></span>
                 <span class="ps-1">Add New</span>
             </div>
         </button>

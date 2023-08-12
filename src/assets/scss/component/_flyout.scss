@@ -1,0 +1,53 @@
+.flyout-overlay {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+}
+
+.flyout-wrapper {
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    right: -300px;
+    background-color: #fff;
+    box-shadow: -2px 5px 10px 1px rgba(0, 0, 0, .17);
+    transition: transform 0.02s ease-in-out;
+    z-index: 10002;
+    overflow: hidden;
+
+    &.open {
+        transform: translateX(-300px);
+    }
+}
+
+.flyout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+//Acount Flyout
+.account-flyout {
+
+    width: 400px;
+    height: 100%;
+
+    .user-pro-section {
+        .close-details {
+            position: absolute;
+            right: 15px;
+            top: 12px;
+        }
+
+        padding: 10px 20px;
+        background-color: #f7f7fe !important;
+
+
+        .user-pro {
+            text-align: center;
+        }
+    }
+}

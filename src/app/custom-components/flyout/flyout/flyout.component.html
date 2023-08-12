@@ -1,0 +1,6 @@
+<div class="flyout-overlay" *ngIf="showOverlay" (click)="closeFlyout()"></div>
+<div class="flyout-wrapper" [ngClass]="{'open': isOpen}">
+    <div class="flyout">
+        <ng-container #flyoutContainer></ng-container>
+    </div>
+</div>

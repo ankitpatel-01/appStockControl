@@ -1,0 +1,46 @@
+.resize-none {
+    resize: none;
+}
+
+$custom-sizing: (
+    5: 5%,
+    10: 10%,
+    15: 15%,
+    20: 20%,
+    25: 25%,
+    30: 30%,
+    35: 35%,
+    40: 40%,
+    45: 45%,
+    50: 50%,
+    55: 55%,
+    60: 60%,
+    65: 65%,
+    70: 70%,
+    75: 75%,
+    80: 80%,
+    85: 85%,
+    90: 90%,
+    95: 95%,
+    100: 100%,
+    auto: auto
+);
+
+@each $key,
+$value in $custom-sizing {
+    .w-#{$key} {
+        width: $value;
+    }
+
+    .h-#{$key} {
+        width: $value;
+    }
+}
+
+.icon {
+    font-size: 1.2rem !important;
+}
+
+.icon-mid {
+    font-size: 1.625rem !important;
+}
