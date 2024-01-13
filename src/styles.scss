@@ -7,6 +7,16 @@
 // Bootstrap Base 
 @import './assets/scss/vendor/bootstrap-base';
 
+//ng-select
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+//ngx-toastr
+// regular style toast
+@import 'ngx-toastr/toastr';
+
+//bs-datepicker
+@import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss";
+
 // Bootstrap Component 
 @import './assets/scss/vendor/bootstrap-components';
 
@@ -27,10 +37,3 @@
 
 //icons
 @import './assets/icons/style.css';
-
-//ng-select
-@import "~@ng-select/ng-select/themes/default.theme.css";
-
-//ngx-toastr
-// regular style toast
-@import 'ngx-toastr/toastr';

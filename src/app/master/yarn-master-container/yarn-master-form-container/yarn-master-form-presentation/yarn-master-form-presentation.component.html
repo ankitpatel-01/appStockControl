@@ -1,7 +1,7 @@
 <div class="drawer drawer-w800">
     <div class="drawer-header">
         <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Yarn</span>
-        <span class="icon-xmark-solid fs-4 cursor-pointer" (click)="close()"></span>
+        <span class="icon-mid icon-x fw-bold fs-4 cursor-pointer" (click)="close()"></span>
     </div>
 
     <div class="drawer-main">
@@ -172,7 +172,7 @@
                 <!-- yarn description -->
                 <div class="col-6">
                     <div class="mb-3 form-control-wrapper">
-                        <label for="yarn_desc" class="form-label">Yarn description</label>
+                        <label for="yarn_desc" class="form-label">Yarn Description</label>
                         <input #yarn_count type="text" class="form-control" [ngClass]="{ 'invalid': (
                             getControls['yarn_desc'].touched
                             || getControls['yarn_desc'].dirty
@@ -237,7 +237,7 @@
 
                 <div class="col-6">
                     <div class="mb-3 form-control-wrapper">
-                        <label for="yarn_category" class="form-label">Yarn category</label>
+                        <label for="yarn_category" class="form-label">Yarn Category</label>
                         <div *ngIf="yarnCategoryLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
                             role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -265,7 +265,7 @@
 
                 <div class="col-6">
                     <div class="mb-3 form-control-wrapper">
-                        <label for="yarn_group" class="form-label">Yarn group</label>
+                        <label for="yarn_group" class="form-label">Yarn Group</label>
                         <div *ngIf="yarnGroupLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
                             role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -289,7 +289,7 @@
 
                 <div class="col-6">
                     <div class="mb-3 form-control-wrapper">
-                        <label for="hsn_code" class="form-label">HSN code</label>
+                        <label for="hsn_code" class="form-label">HSN Code</label>
                         <div *ngIf="yarnHsnLoading" class="ms-2 spinner-border text-primary spinner-border-sm"
                             role="status">
                             <span class="visually-hidden">Loading...</span>

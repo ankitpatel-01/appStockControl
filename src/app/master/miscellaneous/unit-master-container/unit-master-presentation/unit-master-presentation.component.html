@@ -1,0 +1,114 @@
+<div class="py-4 h-100 d-flex flex-column">
+    <!-- START:ACTION ROW  -->
+    <div class="d-flex align-items-center justify-content-end">
+        <!-- search control  -->
+        <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
+            id="searchUnit" (input)="onSearchQueryInput($event)">
+        <!-- Add button  -->
+        <button type="button" class="btn btn-primary" (click)="openUnitForm()">
+            <div class="d-flex align-items-center">
+                <span class="icon icon-plus pe-2"></span>
+                <span class="ps-1">Add New</span>
+            </div>
+        </button>
+    </div>
+    <!-- END:ACTION ROW  -->
+    <!-- START: UNIT MASTER LIST LOADER TABLE  -->
+    <div *ngIf="isUnitLoading" class="mt-3 table-responsive" aria-hidden="true">
+        <table class="table bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="num-col">#</th>
+                    <th scope="col">unit</th>
+                    <th scope="col">unit description</th>
+                    <th scope="col" class="action-col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let yarnType of [1,2,3,4,5];let i = index;" class="placeholder-glow">
+                    <td scope="row" class="num-col">
+                        <span class="placeholder">
+                            #
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some unit name
+                        </span>
+                    </td>
+                    <td>
+                        <span class="placeholder">
+                            some unit description
+                        </span>
+                    </td>
+                    <td class="action-col">
+                        <span class="placeholder">
+                            action
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- END: UNIT MASTER LIST LOADER TABLE  -->
+    <!-- START: UNIT MASTER LIST TABLE  -->
+    <div *ngIf="unitList.length > 0 && !isUnitLoading" class="mt-3 table-responsive">
+        <table class="table bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="num-col">#</th>
+                    <th scope="col">unit</th>
+                    <th scope="col">unit description</th>
+                    <th scope="col" class="action-col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let unit of unitList;let i = index;trackBy: UnitTrackBy">
+                    <td scope="row" class="num-col">
+                        <span>
+                            {{i + 1 + (paginationMeta.per_page * (paginationMeta.current_page-1))}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{unit?.unit_name?unit.unit_name:'N/A'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{unit?.unit_desc?unit.unit_desc:'N/A'}}
+                        </span>
+                    </td>
+                    <td class="action-col">
+                        <span class="icon-trash cursor-pointer" (click)="removeUnitById(unit)"></span>
+                        <span class="icon-edit ms-3 cursor-pointer" (click)="openUnitForm(unit)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="paginationMeta.current_page" class="d-flex align-items-center justify-content-end">
+            <app-paginator [totalPages]="paginationMeta.total_pages" [currentPage]="paginationMeta.current_page"
+                [ellipses]="false" (pageChanged)="gotoPage($event)">
+            </app-paginator>
+        </div>
+    </div>
+    <!-- END: UNIT MASTER LIST TABLE  -->
+    <!-- START: NO DATA SCREEN  -->
+    <div *ngIf="unitList.length === 0 && !isUnitLoading"
+        class="mt-3 flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+        <figure>
+            <img class="no-data pe-3" src="../../../../assets/svgs/no_data.svg" alt="no-data-found" />
+        </figure>
+        <p class="fs-3">No Data Found</p>
+        <small class="text-muted">Look's like you haven't added any data. no worries.</small>
+        <small class="text-muted">Click the "Add New" button.</small>
+        <button type="button" class="btn btn-primary mt-3" (click)="openUnitForm()">
+            <div class="d-flex align-items-center">
+                <span class="icon icon-plus pe-2"></span>
+                <span class="ps-1">Add New</span>
+            </div>
+        </button>
+    </div>
+    <!-- END: NO DATA SCREEN  -->
+</div>

@@ -18,6 +18,11 @@ const routes: Routes = [
       {
         path: "master",
         loadChildren: () => import("./master/master.module").then(m => m.MasterModule),
+      },
+      {
+        path: 'setting',
+        loadChildren: () => import("./settings/settings.module").then(m => m.SettingsModule),
+        canActivate: [AuthGuard],
       }
     ]
   },
@@ -25,7 +30,13 @@ const routes: Routes = [
     path: 'login',
     component: LoginPageComponent,
     canActivate: [AuthGuard],
-  }
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import("./sign-up/sign-up.module").then(m => m.SignUpModule),
+    canActivate: [AuthGuard],
+  },
+
 ];
 
 @NgModule({

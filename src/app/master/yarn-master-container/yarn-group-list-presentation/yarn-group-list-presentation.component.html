@@ -2,12 +2,12 @@
     <!-- START:Action row -->
     <div class="d-flex align-items-center justify-content-end">
         <!-- Search  -->
-        <input #searchQuery class="form-control search-control w-auto me-3" type="text" placeholder="Search"
-            autocomplete="off" id="searchQuery" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
+        <input #searchYarnGroup class="form-control search-control w-auto me-3" type="text" placeholder="Search"
+            autocomplete="off" id="searchYarnGroup" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
         <!-- Add button -->
         <button type="button" class="btn btn-primary" (click)="openYarnGroupForm()">
             <div class="d-flex align-items-center">
-                <span class="icon-plus-solid pe-2"></span>
+                <span class="icon icon-plus pe-2"></span>
                 <span class="ps-1">Add New</span>
             </div>
         </button>
@@ -70,7 +70,7 @@
                     </td>
                     <td class="action-col">
                         <span class="icon-trash cursor-pointer" (click)="removeYarnGroupById(yarnGroup)"></span>
-                        <span class="icon-pen ms-3 cursor-pointer" (click)="openYarnGroupForm(yarnGroup)"></span>
+                        <span class="icon-edit ms-3 cursor-pointer" (click)="openYarnGroupForm(yarnGroup)"></span>
                     </td>
                 </tr>
             </tbody>
@@ -91,14 +91,14 @@
             <img class="no-data pe-3" src="../../../../assets/svgs/no_data.svg" alt="no-data-found" />
         </figure>
         <p class="fs-3">No Result Found</p>
-        <!-- <ng-container *ngIf="!searchQuery.value"> -->
+        <!-- <ng-container *ngIf="!searchYarnGroup.value"> -->
         <small class="text-muted">Look's like you haven't added any data. no worries.</small>
         <small class="text-muted">Click the "Add New" button.</small>
         <!-- </ng-container> -->
         <!-- Add button -->
         <button type="button" class="btn btn-primary mt-3" (click)="openYarnGroupForm()">
             <div class="d-flex align-items-center">
-                <span class="icon-plus-solid pe-2"></span>
+                <span class="icon icon-plus pe-2"></span>
                 <span class="ps-1">Add New</span>
             </div>
         </button>

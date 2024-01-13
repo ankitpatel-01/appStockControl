@@ -10,15 +10,20 @@ import { AuthService } from './core/services/auth.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'appStockControl';
 
+  private refreshTokenTimeout?: NodeJS.Timeout;
+
+
   constructor(private _router: Router, private _authService: AuthService) {
     window.addEventListener('storage', (event) => {
       if (event.storageArea === localStorage && event.key === null) {
         // Local storage has been cleared, navigate to the login page
         this._router.navigate(['/login']);
       }
+      if (event.storageArea === sessionStorage && event.key === null) {
+        // session storage has been cleared, navigate to the login page
+        this._router.navigate(['/login']);
+      }
     });
-  }
-  ngOnDestroy(): void {
   }
   ngOnInit(): void {
     this._authService.loggedIn$.subscribe((loggedIn: boolean) => {
@@ -29,6 +34,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.stopRefreshTokenTimer();
       }
     })
+  }
+
+  ngOnDestroy(): void {
   }
 
   refreshTokens() {
@@ -43,8 +51,6 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     })
   }
-
-  private refreshTokenTimeout?: NodeJS.Timeout;
 
   private startRefreshTokenTimer() {
     const tokenExpirationDate = this._authService.getTokenExpirationDate(this._authService.getAccessToken());

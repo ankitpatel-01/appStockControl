@@ -1,0 +1,52 @@
+<div class="drawer drawer-w600">
+    <!-- START:DRAWER HEADER -->
+    <div class="drawer-header">
+        <span class="drawer-title">{{isEditMode?'Edit':'Add'}} Unit</span>
+        <span class="icon-mid icon-x fw-bold fs-4 cursor-pointer" (click)="close()"></span>
+    </div>
+    <!-- END:DRAWER HEADER -->
+    <!-- START:DRAWER BODY -->
+    <div class="drawer-main">
+        <form class="row" [formGroup]="unitForm" autocomplete="off">
+            <!--START: unit name -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="unit_name" class="form-label">Unit Name</label>
+                    <input #unit_name id="unit_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['unit_name'].touched
+                        || getControls['unit_name'].dirty
+                    ) && getControls['unit_name'].invalid }" placeholder="Enter unit name" formControlName="unit_name"
+                        toUpperCase (keyup.enter)="unit_desc.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter location name.
+                    </small>
+                </div>
+            </div>
+            <!--END: unit name -->
+            <!--START: unit description -->
+            <div class="col-12">
+                <div class="mb-3 form-control-wrapper">
+                    <label for="unit_desc" class="form-label">Unit Description</label>
+                    <input #unit_desc id="unit_desc" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                        getControls['unit_desc'].touched
+                        || getControls['unit_desc'].dirty
+                    ) && getControls['unit_desc'].invalid }" placeholder="Enter unit description"
+                        formControlName="unit_desc" toUpperCase (keyup.enter)="saveBtn.focus()">
+                    <!-- validation message  -->
+                    <small class="validation-text">
+                        Please enter unit description.
+                    </small>
+                </div>
+            </div>
+            <!--END: unit description -->
+        </form>
+    </div>
+    <!-- END:DRAWER BODY -->
+    <!-- START:DRAWER FOOTER -->
+    <div class="drawer-footer">
+        <span class="fs-6 cursor-pointer" (click)="close()">Cancel</span>
+        <button #saveBtn type="button" class="btn btn-primary btn px-4" (click)="saveClick()">Save</button>
+    </div>
+    <!-- END:DRAWER FOOTER -->
+</div>

@@ -1,0 +1,30 @@
+<div class="pt-4 container">
+    <h2 class="content-header-title">Account Settings</h2>
+    <!-- <app-tab-group [verticalLayout]="false" (onTabChange)="onTabChange($event)">
+        <app-tab tabTitle="Profile">
+            <div class="mt-3">
+                <app-tab-group [verticalLayout]="true" (onTabChange)="onTabChange($event)">
+                    <app-tab tabTitle="Personal Profile">
+
+                    </app-tab>
+                    <app-tab tabTitle="Orgnation Profile">
+
+                    </app-tab>
+                </app-tab-group>
+            </div>
+        </app-tab>
+
+    </app-tab-group> -->
+
+    <div>
+        <tabset>
+            <tab heading="Basic title" id="tab1">
+                <app-test1></app-test1>
+            </tab>
+            <tab heading="Basic Title 1">
+                <app-test2></app-test2>
+            </tab>
+            <tab heading="Basic Title 2">Basic content 2</tab>
+        </tabset>
+    </div>
+</div>

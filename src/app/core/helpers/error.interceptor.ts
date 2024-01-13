@@ -1,19 +1,14 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
-} from '@angular/common/http';
-import { Observable } from 'rxjs/internal/Observable';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { throwError } from 'rxjs/internal/observable/throwError';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { EventService } from 'src/app/shared/services/event.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor() { }
+  constructor(private _eventService: EventService) {
+  }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -25,24 +20,32 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else {
           // server-side error
           switch (error.status) {
+            case 0:
+              this._eventService.showErrorToastr("Server is not available.", "Server Unavailable");
+              break;
             case 400:
-              errorMessage = `Bad Request: ${error.message}`;
+              this._eventService.showErrorToastr(error.error.message, "Bad Request:");
+              errorMessage = `Bad Request: ${error.error.message}`;
               break;
             case 401:
-              errorMessage = `Unauthorized: ${error.message}`;
+              this._eventService.showErrorToastr(error.error.message, "Unauthorized:",);
+              errorMessage = `Unauthorized: ${error.error.message}`;
               break;
             case 403:
-              errorMessage = `Forbidden: ${error.message}`;
+              this._eventService.showErrorToastr(error.error.message, "Forbidden");
+              errorMessage = `Forbidden: ${error.error.message}`;
               break;
             case 404:
-              errorMessage = `Not Found: ${error.message}`;
+              this._eventService.showErrorToastr(error.error.message, "Not Found");
+              errorMessage = `Not Found: ${error.error.message}`;
               break;
             default:
-              errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-              break;
+              this._eventService.showErrorToastr(error.error.message, `Error Code:${error.status}`);
+              errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
+              return throwError(() => error);
           }
         }
-        return throwError(errorMessage);
+        return throwError(() => errorMessage);
       })
     );
   }

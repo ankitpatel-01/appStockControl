@@ -31,9 +31,41 @@ export class DrawerService {
     return overlayRef;
   }
 
+  createUpperSilder(): OverlayRef {
+    let config = new OverlayConfig({
+      hasBackdrop: true,
+      height: '100%',
+      positionStrategy: this._overlay.position().global().centerHorizontally().top(),
+      panelClass: 'drawer-slideDown'
+    });
+
+    const overlayRef = this._overlay.create(config);
+
+    overlayRef.backdropClick().subscribe({
+
+      next: () => {
+        overlayRef.overlayElement.classList.remove('drawer-slideDown')
+        overlayRef.overlayElement.classList.add('drawer-slideUp');
+        setTimeout(() => {
+          overlayRef.detach()
+        }, 150)
+      }
+    });
+
+    return overlayRef;
+  }
+
   closeRightDrawer(overlayRef: OverlayRef) {
     overlayRef.overlayElement.classList.remove('drawer-slideIn')
     overlayRef.overlayElement.classList.add('drawer-slideOut');
+    setTimeout(() => {
+      overlayRef.detach()
+    }, 150)
+  }
+
+  closeUpperSilder(overlayRef: OverlayRef) {
+    overlayRef.overlayElement.classList.remove('drawer-slideDown')
+    overlayRef.overlayElement.classList.add('drawer-slideUp');
     setTimeout(() => {
       overlayRef.detach()
     }, 150)

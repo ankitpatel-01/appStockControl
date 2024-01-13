@@ -3,11 +3,11 @@
     <div class="d-flex align-items-center justify-content-end">
         <!-- Search  -->
         <input class="form-control search-control w-auto me-3" type="text" placeholder="Search" autocomplete="off"
-            id="searchQuery" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
+            id="searchYarnQuality" (input)="onSearchQueryInput($event)" [formControl]="searchControl">
         <!-- Add button -->
         <button type="button" class="btn btn-primary" (click)="openQualityForm()">
             <div class="d-flex align-items-center">
-                <span class="icon-plus-solid pe-2"></span>
+                <span class="icon icon-plus pe-2"></span>
                 <span class="ps-1">Add New</span>
             </div>
         </button>
@@ -82,7 +82,7 @@
                     </td>
                     <td class="action-col">
                         <span class="icon-trash cursor-pointer" (click)="removeQualityById(quality)"></span>
-                        <span class="icon-pen ms-3 cursor-pointer" (click)="openQualityForm(quality)"></span>
+                        <span class="icon-edit ms-3 cursor-pointer" (click)="openQualityForm(quality)"></span>
                     </td>
                 </tr>
             </tbody>
@@ -108,7 +108,7 @@
         <!-- Add button -->
         <button type="button" class="btn btn-primary mt-3" (click)="openQualityForm()">
             <div class="d-flex align-items-center">
-                <span class="icon-plus-solid pe-2"></span>
+                <span class="icon icon-plus pe-2"></span>
                 <span class="ps-1">Add New</span>
             </div>
         </button>

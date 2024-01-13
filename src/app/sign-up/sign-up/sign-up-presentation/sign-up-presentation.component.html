@@ -1,0 +1,809 @@
+<div class="container-fluid d-flex align-items-center h-100 bg-light overflow-y-auto">
+    <div class="container  bg-white rounded-2 border">
+        <div class="row p-md-3">
+            <div
+                class="d-none col-md-4 d-md-flex align-items-center justify-content-center rounded-2 bg-light bg-gradient">
+                <div class="signup-stepper">
+                    <ul>
+                        <li class="step" [ngClass]="{'completed':getStep(1)?.completed,'current':getStep(1)?.active}">
+                            <div class="name">Company Details</div>
+                        </li>
+                        <li class="step" [ngClass]="{'completed':getStep(2)?.completed,'current':getStep(2)?.active}">
+                            <div class="name">Addresss Details</div>
+                        </li>
+                        <li class="step" [ngClass]="{'completed':getStep(3)?.completed,'current':getStep(3)?.active}">
+                            <div class="name">Contact Details</div>
+                        </li>
+                        <li class="step" [ngClass]="{'completed':getStep(4)?.completed,'current':getStep(4)?.active}">
+                            <div class="name">Taxation Details</div>
+                        </li>
+                        <li class="step" [ngClass]="{'completed':getStep(5)?.completed,'current':getStep(5)?.active}">
+                            <div class="name">Bank Detail</div>
+                        </li>
+                        <li class="step" [ngClass]="{'completed':getStep(6)?.completed,'current':getStep(6)?.active}">
+                            <div class="name">Get Started</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <form [formGroup]="signUpFormGroup" autocomplete="off"
+                class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center">
+                <ng-container [ngSwitch]="findActiveStep()">
+                    <ng-container *ngSwitchCase="1">
+                        <!-- START:COMPANY DETAIL  -->
+                        <div class="w-80 py-3">
+                            <p class="fs-2 fw-bold mb-0">Company Details</p>
+                            <p class="fw-light">please provide your company details.</p>
+                            <!-- START:Company Name -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="company_name" class="form-label">Company Name</label>
+                                <input #company_name id="company_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['company_name'].touched
+                                    || getControls['company_name'].dirty
+                                ) && getControls['company_name'].invalid }" formControlName="company_name"
+                                    placeholder="Enter company name" toUpperCase (keyup.enter)="trading_name.focus()">
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter company name.
+                                </small>
+                            </div>
+                            <!-- END:Company Name -->
+
+                            <!-- START:Trading Name -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="trading_name" class="form-label">Trading Name</label>
+                                <input #trading_name id="trading_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['trading_name'].touched
+                                    || getControls['trading_name'].dirty
+                                ) && getControls['trading_name'].invalid }" formControlName="trading_name"
+                                    placeholder="Enter trading name" toUpperCase
+                                    (keyup.enter)="company_short_name.focus()">
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter trading name.
+                                </small>
+                            </div>
+                            <!-- END:Trading Name -->
+
+                            <!-- START:Short Name -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="company_short_name" class="form-label">Short Name
+                                    <span class="option-control-text">
+                                        (optional)
+                                    </span>
+                                </label>
+                                <input #company_short_name id="company_short_name" type="text" class="form-control"
+                                    [ngClass]="{ 'invalid': (
+                                    getControls['company_short_name'].touched
+                                    || getControls['company_short_name'].dirty
+                                ) && getControls['company_short_name'].invalid }" formControlName="company_short_name"
+                                    placeholder="Enter short name" toUpperCase (keyup.enter)="company_type.focus()">
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter short name.
+                                </small>
+                            </div>
+                            <!-- END:Short Name -->
+                            <!-- START: Company Type  -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="company_type" class="form-label">Company Type</label>
+                                <ng-select #company_type id="company_type" [ngClass]="{ 'invalid': (
+                                    getControls['company_type'].touched
+                                    || getControls['company_type'].dirty
+                                ) && getControls['company_type'].invalid }" formControlName="company_type"
+                                    placeholder="Select company type">
+                                    <ng-option value="" disabled>Select company type</ng-option>
+                                    <ng-option *ngFor="let type of company_type_master" [value]="type.id">
+                                        {{type.type_name}}
+                                    </ng-option>
+                                </ng-select>
+                                <small class="validation-text">
+                                    Please select company type.
+                                </small>
+                            </div>
+                            <!-- EMD: Company Type  -->
+                            <!-- ACTION  -->
+                            <div class="d-flex align-items-center justify-content-end pt-4">
+                                <button #toAddress type="button" class="btn btn-primary" (click)="next()">Next</button>
+                            </div>
+                        </div>
+                        <!-- END:COMPANY DETAIL  -->
+                    </ng-container>
+                    <ng-container *ngSwitchCase="2">
+                        <!-- START:Address DETAIL  -->
+                        <div class="w-80 py-3">
+                            <p class="fs-2 fw-bold mb-0">Address Details</p>
+                            <p class="fw-light">please provide your company address details.</p>
+                            <!-- START:Address 1 -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="address1" class="form-label">Address 1</label>
+                                <textarea #address1 id="address1" class="form-control resize-none" [ngClass]="{ 'invalid': (
+                                    getControls['address1'].touched
+                                    || getControls['address1'].dirty
+                                ) && getControls['address1'].invalid }" formControlName="address1"
+                                    placeholder="Enter company address line 1" preventFirstNewline
+                                    (keyup.enter)="address2.focus()"></textarea>
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter address.
+                                </small>
+                            </div>
+                            <!-- END:Address 1 -->
+
+                            <!-- START:Address 2 -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="address2" class="form-label">Address 2
+                                    <span class="option-control-text">
+                                        (optional)
+                                    </span>
+                                </label>
+                                <textarea #address2 id="address2" class="form-control resize-none" [ngClass]="{ 'invalid': (
+                                    getControls['address2'].touched
+                                    || getControls['address2'].dirty
+                                ) && getControls['address2'].invalid }" formControlName="address2"
+                                    placeholder="Enter company address line 2" preventFirstNewline
+                                    (keyup.enter)="address3.focus()"></textarea>
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter address.
+                                </small>
+                            </div>
+                            <!-- END:Address 2 -->
+
+                            <!-- START:Address 3 -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="address3" class="form-label">Address 3
+                                    <span class="option-control-text">
+                                        (optional)
+                                    </span>
+                                </label>
+                                <textarea #address3 id="address3" class="form-control resize-none" [ngClass]="{ 'invalid': (
+                                    getControls['address3'].touched
+                                    || getControls['address3'].dirty
+                                ) && getControls['address3'].invalid }" formControlName="address3"
+                                    placeholder="Enter company address line 2" preventFirstNewline
+                                    (keyup.enter)="state_id.focus()"></textarea>
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter address.
+                                </small>
+                            </div>
+                            <!-- END:Address 1 -->
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- START: Country  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="country_id" class="form-label">Country</label>
+                                        <ng-select #country_id id="country_id" placeholder="Select country" [ngClass]="{ 'invalid': (
+                                            getControls['country_id'].touched
+                                            || getControls['country_id'].dirty
+                                        ) && getControls['country_id'].invalid }" formControlName="country_id"
+                                            (keyup.enter)="state_id.focus()">
+                                            <ng-option value="" disabled>Select country</ng-option>
+                                            <ng-option *ngFor="let item of country"
+                                                [value]="1">{{item.name}}</ng-option>
+                                        </ng-select>
+                                        <small class="validation-text">
+                                            Please select country.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Country  -->
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- START: State  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="state_id" class="form-label">State</label>
+                                        <ng-select #state_id id="state_id" placeholder="Select state" [ngClass]="{ 'invalid': (
+                                            getControls['state_id'].touched
+                                            || getControls['state_id'].dirty
+                                        ) && getControls['state_id'].invalid }" formControlName="state_id"
+                                            (keyup.enter)="city.focus()">
+                                            <ng-option value="" disabled>Select state</ng-option>
+                                            <ng-option *ngFor="let state of stateList"
+                                                [value]="state.id">{{state.name}}</ng-option>
+                                        </ng-select>
+                                        <small class="validation-text">
+                                            Please select state.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: State  -->
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- START: city  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="city" class="form-label">City</label>
+                                        <input #city id="city" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['city'].touched
+                                            || getControls['city'].dirty
+                                        ) && getControls['city'].invalid }" formControlName="city"
+                                            placeholder="Enter city name" (keyup.enter)="pincode.focus()">
+                                        <!-- validation message  -->
+                                        <small class="validation-text">
+                                            Please enter company name.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: City  -->
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- START: Pincode  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="pincode" class="form-label">Pincode</label>
+                                        <input #pincode id="pincode" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['pincode'].touched
+                                            || getControls['pincode'].dirty
+                                        ) && getControls['pincode'].invalid }" formControlName="pincode"
+                                            placeholder="Enter pincode" numberOnly maxlength="6"
+                                            (keyup.enter)="toContact.focus()">
+                                        <small *ngIf="getControls['pincode']?.errors?.['required']"
+                                            class="validation-text">
+                                            Please enter pincode.
+                                        </small>
+                                        <small *ngIf="getControls['pincode']?.errors?.['pattern']"
+                                            class="validation-text">
+                                            Enter a valid pincode number.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Pincode  -->
+                                </div>
+
+                            </div>
+                            <!-- ACTION  -->
+                            <div class="d-flex align-items-center justify-content-end pt-4">
+                                <button type="button" class="btn btn-outline-primary me-3"
+                                    (click)="prev()">Back</button>
+                                <button #toContact type="button" class="btn btn-primary" (click)="next()">Next</button>
+                            </div>
+                        </div>
+                        <!-- END:Address DETAIL  -->
+                    </ng-container>
+                    <ng-container *ngSwitchCase="3">
+                        <!-- START:Contact DETAIL  -->
+                        <div class="w-80 py-3">
+                            <p class="fs-2 fw-bold mb-0">Contact Details</p>
+                            <p class="fw-light">please provide your company contact details.</p>
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- START: Mobile 1  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="mobile1" class="form-label">Mobile No. 1</label>
+                                        <input #mobile1 id="mobile1" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['mobile1'].touched
+                                            || getControls['mobile1'].dirty
+                                        ) && getControls['mobile1'].invalid }" formControlName="mobile1"
+                                            placeholder="Enter your company mobile no." numberOnly maxlength="10"
+                                            (keyup.enter)="mobile2.focus()">
+                                        <!-- validation message  -->
+                                        <small *ngIf="getControls['mobile1']?.errors?.['required']"
+                                            class="validation-text">
+                                            Please enter your company mobile no.
+                                        </small>
+                                        <small
+                                            *ngIf="getControls['mobile1']?.errors?.['maxlength']||getControls['mobile1']?.errors?.['minlength']"
+                                            class="validation-text">
+                                            Mobile number length should be 10 digit.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Mobile 1  -->
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- START: Mobile 2  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="mobile2" class="form-label">Mobile No. 2
+                                            <span class="option-control-text">
+                                                (optional)
+                                            </span>
+                                        </label>
+                                        <input #mobile2 id="mobile2" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['mobile2'].touched
+                                            || getControls['mobile2'].dirty
+                                        ) && getControls['mobile2'].invalid }" formControlName="mobile2"
+                                            placeholder="Enter your company mobile no." numberOnly maxlength="10"
+                                            (keyup.enter)="tel_no.focus()">
+                                        <!-- validation message  -->
+                                        <small *ngIf="getControls['mobile2']?.errors?.['required']"
+                                            class="validation-text">
+                                            Please enter your company mobile no.
+                                        </small>
+                                        <small
+                                            *ngIf="getControls['mobile2']?.errors?.['maxlength']||getControls['mobile2']?.errors?.['minlength']"
+                                            class="validation-text">
+                                            Mobile number length should be 10 digit.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Mobile 2  -->
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <!-- START: Telephone No  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="tel_no" class="form-label">Telephone No
+                                            <span class="option-control-text">
+                                                (optional)
+                                            </span>
+                                        </label>
+                                        <input #tel_no id="tel_no" type="tel" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['tel_no'].touched
+                                            || getControls['tel_no'].dirty
+                                        ) && getControls['tel_no'].invalid }" formControlName="tel_no"
+                                            placeholder="Enter your company telephone no." numberOnly maxlength="10"
+                                            (keyup.enter)="fax_no.focus()">
+                                        <!-- validation message  -->
+                                        <small *ngIf="getControls['tel_no']?.errors?.['required']"
+                                            class="validation-text">
+                                            Please enter your company telephone no.
+                                        </small>
+                                        <small
+                                            *ngIf="getControls['tel_no']?.errors?.['maxlength']||getControls['tel_no']?.errors?.['minlength']"
+                                            class="validation-text">
+                                            Telephone number length should be 10 digit.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Telephone No  -->
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <!-- START: Fax No  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="fax_no" class="form-label">Fax No.
+                                            <span class="option-control-text">
+                                                (optional)
+                                            </span>
+                                        </label>
+                                        <input #fax_no id="fax_no" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['fax_no'].touched
+                                            || getControls['fax_no'].dirty
+                                        ) && getControls['fax_no'].invalid }" formControlName="fax_no"
+                                            placeholder="Enter your company fax no." numberOnly maxlength="10"
+                                            (keyup.enter)="company_email.focus()">
+                                        <!-- validation message  -->
+                                        <small *ngIf="getControls['fax_no']?.errors?.['required']"
+                                            class="validation-text">
+                                            Please enter your company fax no.
+                                        </small>
+                                        <small
+                                            *ngIf="getControls['fax_no']?.errors?.['maxlength']||getControls['fax_no']?.errors?.['minlength']"
+                                            class="validation-text">
+                                            Fax number length should be 10 digit.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Mobile 2  -->
+                                </div>
+
+                            </div>
+
+                            <!-- START:Company Eamil -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="company_email" class="form-label">Company Eamil</label>
+                                <input #company_email id="company_email" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['company_email'].touched
+                                            || getControls['company_email'].dirty
+                                        ) && getControls['company_email'].invalid }" formControlName="company_email"
+                                    placeholder="Enter company email" (keyup.enter)="website.focus()">
+                                <!-- validation message  -->
+                                <small *ngIf="getControls['company_email']?.errors?.['required']"
+                                    class="validation-text">
+                                    Please enter company email.
+                                </small>
+                                <small *ngIf="getControls['company_email']?.errors?.['pattern']"
+                                    class="validation-text">
+                                    Enter a valid email address.
+                                </small>
+                            </div>
+                            <!-- END:Company Eamil -->
+
+                            <!-- START:Company Website -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="website" class="form-label">Company Website
+                                    <span class="option-control-text">
+                                        (optional)
+                                    </span>
+                                </label>
+                                <input #website id="website" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['website'].touched
+                                            || getControls['website'].dirty
+                                        ) && getControls['website'].invalid }" formControlName="website"
+                                    placeholder="Enter company website" (keyup.enter)="toTaxation.focus()">
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter company website.
+                                </small>
+                            </div>
+                            <!-- END:Company Website -->
+
+                            <!-- ACTION  -->
+                            <div class="d-flex align-items-center justify-content-end pt-4">
+                                <button type="button" class="btn btn-outline-primary me-3"
+                                    (click)="prev()">Back</button>
+                                <button #toTaxation type="button" class="btn btn-primary" (click)="next()">Next</button>
+                            </div>
+                        </div>
+                        <!-- END:Contact DETAIL  -->
+                    </ng-container>
+                    <ng-container *ngSwitchCase="4">
+                        <!-- START:Taxation DETAIL  -->
+                        <div class="w-80 py-3">
+                            <p class="fs-2 fw-bold mb-0">Taxation Details</p>
+                            <p class="fw-light">please provide your company taxation details.</p>
+
+
+
+                            <!-- START: PAN -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="pan_no" class="form-label">PAN No.
+                                    <span *ngIf="!(this.getControls['company_type'].value===1)"
+                                        class="option-control-text">
+                                        (optional)
+                                    </span>
+                                </label>
+                                <input #pan_no id="pan_no" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['pan_no'].touched
+                                    || getControls['pan_no'].dirty
+                                ) && getControls['pan_no'].invalid }" formControlName="pan_no"
+                                    placeholder="Enter your company pan no." (keyup.enter)="gst_no.focus()">
+                                <!-- validation message  -->
+                                <small *ngIf="getControls['pan_no']?.errors?.['required']" class="validation-text">
+                                    Please enter your company pan no.
+                                </small>
+                                <small *ngIf="getControls['pan_no']?.errors?.['pattern']" class="validation-text">
+                                    Enter a valid pan number.
+                                </small>
+                            </div>
+                            <!-- END: PAN -->
+
+                            <!-- START:GST No -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="gst_no" class="form-label">GSTIN No.
+                                    <span *ngIf="!(this.getControls['company_type'].value===1)"
+                                        class="option-control-text">
+                                        (optional)
+                                    </span>
+                                </label>
+                                <input #gst_no id="gst_no" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['gst_no'].touched
+                                    || getControls['gst_no'].dirty
+                                ) && getControls['gst_no'].invalid }" formControlName="gst_no"
+                                    placeholder="Enter your company gst no." (keyup.enter)="cin_no.focus()">
+                                <!-- validation message  -->
+                                <small *ngIf="getControls['gst_no']?.errors?.['required']" class="validation-text">
+                                    Please enter your company gstin no.
+                                </small>
+                                <small *ngIf="getControls['gst_no']?.errors?.['pattern']" class="validation-text">
+                                    Enter a valid gstin number.
+                                </small>
+                            </div>
+                            <!-- END:GST No -->
+
+                            <!-- START: CIN No -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="cin_no" class="form-label">CIN No.</label>
+                                <input #cin_no id="cin_no" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['cin_no'].touched
+                                    || getControls['cin_no'].dirty
+                                ) && getControls['cin_no'].invalid }" formControlName="cin_no"
+                                    placeholder="Enter your company cin no." (keyup.enter)="opening_date.focus()">
+                                <!-- validation message  -->
+                                <small *ngIf="getControls['cin_no']?.errors?.['required']" class="validation-text">
+                                    Please enter your company cin no.
+                                </small>
+                                <small *ngIf="getControls['cin_no']?.errors?.['pattern']" class="validation-text">
+                                    Enter a valid cin number.
+                                </small>
+                            </div>
+                            <!-- END: CIN No -->
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <!-- START: Opening date  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="opening_date" class="form-label">Opening date</label>
+                                        <input #opening_date id="opening_date" placeholder="DD-MM-YYYY"
+                                            class="form-control date-input" [ngClass]="{ 'invalid': (
+                                    getControls['opening_date'].touched
+                                    || getControls['opening_date'].dirty
+                                ) && getControls['opening_date'].invalid }" formControlName="opening_date" bsDatepicker
+                                            placement="top"
+                                            [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD-MM-YYYY' }"
+                                            (keyup.enter)="from_date.focus()">
+                                        <!-- validation message  -->
+                                        <small class="validation-text">
+                                            Please select opening date.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Opening date  -->
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <!-- START: Form date  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="from_date" class="form-label">From date</label>
+                                        <input #from_date id="from_date" placeholder="DD-MM-YYYY"
+                                            class="form-control date-input" [ngClass]="{ 'invalid': (
+                                            getControls['from_date'].touched
+                                            || getControls['from_date'].dirty
+                                        ) && getControls['from_date'].invalid }" formControlName="from_date"
+                                            bsDatepicker placement="top"
+                                            [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD-MM-YYYY' }"
+                                            (keyup.enter)="to_date.focus()">
+                                        <!-- validation message  -->
+                                        <small class="validation-text">
+                                            Please select form date.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: Form date  -->
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <!-- START: To date  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="to_date" class="form-label">To date</label>
+                                        <input #to_date id="to_date" placeholder="DD-MM-YYYY"
+                                            class="form-control date-input" [ngClass]="{ 'invalid': (
+                                            getControls['to_date'].touched
+                                            || getControls['to_date'].dirty
+                                        ) && getControls['to_date'].invalid }" formControlName="to_date" bsDatepicker
+                                            placement="top"
+                                            [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD-MM-YYYY' }"
+                                            (keyup.enter)="toBankDetails.focus()">
+                                        <!-- validation message  -->
+                                        <small class="validation-text">
+                                            Please select To date.
+                                        </small>
+                                    </div>
+                                    <!-- EMD: To date  -->
+                                </div>
+
+                            </div>
+
+                            <!-- ACTION  -->
+                            <div class="d-flex align-items-center justify-content-end pt-4">
+                                <button type="button" class="btn btn-outline-primary me-3"
+                                    (click)="prev()">Back</button>
+                                <button #toBankDetails type="button" class="btn btn-primary"
+                                    (click)="next()">Next</button>
+                            </div>
+                        </div>
+                        <!-- END:Taxation DETAIL  -->
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="5">
+                        <!-- START:Bank DETAIL  -->
+                        <div class="w-80 py-3">
+                            <p class="fs-2 fw-bold mb-0">Bank Details</p>
+                            <p class="fw-light">please provide your company bank details.</p>
+
+                            <!-- START: Bank Name -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="bank_name" class="form-label">Bank Name</label>
+                                <input #bank_name id="bank_name" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['bank_name'].touched
+                                    || getControls['bank_name'].dirty
+                                ) && getControls['bank_name'].invalid }" formControlName="bank_name"
+                                    placeholder="Enter your company bank name."
+                                    (keyup.enter)="bank_branch_name.focus()">
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter your company bank name.
+                                </small>
+                            </div>
+                            <!-- END: Bank Name -->
+
+                            <!-- START:Branch Name -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="bank_branch_name" class="form-label">Branch Name</label>
+                                <input #bank_branch_name id="bank_branch_name" type="text" class="form-control"
+                                    [ngClass]="{ 'invalid': (
+                                    getControls['bank_branch_name'].touched
+                                    || getControls['bank_branch_name'].dirty
+                                ) && getControls['bank_branch_name'].invalid }" formControlName="bank_branch_name"
+                                    placeholder="Enter your bank branch name" (keyup.enter)="ifsc_code.focus()">
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter your bank branch name.
+                                </small>
+                            </div>
+                            <!-- END:Branch Name -->
+
+                            <!-- START: IFSC Code -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="ifsc_code" class="form-label">IFSC Code</label>
+                                <input #ifsc_code id="ifsc_code" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['ifsc_code'].touched
+                                    || getControls['ifsc_code'].dirty
+                                ) && getControls['ifsc_code'].invalid }" formControlName="ifsc_code"
+                                    placeholder="Enter your bank ifsc code." (keyup.enter)="account_no.focus()">
+                                <!-- validation message  -->
+                                <small *ngIf="getControls['ifsc_code']?.errors?.['required']" class="validation-text">
+                                    Please enter your bank ifsc code.
+                                </small>
+                                <small *ngIf="getControls['ifsc_code']?.errors?.['pattern']" class="validation-text">
+                                    Enter valid ifsc code.
+                                </small>
+                            </div>
+                            <!-- END: IFSC Code -->
+
+                            <!-- START: Bank Account No-->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="account_no" class="form-label">Account No.</label>
+                                <input #account_no id="account_no" type="text" class="form-control" class="form-control"
+                                    [ngClass]="{ 'invalid': (
+                                    getControls['account_no'].touched
+                                    || getControls['account_no'].dirty
+                                ) && getControls['account_no'].invalid }" formControlName="account_no"
+                                    placeholder="Enter your bank account no." numberOnly
+                                    (keyup.enter)="toGetStarred.focus()">
+                                <!-- validation message  -->
+                                <small *ngIf="getControls['account_no']?.errors?.['required']" class="validation-text">
+                                    Please enter your bank account no.
+                                </small>
+                                <small *ngIf="getControls['account_no']?.errors?.['pattern']" class="validation-text">
+                                    Enter valid account no.
+                                </small>
+                            </div>
+                            <!-- END: Bank Name -->
+
+                            <!-- ACTION  -->
+                            <div class="d-flex align-items-center justify-content-end pt-4">
+                                <button type="button" class="btn btn-outline-primary me-3"
+                                    (click)="prev()">Back</button>
+                                <button #toGetStarred type="button" class="btn btn-primary"
+                                    (click)="next()">Next</button>
+                            </div>
+                        </div>
+                        <!-- END:bank DETAIL  -->
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="6">
+                        <!-- START:USER DETAIL  -->
+                        <div class="w-80 py-3">
+                            <p class="fs-2 fw-bold mb-0">Get Started</p>
+                            <p class="fw-light">set you login credentials to get started.</p>
+                            <div class="row">
+                                <div class="col-12 col-md-4 pe-md-0">
+                                    <!-- START: Name  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="user_firstname" class="form-label">First Name</label>
+                                        <input #user_firstname id="user_firstname" type="text" class="form-control"
+                                            class="form-control" [ngClass]="{ 'invalid': (
+                                getControls['user_firstname'].touched
+                                || getControls['user_firstname'].dirty
+                            ) && getControls['user_firstname'].invalid }" formControlName="user_firstname"
+                                            placeholder="Enter your first name" maxlength="30"
+                                            (keyup.enter)="user_username.focus()">
+                                        <!-- validation message  -->
+                                        <small class="validation-text">
+                                            Please enter your first name.
+                                        </small>
+                                    </div>
+                                    <!-- END: Name  -->
+                                </div>
+                                <div class="col-12 col-md-4 pe-md-0">
+                                    <!-- START: Middle Name  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="user_middlename" class="form-label">Middle Name
+                                            <span class="option-control-text">
+                                                (optional)
+                                            </span>
+                                        </label>
+                                        <input #user_middlename id="user_middlename" type="text" class="form-control"
+                                            class="form-control" [ngClass]="{ 'invalid': (
+                                getControls['user_middlename'].touched
+                                || getControls['user_middlename'].dirty
+                            ) && getControls['user_middlename'].invalid }" formControlName="user_middlename"
+                                            placeholder="Enter your middle name" maxlength="30"
+                                            (keyup.enter)="user_lastname.focus()">
+                                        <!-- validation message  -->
+                                        <small class="validation-text">
+                                            Please enter your middle name.
+                                        </small>
+                                    </div>
+                                    <!-- END:  Middle Name  -->
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <!-- START: Last Name  -->
+                                    <div class="mb-3 form-control-wrapper">
+                                        <label for="user_lastname" class="form-label">Last Name</label>
+                                        <input #user_lastname id="user_lastname" type="text" class="form-control"
+                                            class="form-control" [ngClass]="{ 'invalid': (
+                                getControls['user_lastname'].touched
+                                || getControls['user_lastname'].dirty
+                            ) && getControls['user_lastname'].invalid }" formControlName="user_lastname"
+                                            placeholder="Enter your last name" maxlength="30"
+                                            (keyup.enter)="user_username.focus()">
+                                        <!-- validation message  -->
+                                        <small class="validation-text">
+                                            Please enter your last name.
+                                        </small>
+                                    </div>
+                                    <!-- END:  Last Name  -->
+                                </div>
+
+                            </div>
+
+
+                            <!-- START: Username  -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="username" class="form-label">Username</label>
+                                <input #user_username id="username" type="text" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['user_username'].touched
+                                    || getControls['user_username'].dirty
+                                ) && getControls['user_username'].invalid }" formControlName="user_username"
+                                    placeholder="Enter your username" maxlength="30" (keyup.enter)="password1.focus()">
+                                <!-- validation message  -->
+                                <small class="validation-text">
+                                    Please enter your username.
+                                </small>
+                            </div>
+                            <!-- END: Username  -->
+                            <!-- START: Password  -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="password1" class="form-label">Password</label>
+                                <div class="password-input-wrapper">
+                                    <input #password1 [type]="passwordField.className == 'hide' ? 'password' : 'text'"
+                                        id="password1" placeholder="Enter your password" class="form-control" [ngClass]="{ 'invalid': (
+                                    getControls['user_password'].touched
+                                    || getControls['user_password'].dirty
+                                ) && getControls['user_password'].invalid }" formControlName="user_password"
+                                        maxlength="8" (keyup.enter)="confirmPassword.focus()">
+                                    <span #eyeIcon id="eyeIconsp" class="password-icon"
+                                        [ngClass]="passwordField.className == 'hide' ? 'icon icon-remove_red_eye' : 'icon icon-visibility_off'"
+                                        (mousedown)="togglePasswordVisibility()"
+                                        (mouseup)="togglePasswordVisibility()"></span>
+                                    <!-- validation message  -->
+                                    <small class="validation-text">
+                                        Please enter your password.
+                                    </small>
+                                </div>
+                            </div>
+                            <!-- END: Password  -->
+                            <!-- START: Confirm Password  -->
+                            <div class="mb-3 form-control-wrapper">
+                                <label for="password1" class="form-label">Confirm password</label>
+                                <div class="password-input-wrapper">
+                                    <input #confirmPassword
+                                        [type]="confirmPasswordField.className == 'hide' ? 'password' : 'text'"
+                                        id="password1" placeholder="Enter your password" class="form-control" [ngClass]="{ 'invalid': (
+                                            getControls['user_confirm_password'].touched
+                                            || getControls['user_confirm_password'].dirty
+                                        ) && getControls['user_confirm_password'].invalid }"
+                                        formControlName="user_confirm_password" maxlength="8">
+                                    <span #eyeIcon id="eyeIconsp" class="password-icon"
+                                        [ngClass]="confirmPasswordField.className == 'hide' ? 'icon icon-remove_red_eye' : 'icon icon-visibility_off'"
+                                        (mousedown)="toggleConfirmPasswordVisibility()"
+                                        (mouseup)="toggleConfirmPasswordVisibility()"></span>
+                                    <!-- validation message  -->
+                                    <small *ngIf="getControls['user_confirm_password']?.errors?.['required']"
+                                        class="validation-text">
+                                        Please enter your confirm password.
+                                    </small>
+                                    <small
+                                        *ngIf="getControls['user_confirm_password']?.hasError('passwordsDoNotMatch') && !getControls['user_confirm_password']?.errors?.['required']"
+                                        class="validation-text">
+                                        Password and Confirm Password does not match.
+                                    </small>
+                                </div>
+                            </div>
+                            <!-- END: Password  -->
+
+
+                            <!-- ACTION  -->
+                            <div class="d-flex align-items-center justify-content-end pt-4">
+                                <button type="button" class="btn btn-outline-primary me-3"
+                                    (click)="prev()">Back</button>
+                                <button type="button" class="btn btn-primary" (click)="submit()">Submit</button>
+                            </div>
+                        </div>
+                        <!-- END:USER DETAIL  -->
+                    </ng-container>
+
+                </ng-container>
+            </form>
+        </div>
+    </div>
+</div>

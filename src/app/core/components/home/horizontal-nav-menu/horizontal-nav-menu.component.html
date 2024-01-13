@@ -1,6 +1,6 @@
 <!-- START: Header  -->
-<div class="border-bottom bg-white">
-    <div class="container d-flex align-items-center justify-content-between">
+<div class="border-bottom bg-white header-height">
+    <div class="container d-flex align-items-center justify-content-between h-100">
         <ul class="nav">
             <!-- START: Master  -->
             <li class="nav-item dropdown">
@@ -8,30 +8,53 @@
                     [ngClass]="{'active':isActive('/master')}">Master</a>
 
                 <!-- START: MASTER MENU  -->
-                <ul class="dropdown-container">
+                <ul class="dropdown-container" *ngIf="showDropdown">
+                    <!-- General -->
                     <li class="dropdown-item" [ngClass]="{'active':isActive('/master/general')}">
                         <span>General</span>
                     </li>
+                    <!-- Account -->
                     <li class="dropdown-item">
                         <span>Account</span>
                     </li>
+                    <!-- Yarn Master  -->
                     <li class="dropdown-item" routerLink="/master/yarn"
                         [ngClass]="{'active':isActive('/master/yarn',true)}">
                         <span>Yarn Master</span>
                     </li>
+                    <!-- Item Master  -->
+                    <li class="dropdown-item" routerLink="/master/item-master"
+                        [ngClass]="{'active':isActive('/master/item-master',true)}">
+                        <span>Item Master</span>
+                    </li>
+                    <!-- Fabric -->
                     <li class="dropdown-item">
                         <span>Fabric</span>
                     </li>
+                    <!-- Miscellaneous -->
                     <li class="dropdown-item dropdown-toggle-right" [ngClass]="{'active':isActive('/master/misc')}">
                         <span>Miscellaneous</span>
+                        <!-- Miscellaneous Sub level-->
                         <ul class="dropdown-container">
+                            <!-- Hsn master -->
                             <li class="dropdown-item" routerLink="/master/misc/hsn"
                                 [ngClass]="{'active':isActive('/master/misc/hsn',true)}">
                                 <span>Hsn master</span>
                             </li>
+                            <!-- Tax master -->
                             <li class="dropdown-item" routerLink="/master/misc/tax"
                                 [ngClass]="{'active':isActive('/master/misc/tax',true)}">
                                 <span>Tax master</span>
+                            </li>
+                            <!-- Location master -->
+                            <li class="dropdown-item" routerLink="/master/misc/location"
+                                [ngClass]="{'active':isActive('/master/misc/location',true)}">
+                                <span>Location master</span>
+                            </li>
+                            <!-- Unit master -->
+                            <li class="dropdown-item" routerLink="/master/misc/unit"
+                                [ngClass]="{'active':isActive('/master/misc/unit',true)}">
+                                <span>Unit master</span>
                             </li>
                         </ul>
                     </li>
@@ -53,10 +76,17 @@
         </ul>
 
         <!-- START:LOGOUT BUTTON -->
-        <button class="btn btn-primary" type="button" (click)="logout()">
+        <!-- <button class="btn btn-primary" type="button" (click)="logout()">
             Logout
-        </button>
+        </button> -->
         <!-- START:LOGOUT BUTTON -->
+        <div class="d-flex align-items-center" *ngIf="selectedBranch">
+            <span (click)="accountFlyoutClicked()"
+                class="d-flex align-items-center me-3 cursor-pointer">{{selectedBranch.name}}<span
+                    class="icon icon-chevron-down ms-2"></span></span>
+            <app-avatar class="cursor-pointer" (click)="accountFlyoutClicked()"
+                [name]="(userProfile.first_name + ' ' +userProfile.last_name)"></app-avatar>
+        </div>
 
     </div>
 </div>

@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 // ------------------------------------------------------------------------------------
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { Subject } from 'rxjs/internal/Subject';
 // ------------------------------------------------------------------------------------
 import { UtitityService } from 'src/app/shared/services/utitity.service';
 import { YarnMasterService } from '../../services/yarn-master.service';
@@ -24,9 +25,7 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
   public hsnList$: Observable<PaginateResponse<Hsn[]>>
 
   // Subscription
-  private createHsnSub: Subscription;
-  private updateHsnSub: Subscription;
-  private removeHsnSub: Subscription;
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService, private _event: EventService) {
     this.searchString = "";
@@ -37,9 +36,8 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.createHsnSub?.unsubscribe();
-    this.updateHsnSub?.unsubscribe();
-    this.removeHsnSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   _props(): void {
@@ -72,15 +70,17 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
    * @param hsn : CreateHsnDto
    */
   createHsnCode(hsn: CreateHsnDto): void {
-    this.createHsnSub = this._yarnMasterService.createHsnCode(hsn).subscribe({
-      next: (res) => {
-        this.getAllHsnCodeList();
-        this._event.showSuccessSnackBar("HSN code created");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.createHsnCode(hsn)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllHsnCodeList();
+          this._event.showSuccessSnackBar("HSN code created");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   /**
@@ -89,15 +89,17 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
    * @param hsn : UpdateHsnDto
    */
   updateHsnCode(hsn: UpdateHsnDto): void {
-    this.updateHsnSub = this._yarnMasterService.updateHsnCode(hsn).subscribe({
-      next: (res) => {
-        this.getAllHsnCodeList(this._currentPage);
-        this._event.showSuccessSnackBar("HSN code updated");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.updateHsnCode(hsn)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllHsnCodeList(this._currentPage);
+          this._event.showSuccessSnackBar("HSN code updated");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   /**
@@ -106,16 +108,18 @@ export class HsnMasterContainerComponent implements OnInit, OnDestroy {
    * @param hsn : RemoveEmit
    */
   removeHsnCode(hsn: RemoveEmit) {
-    this.removeHsnSub = this._yarnMasterService.removeHsnCode(hsn.id).subscribe({
-      next: (res) => {
-        hsn.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getAllHsnCodeList(this._currentPage);
-        this._event.showSuccessSnackBar("HSN code removed");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.removeHsnCode(hsn.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this._currentPage = hsn.length === 1 ? 1 : this._currentPage;
+          this.getAllHsnCodeList(this._currentPage);
+          this._event.showSuccessSnackBar("HSN code removed");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
 }

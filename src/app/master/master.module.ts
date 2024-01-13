@@ -32,6 +32,16 @@ import { YarnCategoryFormPresentationComponent } from './yarn-master-container/y
 import { YarnGroupFormPresentationComponent } from './yarn-master-container/yarn-group-list-presentation/yarn-group-form-presentation/yarn-group-form-presentation.component';
 import { YarnQualityFormPresentationComponent } from './yarn-master-container/yarn-quality-list-presentation/yarn-quality-form-presentation/yarn-quality-form-presentation.component';
 import { LoaderService } from '../core/services/loader.service';
+import { LocationMasterContainerComponent } from './miscellaneous/location-master-container/location-master-container.component';
+import { UnitMasterContainerComponent } from './miscellaneous/unit-master-container/unit-master-container.component';
+import { LocationMasterPresentationComponent } from './miscellaneous/location-master-container/location-master-presentation/location-master-presentation.component';
+import { UnitMasterPresentationComponent } from './miscellaneous/unit-master-container/unit-master-presentation/unit-master-presentation.component';
+import { LocationMasterFormPresentationComponent } from './miscellaneous/location-master-container/location-master-form-presentation/location-master-form-presentation.component';
+import { UnitMasterFormPresentationComponent } from './miscellaneous/unit-master-container/unit-master-form-presentation/unit-master-form-presentation.component';
+import { ItemMasterContainerComponent } from './item-master/item-master-container/item-master-container.component';
+import { ItemMasterPresentationComponent } from './item-master/item-master-container/item-master-presentation/item-master-presentation.component';
+import { ItemMasterFormContainerComponent } from './item-master/item-master-form-container/item-master-form-container.component';
+import { ItemMasterFormPresentationComponent } from './item-master/item-master-form-container/item-master-form-presentation/item-master-form-presentation.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +71,16 @@ import { LoaderService } from '../core/services/loader.service';
     YarnCategoryFormPresentationComponent,
     YarnGroupFormPresentationComponent,
     YarnQualityFormPresentationComponent,
+    LocationMasterContainerComponent,
+    UnitMasterContainerComponent,
+    LocationMasterPresentationComponent,
+    UnitMasterPresentationComponent,
+    LocationMasterFormPresentationComponent,
+    UnitMasterFormPresentationComponent,
+    ItemMasterContainerComponent,
+    ItemMasterPresentationComponent,
+    ItemMasterFormContainerComponent,
+    ItemMasterFormPresentationComponent,
   ],
   imports: [
     MasterRoutingModule,

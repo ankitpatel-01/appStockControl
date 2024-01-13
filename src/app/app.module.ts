@@ -9,17 +9,23 @@ import { DelayInterceptor } from './core/helpers/delay.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './core/helpers/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ErrorInterceptor } from './core/helpers/error.interceptor';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CoreModule,
     BrowserAnimationsModule, // required animations module
+    BsDatepickerModule.forRoot(),
+    TabsModule,
+    CoreModule,
     ToastrModule.forRoot({
       maxOpened: 3,
       autoDismiss: true,
@@ -35,6 +41,11 @@ import { ToastrModule } from 'ngx-toastr';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     },
   ],
