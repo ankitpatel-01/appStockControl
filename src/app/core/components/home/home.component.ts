@@ -1,12 +1,16 @@
 import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+// ------------------------------------------------------------------------------------
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+// ------------------------------------------------------------------------------------
+import { AuthService } from '../../services/auth.service';
 import { FadeInOut } from 'src/app/animations/animation';
 import { FlyoutComponent } from 'src/app/custom-components/flyout/flyout/flyout.component';
 import { AccountFlyoutComponent } from './horizontal-nav-menu/account-flyout/account-flyout.component';
-import { AuthService } from '../../services/auth.service';
+// ------------------------------------------------------------------------------------
 import { UserProfile } from '../../models/user-profile.model';
 import { CompanyBranchList } from '../../models/company-branch.model';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -21,8 +25,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   userProfile: UserProfile;
   companyBranchList: CompanyBranchList[];
 
-  /** Subscription object to unsubscribe from the logout observable */
-  logutSub: Subscription;
+  // Subscription
+  private destroy$: Subject<void> = new Subject<void>();
+
   selectedBranchId: number;
   selectedBranch: CompanyBranchList | undefined;
 
@@ -39,7 +44,8 @@ export class HomeComponent implements OnInit, OnDestroy {
    * Unsubscribe from the logout observable to prevent memory leaks
    */
   ngOnDestroy(): void {
-    this.logutSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   accountFlyout() {
@@ -59,12 +65,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       componentRef.instance.companyBranchList = this.companyBranchList;
       componentRef.instance.selectedBranch = this.selectedBranch;
       // Subscribe to any outputs from your custom component
-      componentRef.instance.cancel.subscribe(data => {
-        this.flyout.closeFlyout();
-      });
-      componentRef.instance.signOut.subscribe(data => {
-        this.logout()
-      });
+      componentRef.instance.cancel
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(data => {
+          this.flyout.closeFlyout();
+        });
+      componentRef.instance.signOut
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(data => {
+          this.logout()
+        });
 
       // Open the flyout
       this.flyout.openFlyout();
@@ -82,15 +92,17 @@ export class HomeComponent implements OnInit, OnDestroy {
    * Logout the user and clear the session storage
    */
   logout() {
-    this.logutSub = this._authService.logout().subscribe({
-      next: () => {
-        this._authService.clearSessionStorage();
-        this._authService.setLoggedInStatus(false);
-        this._router.navigate(['/login']);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
+    this._authService.logout()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this._authService.clearSessionStorage();
+          this._authService.setLoggedInStatus(false);
+          this._router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
   }
 }

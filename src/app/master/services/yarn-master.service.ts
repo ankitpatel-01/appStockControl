@@ -20,11 +20,16 @@ import { Color, CreateColorDto, UpdateColorDto } from '../model/color.model';
 import { Category, CreateCategoryDto, UpdateCategoryDto } from '../model/category.model';
 import { CreateLocationMasterDto, LocationMaster, UpdateLocationMasterDto } from '../model/location.model';
 import { CreateUnitDto, Unit, UpdateUnitDto } from '../model/unit.model';
+import { of } from 'rxjs/internal/observable/of';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable()
 export class YarnMasterService {
 
   baseUrl: string;
+
+  private gstFirstPageCache: PaginateResponse<Gst[]> | null = null;
+
 
   constructor(private HttpClient: HttpClient) {
     this.baseUrl = environment.baseUrl;
@@ -232,22 +237,40 @@ export class YarnMasterService {
       ...(search && { search }),
       limit: PAGE_PER_LIMIT,
     }
-    return this.HttpClient.get<APIResponse<Gst[]>>(this.baseUrl + masterAPI.GST_GET, {
-      params
-    }).pipe(map((res: APIResponse<Gst[]>) => { return { data: res.data, meta: res.meta } }));
+    if (page === 1 && this.gstFirstPageCache && !params.hasOwnProperty("search")) {
+      return of(this.gstFirstPageCache);
+    } else {
+      return this.HttpClient.get<APIResponse<Gst[]>>(this.baseUrl + masterAPI.GST_GET, {
+        params
+      }).pipe(
+        map((res: APIResponse<Gst[]>) => { return { data: res.data, meta: res.meta } }),
+        tap((data: PaginateResponse<Gst[]>) => {
+          if (page === 1 && !params.hasOwnProperty("search")) {
+            this.gstFirstPageCache = data;
+          }
+        }));
+    }
   }
 
   createGstRate(gstRate: CreateGstDto): Observable<Gst> {
+    this.clearGstPageCache()
     return this.HttpClient.post<APIResponse<Gst>>(this.baseUrl + masterAPI.GST_CREATE, gstRate).pipe(map((res: APIResponse<Gst>) => res.data));
   }
 
   updateGstRate(gstRate: UpdateGstDto): Observable<Gst> {
+    this.clearGstPageCache()
     return this.HttpClient.put<APIResponse<Gst>>(this.baseUrl + masterAPI.GST_UPDATE, gstRate).pipe(map((res: APIResponse<Gst>) => res.data));
   }
 
   removeGstRate(gst_id: number): Observable<Gst> {
+    this.clearGstPageCache()
     return this.HttpClient.delete<APIResponse<Gst>>(this.baseUrl + masterAPI.GST_REMOVE + `/${gst_id}`).pipe(map((res: APIResponse<Gst>) => res.data));
   }
+
+  clearGstPageCache() {
+    this.gstFirstPageCache = null;
+  }
+
 
   //--------------------- Location master ----------------
   getAllLocation(): Observable<LocationMaster[]> {

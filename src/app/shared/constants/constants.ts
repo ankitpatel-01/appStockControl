@@ -2,7 +2,7 @@
 export const NUMBER_ONLY: RegExp = /[^0-9]*/g;
 export const NUMBER_FLOAT: RegExp = /^\d*\.?\d{0,5}$/g;
 //------ PAGE PER LIMIT -----//
-export const PAGE_PER_LIMIT: number = 7;
+export const PAGE_PER_LIMIT: number = 10;
 
 export const EMAIL_REGEX: RegExp = /^(?=.{12,150}$)^[a-zA-Z0-9]+(\.?[a-zA-Z0-9])*@[a-zA-Z0-9]+\.([a-zA-Z]{2,3}|[a-zA-Z]{2}\.[a-zA-Z]{2,3})$/;
 export const PAN_NO_REGEX: RegExp = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;

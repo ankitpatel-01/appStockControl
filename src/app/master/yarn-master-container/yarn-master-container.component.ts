@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
@@ -14,6 +13,8 @@ import { CreateYarnGroupDto, UpdateYarnGroupDto, YarnGroup } from '../model/yarn
 import { YarnMaster } from '../model/yarn-master.model';
 import { YarnType } from '../model/yarn-type.model';
 import { YarnMasterService } from '../services/yarn-master.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 @Component({
   selector: 'app-yarn-master-container',
@@ -31,24 +32,7 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
   yarnGroupListPaginated$: Observable<PaginateResponse<YarnGroup[]>>;
 
   //Subscriptions
-  createYarnSub: Subscription;
-  updateYarnSub: Subscription;
-  removedYarnSub: Subscription;
-  createYarnTypeSub: Subscription;
-  updateYarnTypeSub: Subscription;
-  removedYarnTypeSub: Subscription;
-  createYarnQualitySub: Subscription;
-  updateYarnQualitySub: Subscription;
-  removedYarnQualitySub: Subscription;
-  createYarnColorSub: Subscription;
-  updateYarnColorSub: Subscription;
-  removedYarnColorSub: Subscription;
-  createYarnCategorySub: Subscription;
-  updateYarnCategorySub: Subscription;
-  removedYarnCategorySub: Subscription;
-  createYarnGroupSub: Subscription;
-  updateYarnGroupSub: Subscription;
-  removedYarnGroupSub: Subscription;
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private _yarnMasterService: YarnMasterService,
@@ -67,24 +51,8 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.createYarnSub?.unsubscribe();
-    this.updateYarnSub?.unsubscribe();
-    this.removedYarnSub?.unsubscribe();
-    this.createYarnTypeSub?.unsubscribe();
-    this.updateYarnTypeSub?.unsubscribe();
-    this.removedYarnTypeSub?.unsubscribe();
-    this.createYarnQualitySub?.unsubscribe();
-    this.updateYarnQualitySub?.unsubscribe();
-    this.removedYarnQualitySub?.unsubscribe();
-    this.createYarnColorSub?.unsubscribe();
-    this.updateYarnColorSub?.unsubscribe();
-    this.removedYarnColorSub?.unsubscribe();
-    this.createYarnCategorySub?.unsubscribe();
-    this.updateYarnCategorySub?.unsubscribe();
-    this.removedYarnCategorySub?.unsubscribe();
-    this.createYarnGroupSub?.unsubscribe();
-    this.updateYarnGroupSub?.unsubscribe();
-    this.removedYarnGroupSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit(): void {
@@ -130,45 +98,51 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
 
   createYarn(yarn: CreateYarnDto) {
     this._loader.startLoader('yarn');
-    this.createYarnSub = this._yarnMasterService.createYarn(yarn).subscribe({
-      next: (res) => {
-        this.getAllYarnPaginate(1);
-        this._event.showSuccessSnackBar("yarn created sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('yarn');
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.createYarn(yarn)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllYarnPaginate(1);
+          this._event.showSuccessSnackBar("yarn created sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('yarn');
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   updateYarn(updatedYarn: UpdateYarnDto) {
     this._loader.startLoader('yarn');
-    this.updateYarnSub = this._yarnMasterService.updateYarn(updatedYarn).subscribe({
-      next: (res) => {
-        this.getAllYarnPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn updated sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('yarn');
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.updateYarn(updatedYarn)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllYarnPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn updated sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('yarn');
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   removeYarn(yarn: RemoveEmit) {
     this._loader.startLoader('yarn');
-    this.removedYarnSub = this._yarnMasterService.removeYarn(yarn.id).subscribe({
-      next: (res) => {
-        yarn.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getAllYarnPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn removed sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('yarn');
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.removeYarn(yarn.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          yarn.length === 1 ? this._currentPage = 1 : this._currentPage;
+          this.getAllYarnPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn removed sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('yarn');
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   //yarn type
@@ -181,45 +155,51 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
 
   removeYarnType(yarnType: RemoveEmit): void {
     this._loader.startLoader('yarnTypeList');
-    this.removedYarnTypeSub = this._yarnMasterService.removeYarnType(yarnType.id).subscribe({
-      next: (res) => {
-        yarnType.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getYarnTypesPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn type removed sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('yarnTypeList')
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.removeYarnType(yarnType.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          yarnType.length === 1 ? this._currentPage = 1 : this._currentPage;
+          this.getYarnTypesPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn type removed sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('yarnTypeList')
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   createYarnTypes(yarnType: YarnType): void {
     this._loader.startLoader('yarnTypeList');
-    this.createYarnTypeSub = this._yarnMasterService.createYarnTypes(yarnType).subscribe({
-      next: (res) => {
-        this.getYarnTypesPaginate(1);
-        this._event.showSuccessSnackBar("yarn type created sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('yarnTypeList')
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.createYarnTypes(yarnType)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getYarnTypesPaginate(1);
+          this._event.showSuccessSnackBar("yarn type created sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('yarnTypeList')
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   updateYarnTypes(yarnType: YarnType): void {
     this._loader.startLoader('yarnTypeList');
-    this.updateYarnTypeSub = this._yarnMasterService.updateYarnTypes(yarnType).subscribe({
-      next: (res) => {
-        this.getYarnTypesPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn type updated sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('yarnTypeList')
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.updateYarnTypes(yarnType)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getYarnTypesPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn type updated sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('yarnTypeList')
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   //quality
@@ -236,45 +216,51 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
 
   createQuality(quality: CreateQualityDto): void {
     this._loader.startLoader('qulityList');
-    this.createYarnQualitySub = this._yarnMasterService.createQuality(quality).subscribe({
-      next: (res) => {
-        this.getQualityPaginate(1);
-        this._event.showSuccessSnackBar("yarn quality created sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('qulityList');
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.createQuality(quality)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getQualityPaginate(1);
+          this._event.showSuccessSnackBar("yarn quality created sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('qulityList');
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   updateQuality(quality: UpdateQualityDto): void {
     this._loader.startLoader('qulityList');
-    this.updateYarnQualitySub = this._yarnMasterService.updateQuality(quality).subscribe({
-      next: (res) => {
-        this.getQualityPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn quality updated sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('qulityList');
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.updateQuality(quality)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getQualityPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn quality updated sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('qulityList');
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   removeQuality(quality: RemoveEmit): void {
     this._loader.startLoader('qulityList');
-    this.removedYarnQualitySub = this._yarnMasterService.removeQuality(quality.id).subscribe({
-      next: (res) => {
-        quality.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getQualityPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn quality removed sucessfully");
-      },
-      error: (err) => {
-        this._loader.stopLoader('qulityList');
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.removeQuality(quality.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          quality.length === 1 ? this._currentPage = 1 : this._currentPage;
+          this.getQualityPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn quality removed sucessfully");
+        },
+        error: (err) => {
+          this._loader.stopLoader('qulityList');
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   //color
@@ -285,40 +271,46 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
   }
 
   createColor(color: CreateColorDto): void {
-    this.createYarnColorSub = this._yarnMasterService.createColor(color).subscribe({
-      next: (res) => {
-        this.getAllColorsPaginate(1);
-        this._event.showSuccessSnackBar("yarn color created sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.createColor(color)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllColorsPaginate(1);
+          this._event.showSuccessSnackBar("yarn color created sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   updateColor(color: UpdateColorDto): void {
-    this.createYarnColorSub = this._yarnMasterService.updateColor(color).subscribe({
-      next: (res) => {
-        this.getAllColorsPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn color updated sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.updateColor(color)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllColorsPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn color updated sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   removeColor(color: RemoveEmit): void {
-    this.removedYarnColorSub = this._yarnMasterService.removeColor(color.id).subscribe({
-      next: (res) => {
-        color.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getAllColorsPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn color removed sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.removeColor(color.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          color.length === 1 ? this._currentPage = 1 : this._currentPage;
+          this.getAllColorsPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn color removed sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   //category
@@ -329,40 +321,46 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
   }
 
   createCategory(category: CreateCategoryDto): void {
-    this.createYarnCategorySub = this._yarnMasterService.createCategory(category).subscribe({
-      next: (res) => {
-        this.getCategoryPaginate();
-        this._event.showSuccessSnackBar("yarn category created sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.createCategory(category)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getCategoryPaginate();
+          this._event.showSuccessSnackBar("yarn category created sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   updateCategory(category: UpdateCategoryDto): void {
-    this.updateYarnCategorySub = this._yarnMasterService.updateCategory(category).subscribe({
-      next: (res) => {
-        this.getCategoryPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn category updated sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.updateCategory(category)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getCategoryPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn category updated sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   removeCategory(category: RemoveEmit): void {
-    this.removedYarnCategorySub = this._yarnMasterService.removeCategory(category.id).subscribe({
-      next: (res) => {
-        category.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getCategoryPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn category removed sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.removeCategory(category.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          category.length === 1 ? this._currentPage = 1 : this._currentPage;
+          this.getCategoryPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn category removed sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   //yarn group
@@ -373,40 +371,46 @@ export class YarnMasterContainerComponent implements OnInit, OnDestroy {
   }
 
   createYarnGroup(yarnGroup: CreateYarnGroupDto): void {
-    this.createYarnGroupSub = this._yarnMasterService.createYarnGroup(yarnGroup).subscribe({
-      next: (res) => {
-        this.getAllYarnGroupPaginate();
-        this._event.showSuccessSnackBar("yarn group created sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.createYarnGroup(yarnGroup)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllYarnGroupPaginate();
+          this._event.showSuccessSnackBar("yarn group created sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   updateYarnGroup(yarnGroup: UpdateYarnGroupDto): void {
-    this.updateYarnGroupSub = this._yarnMasterService.updateYarnGroup(yarnGroup).subscribe({
-      next: (res) => {
-        this.getAllYarnGroupPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn group updated sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.updateYarnGroup(yarnGroup)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllYarnGroupPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn group updated sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
   removeYarnGroup(yarnGroup: RemoveEmit): void {
-    this.removedYarnColorSub = this._yarnMasterService.removeYarnGroup(yarnGroup.id).subscribe({
-      next: (res) => {
-        yarnGroup.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getAllYarnGroupPaginate(this._currentPage);
-        this._event.showSuccessSnackBar("yarn group removed sucessfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    });
+    this._yarnMasterService.removeYarnGroup(yarnGroup.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          yarnGroup.length === 1 ? this._currentPage = 1 : this._currentPage;
+          this.getAllYarnGroupPaginate(this._currentPage);
+          this._event.showSuccessSnackBar("yarn group removed sucessfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      });
   }
 
 }

@@ -10,6 +10,8 @@ import { PaginateResponse } from 'src/app/shared/models/response.model';
 import { CreateGstDto, Gst, UpdateGstDto } from '../../model/gst.model';
 import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 import { EventService } from 'src/app/shared/services/event.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 @Component({
   selector: 'app-tax-master-container',
@@ -22,9 +24,7 @@ export class TaxMasterContainerComponent implements OnInit {
   public gstRateList$: Observable<PaginateResponse<Gst[]>>
 
   //Subscription
-  private createGstSub: Subscription;
-  private updateGstSub: Subscription;
-  private removeGstSub: Subscription;
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private _yarnMasterService: YarnMasterService, private _utilityService: UtitityService, private _event: EventService) {
     this.searchString = "";
@@ -35,9 +35,8 @@ export class TaxMasterContainerComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.createGstSub?.unsubscribe();
-    this.updateGstSub?.unsubscribe();
-    this.removeGstSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   _props(): void {
@@ -59,15 +58,17 @@ export class TaxMasterContainerComponent implements OnInit {
    * @param gstRate : CreateGstDto
    */
   createGstRate(gstRate: CreateGstDto): void {
-    this.createGstSub = this._yarnMasterService.createGstRate(gstRate).subscribe({
-      next: (res) => {
-        this.getAllGstRateList();
-        this._event.showSuccessSnackBar("GST code created");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.createGstRate(gstRate)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllGstRateList();
+          this._event.showSuccessSnackBar("GST code created");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   /**
@@ -76,15 +77,18 @@ export class TaxMasterContainerComponent implements OnInit {
    * @param gstRate : UpdateGstDto
    */
   updateGstRate(gstRate: UpdateGstDto): void {
-    this.updateGstSub = this._yarnMasterService.updateGstRate(gstRate).subscribe({
-      next: (res) => {
-        this.getAllGstRateList(this._currentPage);
-        this._event.showSuccessSnackBar("GST code updated");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.updateGstRate(gstRate)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllGstRateList(this._currentPage, this.searchString);
+          this._event.showSuccessSnackBar("GST code updated");
+        },
+        error: (err) => {
+          console.log(err)
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   /**
@@ -93,16 +97,18 @@ export class TaxMasterContainerComponent implements OnInit {
    * @param gst : RemoveEmit 
    */
   removeGstRate(gst: RemoveEmit) {
-    this.removeGstSub = this._yarnMasterService.removeGstRate(gst.id).subscribe({
-      next: (res) => {
-        gst.length == 1 ? this._currentPage = 1 : this._currentPage;
-        this.getAllGstRateList(this._currentPage);
-        this._event.showSuccessSnackBar("GST code removed");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.removeGstRate(gst.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          gst.length == 1 ? this._currentPage = 1 : this._currentPage;
+          this.getAllGstRateList(this._currentPage, this.searchString);
+          this._event.showSuccessSnackBar("GST code removed");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
 }

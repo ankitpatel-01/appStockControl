@@ -11,6 +11,8 @@ import { AuthInterceptor } from './core/helpers/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ErrorInterceptor } from './core/helpers/error.interceptor';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { ErrorInterceptor } from './core/helpers/error.interceptor';
     HttpClientModule,
     BrowserAnimationsModule, // required animations module
     BsDatepickerModule.forRoot(),
+    TabsModule,
     CoreModule,
     ToastrModule.forRoot({
       maxOpened: 3,

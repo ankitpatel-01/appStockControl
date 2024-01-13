@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+// ------------------------------------------------------------------------------------
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+// ------------------------------------------------------------------------------------
 import { CompanyBranchList } from 'src/app/core/models/company-branch.model';
 import { UserProfile } from 'src/app/core/models/user-profile.model';
 
@@ -10,7 +14,7 @@ import { UserProfile } from 'src/app/core/models/user-profile.model';
   selector: 'app-horizontal-nav-menu',
   templateUrl: './horizontal-nav-menu.component.html'
 })
-export class HorizontalNavMenuComponent implements OnInit {
+export class HorizontalNavMenuComponent implements OnInit, OnDestroy {
 
   /** Flag to show/hide the dropdown menu */
   showDropdown = true;
@@ -51,21 +55,21 @@ export class HorizontalNavMenuComponent implements OnInit {
   @Output() closeAllFlyout: EventEmitter<Event>;
 
 
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private _router: Router,
   ) {
-
     this.accountFlyout = new EventEmitter<Event>();
     this.closeAllFlyout = new EventEmitter<Event>();
-
   }
+
 
   /**
    * Initialize the component and subscribe to the router events to show/hide the dropdown menu
    */
   ngOnInit(): void {
-    this._router.events.subscribe(event => {
+    this._router.events.pipe(takeUntil(this.destroy$)).subscribe(event => {
       // hide the dropdown when the route changes
       if (event instanceof NavigationStart) {
         this.showDropdown = false;
@@ -78,6 +82,11 @@ export class HorizontalNavMenuComponent implements OnInit {
     });
 
 
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**

@@ -42,7 +42,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             default:
               this._eventService.showErrorToastr(error.error.message, `Error Code:${error.status}`);
               errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
-              break;
+              return throwError(() => error);
           }
         }
         return throwError(() => errorMessage);

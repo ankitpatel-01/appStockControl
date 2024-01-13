@@ -18,8 +18,6 @@ export class ItemMasterPresentationComponent implements OnInit {
   ngOnInit(): void {
     // Subscribe to the location change events
     this.location.subscribe((event) => {
-      console.log(event)
-      // console.log(this.location.getState())
       if (this.overlayRef && this.overlayRef.hasAttached() && event.url != "/master/item-master") {
         const confirm = window.confirm('Are you sure you want to leave? Your changes will be lost.');
         if (!confirm) {

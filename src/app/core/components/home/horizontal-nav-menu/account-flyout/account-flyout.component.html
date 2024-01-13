@@ -11,7 +11,7 @@
                 {{selectedBranch.name}}
             </small>
             <p class="mt-2">
-                <small class="text-primary cursor-pointer">My Account </small>
+                <small class="text-primary cursor-pointer" [routerLink]="'setting'">My Account </small>
                 <span class="text-muted" style="padding:0 10px;">|</span>
                 <small class="text-danger cursor-pointer" (click)="logout()"> Sign Out </small>
             </p>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { RemoveEmit } from 'src/app/shared/models/remove-emitter.model';
 import { PaginateResponse } from 'src/app/shared/models/response.model';
@@ -8,6 +7,8 @@ import { EventService } from 'src/app/shared/services/event.service';
 import { UtitityService } from 'src/app/shared/services/utitity.service';
 import { CreateLocationMasterDto, LocationMaster, UpdateLocationMasterDto } from '../../model/location.model';
 import { YarnMasterService } from '../../services/yarn-master.service';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { Subject } from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-location-master-container',
@@ -20,9 +21,7 @@ export class LocationMasterContainerComponent implements OnInit {
   public locationList$: Observable<PaginateResponse<LocationMaster[]>>
 
   // Subscription
-  private createLocationSub: Subscription;
-  private updateLocationSub: Subscription;
-  private removeLocationSub: Subscription;
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private _yarnMasterService: YarnMasterService,
@@ -38,9 +37,8 @@ export class LocationMasterContainerComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.createLocationSub?.unsubscribe();
-    this.updateLocationSub?.unsubscribe();
-    this.removeLocationSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   _props(): void {
@@ -65,15 +63,17 @@ export class LocationMasterContainerComponent implements OnInit {
    * @param location : CreateLocationMasterDto
    */
   createLocation(location: CreateLocationMasterDto): void {
-    this.createLocationSub = this._yarnMasterService.createLocation(location).subscribe({
-      next: (res) => {
-        this.getAllLocationList();
-        this._event.showSuccessSnackBar("New Loction created successfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.createLocation(location)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllLocationList();
+          this._event.showSuccessSnackBar("New Loction created successfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   /**
@@ -82,15 +82,17 @@ export class LocationMasterContainerComponent implements OnInit {
    * @param location : UpdateLocationMasterDto
    */
   updateLocation(location: UpdateLocationMasterDto): void {
-    this.updateLocationSub = this._yarnMasterService.updateLocation(location).subscribe({
-      next: (res) => {
-        this.getAllLocationList(this._currentPage);
-        this._event.showSuccessSnackBar("Loction updated successfully");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.updateLocation(location)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getAllLocationList(this._currentPage);
+          this._event.showSuccessSnackBar("Loction updated successfully");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
   /**
@@ -99,16 +101,18 @@ export class LocationMasterContainerComponent implements OnInit {
    * @param location : RemoveEmit
    */
   removeLocation(location: RemoveEmit) {
-    this.removeLocationSub = this._yarnMasterService.removeLocation(location.id).subscribe({
-      next: (res) => {
-        location.length === 1 ? this._currentPage = 1 : this._currentPage;
-        this.getAllLocationList(this._currentPage);
-        this._event.showSuccessSnackBar("location removed");
-      },
-      error: (err) => {
-        this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
-      }
-    })
+    this._yarnMasterService.removeLocation(location.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          location.length === 1 ? this._currentPage = 1 : this._currentPage;
+          this.getAllLocationList(this._currentPage);
+          this._event.showSuccessSnackBar("location removed");
+        },
+        error: (err) => {
+          this._utilityService.openAlertDialog(err?.error?.error, err?.error?.message);
+        }
+      })
   }
 
 }

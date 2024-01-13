@@ -18,7 +18,7 @@ export class EventService {
 
   toastrConfig: Partial<IndividualConfig> = {
     closeButton: true,
-    timeOut: 3000,
+    timeOut: 5000,
     easing: 'ease-in',
     easeTime: 150,
     newestOnTop: true,
